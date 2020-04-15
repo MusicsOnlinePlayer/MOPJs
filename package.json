@@ -1,0 +1,51 @@
+{
+	"name": "mop",
+	"version": "0.1.0",
+	"private": true,
+	"dependencies": {
+		"@fortawesome/fontawesome-svg-core": "^1.2.28",
+		"@fortawesome/free-solid-svg-icons": "^5.13.0",
+		"@fortawesome/react-fontawesome": "^0.1.9",
+		"axios": "^0.19.2",
+		"bootstrap": "^4.4.1",
+		"express": "^4.17.1",
+		"howler": "^2.1.3",
+		"memoize-one": "^5.1.1",
+		"mongodb": "^3.5.5",
+		"mongoosastic": "^4.6.0",
+		"mongoose": "^5.9.7",
+		"node-id3": "^0.1.16",
+		"query-string": "^6.11.1",
+		"react": "^16.13.1",
+		"react-audio-player": "^0.11.1",
+		"react-bootstrap": "^1.0.0",
+		"react-dom": "^16.13.1",
+		"react-hot-loader": "^4.12.20",
+		"react-howler": "^3.7.4",
+		"react-redux": "^7.2.0",
+		"react-router-dom": "^5.1.2",
+		"react-scripts": "3.4.1",
+		"react-visibility-sensor": "^5.1.1",
+		"redux": "^4.0.5"
+	},
+	"main": "./index.js",
+	"devDependencies": {
+		"@babel/core": "^7.9.0",
+		"@babel/preset-env": "^7.9.0",
+		"@babel/preset-react": "^7.9.4",
+		"babel-loader": "^8.1.0",
+		"file-loader": "^6.0.0",
+		"style-loader": "^1.1.3",
+		"webpack": "^4.42.1",
+		"webpack-bundle-analyzer": "^3.6.1",
+		"webpack-cli": "^3.3.11",
+		"webpack-dev-server": "^3.10.3"
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"StartAll": "webpack --mode development && node index.js",
+		"BuildClient": "webpack --mode development --watch",
+		"StartServer": "node index.js",
+		"clean": "node clean.js"
+	}
+}

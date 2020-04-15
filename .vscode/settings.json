@@ -1,0 +1,9 @@
+{
+	"eslint.autoFixOnSave": true,
+	"prettier.singleQuote": true,
+	"prettier.tabWidth": 4,
+	"prettier.useTabs": true,
+	"editor.formatOnSave": true,
+	"git.ignoreLimitWarning": true,
+	"prettier.printWidth": 200
+}

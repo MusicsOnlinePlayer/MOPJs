@@ -1,0 +1,9 @@
+{
+  "extends": "airbnb",
+  "globals": {
+    "document": true,
+  },
+  "rules": {
+    "no-unused-expressions": [2, { allowShortCircuit: true }],
+  },
+}

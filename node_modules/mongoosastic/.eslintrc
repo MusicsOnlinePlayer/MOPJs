@@ -1,0 +1,10 @@
+{
+  "env":  {
+    "node": true,
+    "mocha": true
+  },
+  "extends": "standard",
+  "rules": {
+    "no-prototype-builtins": 0
+  }
+}
