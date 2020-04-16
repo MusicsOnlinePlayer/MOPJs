@@ -7,6 +7,7 @@ import store from './store';
 import SearchPage from './Components/Search/SearchPage';
 import Player from './Components/MusicPlayer/Player';
 import Playlist from './Components/MusicPlayer/Playlist';
+import Album from './Components/Albums/Album';
 
 const App = () => {
 	return (
@@ -16,6 +17,7 @@ const App = () => {
 				<Route path="/" component={Player} />
 				<Route path="/Search" component={SearchPage} />
 				<Route path="/Playlist" component={Playlist} />
+				<Route path="/Album/:id" component={Album} />
 			</HashRouter>
 		</Provider>
 	);

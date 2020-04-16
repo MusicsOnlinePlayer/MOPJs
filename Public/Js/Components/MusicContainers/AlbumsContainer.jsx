@@ -1,16 +1,16 @@
-import MusicElement from './MusicElement';
+import AlbumElement from './AlbumElement';
 import { connect } from 'react-redux';
-import { Spinner, Container, Row, ListGroup } from 'react-bootstrap';
+import { Spinner, CardDeck, Container, CardColumns, CardGroup } from 'react-bootstrap';
 import React from 'react';
 
 const mapStateToProps = (state) => {
 	return {
-		SearchResults: state.MusicSearchReducer.SearchResults.Musics,
+		SearchResults: state.MusicSearchReducer.SearchResults.Albums,
 		IsFetching: state.MusicSearchReducer.IsFetching,
 	};
 };
 
-class MusicContainerConnected extends React.Component {
+class AlbumsContainerConnected extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
@@ -24,17 +24,14 @@ class MusicContainerConnected extends React.Component {
 			);
 		} else if (this.props.SearchResults) {
 			let MusicsItems = this.props.SearchResults.map((SearchRes) => {
-				return <MusicElement key={SearchRes} id={SearchRes} />;
+				return <AlbumElement key={SearchRes} id={SearchRes} />;
 			});
 			return (
-				<div className="m-4">
-					{/* style={{ borderRadius: '10px', background: '#ededed' }}*/}
+				<div className="m-4 ">
 					<small className="text-muted">
-						<h5>Musics</h5>
+						<h5>Albums</h5>
 					</small>
-					<table className="table table-hover">
-						<tbody>{MusicsItems}</tbody>
-					</table>
+					<div className="card-deck">{MusicsItems}</div>
 				</div>
 			);
 		} else {
@@ -43,6 +40,6 @@ class MusicContainerConnected extends React.Component {
 	}
 }
 
-const MusicContainer = connect(mapStateToProps)(MusicContainerConnected);
+const AlbumsContainer = connect(mapStateToProps)(AlbumsContainerConnected);
 
-export default MusicContainer;
+export default AlbumsContainer;

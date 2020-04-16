@@ -79,17 +79,22 @@ app.get('/Search/Artist/Name/:name', (req, res) => {
 app.get('/Music/id/:id', (req, res) => {
 	MusicModel.findById(req.params.id, (err, doc) => {
 		if (err) console.error(err);
-		doc.FilePath = path.basename(doc.FilePath);
+		if (doc) doc.FilePath = path.basename(doc.FilePath);
 		res.send(doc);
 	});
 });
 
 app.get('/Album/id/:id', (req, res) => {
-	AlbumModel.findById(req.params.id, (err, doc) => {
-		if (err) console.error(err);
-		//doc.FilePath = path.basename(doc.FilePath);
-		res.send(doc);
-	});
+	AlbumModel.findById(req.params.id)
+		.lean()
+		.exec((err, doc) => {
+			if (err) console.error(err);
+			MusicModel.findById(doc.MusicsId[0], (musicerr, musicdoc) => {
+				doc.Image = musicdoc.Image;
+				res.send(doc);
+			});
+			//doc.FilePath = path.basename(doc.FilePath);
+		});
 });
 
 app.get('/Artist/id/:id', (req, res) => {

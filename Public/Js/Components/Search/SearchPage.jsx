@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { RequestSearch, ReceiveMusics, ReceiveAlbums, ReceiveArtists, FailSearch } from '../../Actions/Action';
 import React from 'react';
 import MusicContainer from '../MusicContainers/MusicContainer';
+import AlbumsContainer from '../MusicContainers/AlbumsContainer';
 
 const mapStateToProps = (state) => {
 	return { IsFetching: state.MusicSearchReducer.IsFetching, SearchQuery: state.MusicSearchReducer.SearchQuery };
@@ -25,7 +26,12 @@ class SearchPageConnected extends React.Component {
 		this.state = {};
 	}
 	render() {
-		return <MusicContainer />;
+		return (
+			<div>
+				<MusicContainer />
+				<AlbumsContainer />
+			</div>
+		);
 	}
 
 	ApiSearch = () => {

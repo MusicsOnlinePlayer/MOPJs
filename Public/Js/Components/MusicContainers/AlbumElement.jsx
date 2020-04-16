@@ -2,10 +2,10 @@ import React from 'react';
 import { ChangePlayingMusic, AddMusic } from '../../Actions/Action';
 import { connect } from 'react-redux';
 import Axios from 'axios';
-import MusicItemRow from './MusicItemRow';
-
+import { withRouter } from 'react-router-dom';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import MusicItemCard from './MusicItemCard';
 
 const mapDispatchToProps = (dispatch) => {
 	return {
@@ -28,33 +28,28 @@ class MusicElementConnected extends React.Component {
 	}
 
 	onClick = () => {
-		this.props.ChangePlayingMusic(this.state.ApiResult);
+		if (this.state.ApiResult) this.props.history.push('/Album/' + this.state.ApiResult._id);
 	};
 
 	render() {
 		return (
-			<MusicItemRow Music={this.state.ApiResult} onClick={this.onClick}>
+			<MusicItemCard Image={this.state.ApiResult.Image} Name={this.state.ApiResult.Name} onClick={this.onClick}>
 				<td className="align-middle" onClick={this.HandleAdd}>
 					<FontAwesomeIcon style={{ color: '#bebebe' }} icon={faPlus} size="lg" pull="right" />
 				</td>
-			</MusicItemRow>
+			</MusicItemCard>
 		);
 	}
 
-	HandleAdd = () => {
-		this.props.AddMusic(this.state.ApiResult);
-	};
-
 	componentWillMount = () => {
-		Axios.get('/Music/Music/id/' + this.props.id).then((res) => {
+		Axios.get('/Music/Album/id/' + this.props.id).then((res) => {
 			this.setState({
 				ApiResult: res.data,
 			});
-			this.props.onDataReceived(res.data);
 		});
 	};
 }
 
 const MusicElement = connect(null, mapDispatchToProps)(MusicElementConnected);
 
-export default MusicElement;
+export default withRouter(MusicElement);
