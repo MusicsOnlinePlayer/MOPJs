@@ -7,7 +7,7 @@ export const FAIL_SEARCH = 'FAIL_SEARCH';
 export function RequestSearch(SearchQuery) {
 	return {
 		type: REQUEST_SEARCH,
-		SearchQuery: SearchQuery,
+		SearchQuery,
 		RequestedAt: Date.now(),
 	};
 }

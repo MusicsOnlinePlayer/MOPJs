@@ -4,33 +4,63 @@ const MusicsFolder = path.join(__dirname, './../../../MusicsFolderProd');
 const ArtistsImageFolder = path.join(__dirname, './../../../ArtistImages');
 const fs = require('fs');
 const NodeID3 = require('node-id3');
-var ArtistModel = require('./../Models').Artist;
+const ArtistModel = require('../Models').Artist;
 
-var MusicModel = require('./../Models').Music;
-var AlbumModel = require('./../Models').Album;
+const MusicModel = require('../Models').Music;
+const AlbumModel = require('../Models').Album;
 
-module.exports = {
-	MusicsFolder,
-	ArtistsImageFolder,
-	ReadAllMusics: () => {
-		return new Promise((resolver, reject) => {
-			Indexation();
-		});
-	},
+const HandleNewMusic = async (tags, MusicFilePath) => {
+	const NewTrackNumber = parseInt(tags.trackNumber.split('/')[0], 10);
+
+	if (isNaN(NewTrackNumber)) {
+		console.warn(`[Music Indexer] Skipped because of track number - ${MusicFilePath}`);
+		return;
+	}
+
+	const doctags = {
+		Title: tags.title,
+		Album: tags.album,
+		Artist: tags.artist,
+		TrackNumber: NewTrackNumber,
+		FilePath: MusicFilePath,
+		Image: tags.image ? tags.image.imageBuffer.toString('base64') : '',
+	};
+
+	const guessedPath = path.join(ArtistsImageFolder, `${doctags.Artist}.jpg`);
+
+	const newMusic = new MusicModel(doctags);
+	const newArtist = new ArtistModel({ Name: doctags.Artist, ImagePath: guessedPath });
+	const newAlbum = new AlbumModel({ Name: doctags.Album });
+
+	const musicDoc = await newMusic.save();
+
+	const artistDoc = await ArtistModel.findOneOrCreate({ Name: newArtist.Name }, newArtist);
+
+	const albumDoc = await AlbumModel.findOneOrCreate({ Name: newAlbum.Name }, newAlbum);
+
+	albumDoc.MusicsId.push(musicDoc._id);
+	const savedAlbum = await albumDoc.save();
+
+	if (artistDoc.AlbumsId.indexOf(savedAlbum._id) === -1) {
+		console.log(`[Music Indexer] Added ${savedAlbum.Name}`);
+		artistDoc.AlbumsId.push(savedAlbum);
+		await artistDoc.save();
+	}
 };
 
-Indexation = async () => {
+const Indexation = async () => {
 	console.log('[Music Indexer] Starting indexing');
 	console.time('[Music Indexer] Time ');
 
-	let files = fs.readdirSync(MusicsFolder);
+	const files = fs.readdirSync(MusicsFolder);
+	/* eslint no-restricted-syntax: "off" */
 	for (const file of files) {
-		let MusicFilePath = path.join(MusicsFolder, path.basename(file));
+		const MusicFilePath = path.join(MusicsFolder, path.basename(file));
 
-		let count = await MusicModel.countDocuments({ FilePath: MusicFilePath });
+		const count = await MusicModel.countDocuments({ FilePath: MusicFilePath });
 
-		if (count == 0) {
-			let tags = NodeID3.read(MusicFilePath);
+		if (count === 0) {
+			const tags = NodeID3.read(MusicFilePath);
 			if (tags.title && tags.album && tags.artist && tags.trackNumber) {
 				await HandleNewMusic(tags, MusicFilePath);
 			}
@@ -40,37 +70,11 @@ Indexation = async () => {
 	console.timeEnd('[Music Indexer] Time ');
 };
 
-HandleNewMusic = async (tags, MusicFilePath) => {
-	let NewTrackNumber = parseInt(tags.trackNumber.split('/')[0], 10);
 
-	let doctags = {
-		Title: tags.title,
-		Album: tags.album,
-		Artist: tags.artist,
-		TrackNumber: NewTrackNumber,
-		FilePath: MusicFilePath,
-		Image: tags.image ? tags.image.imageBuffer.toString('base64') : '',
-	};
-
-	let guessedPath = path.join(ArtistsImageFolder, doctags.Artist + '.jpg');
-	imagePath = guessedPath;
-
-	var newMusic = new MusicModel(doctags);
-	var newArtist = new ArtistModel({ Name: doctags.Artist, ImagePath: guessedPath });
-	var newAlbum = new AlbumModel({ Name: doctags.Album });
-
-	let musicDoc = await newMusic.save();
-
-	let artistDoc = await ArtistModel.findOneOrCreate({ Name: newArtist.Name }, newArtist);
-
-	let albumDoc = await AlbumModel.findOneOrCreate({ Name: newAlbum.Name }, newAlbum);
-
-	albumDoc.MusicsId.push(musicDoc._id);
-	let savedAlbum = await albumDoc.save();
-
-	if (artistDoc.AlbumsId.indexOf(savedAlbum._id) === -1) {
-		console.log('[Music Indexer] Added ' + savedAlbum.Name);
-		artistDoc.AlbumsId.push(savedAlbum);
-		await artistDoc.save();
-	}
+module.exports = {
+	MusicsFolder,
+	ArtistsImageFolder,
+	ReadAllMusics: () => new Promise(() => {
+		Indexation();
+	}),
 };

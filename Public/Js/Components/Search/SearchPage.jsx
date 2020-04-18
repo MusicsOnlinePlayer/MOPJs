@@ -1,67 +1,92 @@
 import QueryString from 'query-string';
 import Axios from 'axios';
 import { connect } from 'react-redux';
-import { RequestSearch, ReceiveMusics, ReceiveAlbums, ReceiveArtists, FailSearch } from '../../Actions/Action';
 import React from 'react';
-import MusicContainer from '../MusicContainers/MusicContainer';
-import AlbumsContainer from '../MusicContainers/AlbumsContainer';
+import PropTypes from 'prop-types';
+import {
+	RequestSearch as RequestSearchRedux,
+	ReceiveMusics as ReceiveMusicsRedux,
+	ReceiveAlbums as ReceiveAlbumsRedux,
+	ReceiveArtists as ReceiveArtistsRedux,
+	FailSearch as FailSearchRedux,
+} from '../../Actions/Action';
+import MusicsContainer from '../Containers/MusicsContainer';
+import AlbumsContainer from '../Containers/AlbumsContainer';
 
-const mapStateToProps = (state) => {
-	return { IsFetching: state.MusicSearchReducer.IsFetching, SearchQuery: state.MusicSearchReducer.SearchQuery };
-};
+const mapStateToProps = (state) => ({
+	IsFetching: state.MusicSearchReducer.IsFetching,
+	SearchQuery: state.MusicSearchReducer.SearchQuery,
+});
 
 function mapDispatchToProps(dispatch) {
 	return {
-		RequestSearch: (Search) => dispatch(RequestSearch(Search)),
-		ReceiveMusics: (SearchResults) => dispatch(ReceiveMusics(SearchResults)),
-		ReceiveAlbums: (SearchResults) => dispatch(ReceiveAlbums(SearchResults)),
-		ReceiveArtists: (SearchResults) => dispatch(ReceiveArtists(SearchResults)),
-		FailSearch: (err) => dispatch(FailSearch(err)),
+		RequestSearch: (Search) => dispatch(RequestSearchRedux(Search)),
+		ReceiveMusics: (SearchResults) => dispatch(ReceiveMusicsRedux(SearchResults)),
+		ReceiveAlbums: (SearchResults) => dispatch(ReceiveAlbumsRedux(SearchResults)),
+		ReceiveArtists: (SearchResults) => dispatch(ReceiveArtistsRedux(SearchResults)),
+		FailSearch: (err) => dispatch(FailSearchRedux(err)),
 	};
 }
 
 class SearchPageConnected extends React.Component {
+	static propTypes = {
+		location: PropTypes.shape({
+			search: PropTypes.string.isRequired,
+		}).isRequired,
+		IsFetching: PropTypes.bool.isRequired,
+		SearchQuery: PropTypes.string.isRequired,
+		ReceiveAlbums: PropTypes.func.isRequired,
+		ReceiveMusics: PropTypes.func.isRequired,
+		ReceiveArtists: PropTypes.func.isRequired,
+		RequestSearch: PropTypes.func.isRequired,
+		FailSearch: PropTypes.func.isRequired,
+	}
+
 	constructor(props) {
 		super(props);
 		this.state = {};
 	}
-	render() {
-		return (
-			<div>
-				<MusicContainer />
-				<AlbumsContainer />
-			</div>
-		);
-	}
+
 
 	ApiSearch = () => {
-		const values = QueryString.parse(this.props.location.search);
+		const {
+			location,
+			IsFetching,
+			SearchQuery,
+			ReceiveAlbums,
+			ReceiveMusics,
+			ReceiveArtists,
+			RequestSearch,
+			FailSearch,
+		} = this.props;
 
-		if (!this.props.IsFetching && values.q != this.props.SearchQuery) {
-			this.props.RequestSearch(values.q);
+		const values = QueryString.parse(location.search);
 
-			Axios.get('/Music/Search/Music/Name/' + values.q + '*')
+		if (!IsFetching && values.q !== SearchQuery) {
+			RequestSearch(values.q);
+
+			Axios.get(`/Music/Search/Music/Name/${values.q}*`)
 				.then((res) => {
-					this.props.ReceiveMusics(res.data);
+					ReceiveMusics(res.data);
 				})
 				.catch((res) => {
-					this.props.FailSearch(res.message);
+					FailSearch(res.message);
 				});
 
-			Axios.get('/Music/Search/Album/Name/' + values.q + '*')
+			Axios.get(`/Music/Search/Album/Name/${values.q}*`)
 				.then((res) => {
-					this.props.ReceiveAlbums(res.data);
+					ReceiveAlbums(res.data);
 				})
 				.catch((res) => {
-					this.props.FailSearch(res.message);
+					FailSearch(res.message);
 				});
 
-			Axios.get('/Music/Search/Artist/Name/' + values.q + '*')
+			Axios.get(`/Music/Search/Artist/Name/${values.q}*`)
 				.then((res) => {
-					this.props.ReceiveArtists(res.data);
+					ReceiveArtists(res.data);
 				})
 				.catch((res) => {
-					this.props.FailSearch(res.message);
+					FailSearch(res.message);
 				});
 		}
 	};
@@ -73,6 +98,15 @@ class SearchPageConnected extends React.Component {
 	componentDidUpdate = () => {
 		this.ApiSearch();
 	};
+
+	render() {
+		return (
+			<div>
+				<MusicsContainer />
+				<AlbumsContainer />
+			</div>
+		);
+	}
 }
 
 const SearchPage = connect(mapStateToProps, mapDispatchToProps)(SearchPageConnected);

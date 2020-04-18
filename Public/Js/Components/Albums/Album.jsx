@@ -1,24 +1,33 @@
 import React from 'react';
 import Axios from 'axios';
-import MusicElement from '../MusicContainers/MusicElement';
 import { Col, Row } from 'react-bootstrap';
-import { faPlay, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ClearPlaylist, AddMultipleMusics } from '../../Actions/Action';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { ClearPlaylist as ClearPlaylistRedux, AddMultipleMusics as AddMultipleMusicsRedux } from '../../Actions/Action';
+import MusicElement from '../Elements/MusicElement';
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		ClearPlaylist: () => {
-			dispatch(ClearPlaylist());
-		},
-		AddMusics: (Musics) => {
-			dispatch(AddMultipleMusics(Musics));
-		},
-	};
-};
+const mapDispatchToProps = (dispatch) => ({
+	ClearPlaylist: () => {
+		dispatch(ClearPlaylistRedux());
+	},
+	AddMusics: (Musics) => {
+		dispatch(AddMultipleMusicsRedux(Musics));
+	},
+});
 
 class AlbumConnected extends React.Component {
+	static propTypes = {
+		match: PropTypes.shape({
+			params: PropTypes.shape({
+				id: PropTypes.string.isRequired,
+			}).isRequired,
+		}).isRequired,
+		ClearPlaylist: PropTypes.func.isRequired,
+		AddMusics: PropTypes.func.isRequired,
+	}
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -29,24 +38,42 @@ class AlbumConnected extends React.Component {
 	}
 
 	onDataReceived = (Music) => {
-		this.setState((prev) => {
-			return {
-				Musics: [...prev.Musics, Music],
-			};
+		this.setState((prev) => ({
+			Musics: [...prev.Musics, Music],
+		}));
+	};
+
+	componentDidMount = () => {
+		const { match } = this.props;
+
+		Axios.get(`/Music/Album/id/${match.params.id}`).then((res) => {
+			this.setState({
+				MusicsId: res.data.MusicsId,
+				AlbumName: res.data.Name,
+			});
 		});
 	};
 
+	onPlayAlbum = () => {
+		const { ClearPlaylist, AddMusics } = this.props;
+		const { Musics } = this.state;
+
+		ClearPlaylist();
+		AddMusics([...Musics].sort((a, b) => a.TrackNumber - b.TrackNumber));
+	};
+
 	render() {
-		let AlbumItems = this.state.MusicsId.map((id) => {
-			return <MusicElement key={id} id={id} onDataReceived={this.onDataReceived} />;
-		});
+		const { MusicsId, AlbumName } = this.state;
+
+		const AlbumItems = MusicsId
+			.map((id) => <MusicElement key={id} id={id} onDataReceived={this.onDataReceived} />);
 
 		return (
 			<div className="m-5">
 				<Row className="p-1">
 					<Col>
 						<small className="text-muted">
-							<h5>{this.state.AlbumName}</h5>
+							<h5>{AlbumName}</h5>
 						</small>
 					</Col>
 					<Col>
@@ -59,20 +86,6 @@ class AlbumConnected extends React.Component {
 			</div>
 		);
 	}
-
-	componentDidMount = () => {
-		Axios.get('/Music/Album/id/' + this.props.match.params.id).then((res) => {
-			this.setState({
-				MusicsId: res.data.MusicsId,
-				AlbumName: res.data.Name,
-			});
-		});
-	};
-
-	onPlayAlbum = () => {
-		this.props.ClearPlaylist();
-		this.props.AddMusics([...this.state.Musics].sort((a, b) => a.TrackNumber - b.TrackNumber));
-	};
 }
 
 const Album = connect(null, mapDispatchToProps)(AlbumConnected);

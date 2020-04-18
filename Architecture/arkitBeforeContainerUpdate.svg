@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="350px" preserveAspectRatio="none" style="width:814px;height:350px;" version="1.1" viewBox="0 0 814 350" width="814px" zoomAndPan="magnify"><defs/><g><!--MD5=[f08bf7caf2e82deb139e951971591573]
+entity _Action--><rect fill="#F8F8F8" height="34.4844" rx="3" ry="3" style="stroke: #000000; stroke-width: 0.5;" width="56" x="269" y="305"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="36" x="279" y="327.0059">Action</text><ellipse cx="353.2487" cy="141.242" fill="#F8F8F8" rx="27.7487" ry="13.242" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="35" x="335.7487" y="144.9842">Album</text><ellipse cx="106.8275" cy="198.8655" fill="#F8F8F8" rx="57.3275" ry="13.8655" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="81" x="66.3275" y="202.6077">AlbumElement</text><ellipse cx="189.9845" cy="258.8969" fill="#F8F8F8" rx="59.9845" ry="14.3969" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="88" x="145.9845" y="262.6391">AlbumItemCard</text><ellipse cx="107.0267" cy="141.1053" fill="#F8F8F8" rx="63.5267" ry="15.1053" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="97" x="58.5267" y="144.8475">AlbumsContainer</text><ellipse cx="293.2487" cy="21.242" fill="#F8F8F8" rx="27.7487" ry="13.242" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="35" x="275.7487" y="24.9842">index</text><ellipse cx="236.0862" cy="199.2172" fill="#F8F8F8" rx="56.5862" ry="13.7172" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="79" x="196.5862" y="202.9594">MusicElement</text><ellipse cx="397.9548" cy="259.091" fill="#F8F8F8" rx="58.4548" ry="14.091" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="84" x="355.9548" y="262.8331">MusicItemRow</text><ellipse cx="573.108" cy="258.9216" fill="#F8F8F8" rx="70.108" ry="16.4216" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="113" x="516.608" y="262.6638">MusicPlayerReducer</text><ellipse cx="248.2284" cy="140.9457" fill="#F8F8F8" rx="62.7284" ry="14.9457" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="95" x="200.7284" y="144.6879">MusicsContainer</text><ellipse cx="731.1526" cy="258.9305" fill="#F8F8F8" rx="72.6526" ry="16.9305" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="119" x="671.6526" y="262.6727">MusicSearchReducer</text><ellipse cx="33.0416" cy="80.242" fill="#F8F8F8" rx="27.0416" ry="13.242" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="34" x="16.0416" y="83.9842">Player</text><ellipse cx="458.2284" cy="140.9457" fill="#F8F8F8" rx="62.7284" ry="14.9457" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="95" x="410.7284" y="144.6879">PlaylistContainer</text><ellipse cx="398.2159" cy="199.2432" fill="#F8F8F8" rx="59.2159" ry="14.2432" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="86" x="355.2159" y="202.9854">PlaylistElement</text><ellipse cx="572.9148" cy="198.783" fill="#F8F8F8" rx="54.4148" ry="13.283" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="73" x="536.4148" y="202.5251">RootReducer</text><ellipse cx="248.0833" cy="80.242" fill="#F8F8F8" rx="51.0833" ry="13.242" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="68" x="214.0833" y="83.9842">SearchPage</text><ellipse cx="474.2132" cy="21.242" fill="#F8F8F8" rx="24.2132" ry="13.242" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="30" x="459.2132" y="24.9842">store</text><!--MD5=[d37fd404da6c925feb1fdf2cb30117f1]
+entity _TopNav--><rect fill="#F8F8F8" height="34.4844" rx="3" ry="3" style="stroke: #000000; stroke-width: 0.5;" width="63" x="118.5" y="63"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="43" x="128.5" y="85.0059">TopNav</text><!--MD5=[905ae5e4446d026c3e7c92b32710b48e]
+link Album to _Action--><path d="M346.083,153.715 C341.317,162.179 335.124,174.008 331,185 C316.252,224.307 305.942,272.3917 300.785,299.5777 " fill="none" id="Album-&gt;_Action" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="299.822,304.7274,305.4078,296.6157,300.7408,299.8125,297.544,295.1456,299.822,304.7274" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[f7f8b84a48b635954fc242a2f125ddcc]
+link Album to MusicElement--><path d="M334.719,150.75 C315.878,159.768 286.25,173.949 264.364,184.424 " fill="none" id="Album-&gt;MusicElement" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="259.818,186.6,269.6629,186.3226,264.328,184.4414,266.2092,179.1065,259.818,186.6" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[48c0d5b537b7dd4465144cfd8dff9ec7]
+link AlbumElement to _Action--><path d="M105.6846,213.162 C104.7753,229.992 105.9296,258.9894 122,276 C141.188,296.3104 218.406,310.1439 263.604,316.6801 " fill="none" id="AlbumElement-&gt;_Action" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="268.682,317.4033,260.3366,312.1731,263.732,316.6976,259.2075,320.093,268.682,317.4033" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[425d2b7c32d9a0169da36f1e4b7fe99d]
+link AlbumElement to AlbumItemCard--><path d="M125.01,212.585 C137.346,221.206 153.812,232.712 167.083,241.9858 " fill="none" id="AlbumElement-&gt;AlbumItemCard" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="171.451,245.0378,166.3652,236.6036,167.3526,242.1737,161.7826,243.161,171.451,245.0378" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[d23228daa965e9aca87c2133b8828fa9]
+link AlbumsContainer to AlbumElement--><path d="M107,156.131 C107,163.292 107,172.072 107,179.739 " fill="none" id="AlbumsContainer-&gt;AlbumElement" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="107,184.835,111,175.835,107,179.835,103,175.835,107,184.835" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[789af418a07ed9c236fb61d072a09a54]
+link <b>index</b> to Album--><path d="M298.972,33.746 C309.754,54.95 332.486,99.656 344.746,123.767 " fill="none" id="&lt;b&gt;index&lt;/b&gt;-&gt;Album" style="stroke: #000000; stroke-width: 1.0;"/><polygon fill="#000000" points="347.052,128.302,346.5382,118.4666,344.7857,123.8451,339.4071,122.0927,347.052,128.302" style="stroke: #000000; stroke-width: 1.0;"/><!--MD5=[97b44d8e90469c83c06a325477c08ecf]
+link <b>index</b> to Player--><path d="M268.54,27.362 C220.387,37.919 113.511,61.35 61.9422,72.655 " fill="none" id="&lt;b&gt;index&lt;/b&gt;-&gt;Player" style="stroke: #000000; stroke-width: 1.0;"/><polygon fill="#000000" points="56.8294,73.776,66.4773,75.7552,61.7133,72.7049,64.7636,67.9409,56.8294,73.776" style="stroke: #000000; stroke-width: 1.0;"/><!--MD5=[283a42088eb661d1728fe2a5d8f2023f]
+link <b>index</b> to PlaylistContainer--><path d="M307.354,32.265 C335.943,52.711 400.216,98.676 434.848,123.443 " fill="none" id="&lt;b&gt;index&lt;/b&gt;-&gt;PlaylistContainer" style="stroke: #000000; stroke-width: 1.0;"/><polygon fill="#000000" points="439.328,126.646,434.3341,118.1571,435.261,123.7375,429.6806,124.6643,439.328,126.646" style="stroke: #000000; stroke-width: 1.0;"/><!--MD5=[dc3d22c7f755bcb20cd7bdda78e766f8]
+link <b>index</b> to SearchPage--><path d="M283.894,33.535 C277.212,41.998 268.054,53.599 260.66,62.964 " fill="none" id="&lt;b&gt;index&lt;/b&gt;-&gt;SearchPage" style="stroke: #000000; stroke-width: 1.0;"/><polygon fill="#000000" points="257.403,67.09,266.1197,62.5052,260.5015,63.1658,259.8409,57.5477,257.403,67.09" style="stroke: #000000; stroke-width: 1.0;"/><!--MD5=[39568d39ac203aa9eaf2f55a98750523]
+link <b>index</b> to store--><path d="M320.574,21 C361.944,21 403.313,21 444.683,21 " fill="none" id="&lt;b&gt;index&lt;/b&gt;-&gt;store" style="stroke: #000000; stroke-width: 1.0;"/><polygon fill="#000000" points="449.728,21,440.728,17,444.728,21,440.728,25,449.728,21" style="stroke: #000000; stroke-width: 1.0;"/><!--MD5=[33ac21a6a472c01318c1790dd5dc6725]
+link <b>index</b> to _TopNav--><path d="M272.64,29.931 C251.65,38.129 217.99,51.34 189,63 C188.279,63.29 187.55,63.584 186.816,63.88 " fill="none" id="&lt;b&gt;index&lt;/b&gt;-&gt;_TopNav" style="stroke: #000000; stroke-width: 1.0;"/><polygon fill="#000000" points="181.911,65.867,191.7544,66.1956,186.5453,63.9899,188.751,58.7808,181.911,65.867" style="stroke: #000000; stroke-width: 1.0;"/><!--MD5=[f4f29e4f9f20288d3d417fb9f1a0376e]
+link MusicElement to _Action--><path d="M242.298,212.493 C252.787,233.298 273.931,275.2411 286.64,300.4501 " fill="none" id="MusicElement-&gt;_Action" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="288.91,304.9536,288.4298,295.1165,286.659,300.489,281.2864,298.7181,288.91,304.9536" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[e4f6c8ebd6a00f27b6b40441709d062f]
+link MusicElement to MusicItemRow--><path d="M265.713,210.638 C292.999,220.407 333.476,234.899 362.464,245.2771 " fill="none" id="MusicElement-&gt;MusicItemRow" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="367.374,247.0353,360.2494,240.2353,362.6667,245.3496,357.5524,247.7669,367.374,247.0353" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[fe919eb9f32e0a87f9806792de602d58]
+link MusicPlayerReducer to _Action--><path d="M523.975,270.8353 C468.226,283.1565 378.707,302.9415 330.436,313.6101 " fill="none" id="MusicPlayerReducer-&gt;_Action" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="325.328,314.7392,334.9795,316.7008,330.21,313.6592,333.2516,308.8897,325.328,314.7392" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[9aef494e359ce0ce04111aa3b8ddb068]
+link MusicsContainer to MusicElement--><path d="M244.972,156.131 C243.415,163.397 241.501,172.33 239.841,180.076 " fill="none" id="MusicsContainer-&gt;MusicElement" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="238.74,185.214,244.5381,177.2527,239.7883,180.3251,236.7159,175.5754,238.74,185.214" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[5367661e620f5f4a61aa909adf955e15]
+link MusicSearchReducer to _Action--><path d="M679.027,270.9508 C669.716,272.7538 660.086,274.5158 651,276 C533.545,295.186 393.032,310.9168 330.203,317.5746 " fill="none" id="MusicSearchReducer-&gt;_Action" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="325.091,318.1145,334.4608,321.1487,330.0634,317.5902,333.6219,313.1928,325.091,318.1145" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[742bff8ef7c406de1ee3360ad85c4506]
+link Player to _Action--><path d="M29.9403,93.02 C21.8077,128.14 3.9134,230.944 60,276 C90.9807,300.8879 206.267,313.6056 263.842,318.5202 " fill="none" id="Player-&gt;_Action" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="268.894,318.9439,260.2605,314.2045,263.9116,318.5253,259.5907,322.1764,268.894,318.9439" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[948fa54566632259a5d4033e8c9155ed]
+link PlaylistContainer to _Action--><path d="M464.036,156.283 C474.222,182.879 491.194,240.5089 464,276 C447.855,297.0717 374.348,310.5024 330.417,316.7952 " fill="none" id="PlaylistContainer-&gt;_Action" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="325.212,317.5272,334.681,320.236,330.1634,316.8315,333.5679,312.3138,325.212,317.5272" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[88af3d1c654c5622db6f052db53f47be]
+link PlaylistContainer to PlaylistElement--><path d="M443.169,155.843 C434.938,163.525 424.639,173.137 415.955,181.242 " fill="none" id="PlaylistContainer-&gt;PlaylistElement" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="411.838,185.084,421.1464,181.8662,415.4928,181.672,415.6871,176.0184,411.838,185.084" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[a2408f5e7597c7f711ef0b590e7619c4]
+link PlaylistElement to MusicItemRow--><path d="M398,213.161 C398,221.022 398,231.122 398,239.7456 " fill="none" id="PlaylistElement-&gt;MusicItemRow" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="398,244.891,402,235.891,398,239.891,394,235.891,398,244.891" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[58a3320fb9fafb1804d6fd9ab49d417b]
+link RootReducer to MusicPlayerReducer--><path d="M573,212.585 C573,219.623 573,228.585 573,236.685 " fill="none" id="RootReducer-&gt;MusicPlayerReducer" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="573,242.1201,577,233.1201,573,237.1201,569,233.1201,573,242.1201" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[a8a67d5af234b5ed020ea681abac73d5]
+link RootReducer to MusicSearchReducer--><path d="M601.613,210.503 C625.991,219.453 661.358,232.435 688.956,242.5661 " fill="none" id="RootReducer-&gt;MusicSearchReducer" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="693.664,244.2944,686.5935,237.4382,688.9702,242.5715,683.8369,244.9482,693.664,244.2944" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[133ac9c855a86a22df81d15636eaabcf]
+link SearchPage to _Action--><path d="M215.962,90.173 C207.249,92.535 197.792,94.978 189,97 C121.55,112.513 80.1479,72.698 36,126 C27.2028,136.621 34.5888,197.465 42,213 C81.4865,295.7685 203.697,315.1542 263.436,319.6592 " fill="none" id="SearchPage-&gt;_Action" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="268.67,320.0278,259.9734,315.4051,263.6824,319.6764,259.4111,323.3853,268.67,320.0278" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[872f5e9b25e410031026011656b368dc]
+link SearchPage to AlbumsContainer--><path d="M223.117,91.412 C200.342,100.942 166.437,115.129 141.136,125.716 " fill="none" id="SearchPage-&gt;AlbumsContainer" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="136.517,127.649,146.3635,127.8642,141.1293,125.7186,143.2749,120.4844,136.517,127.649" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[eca3d3d694fab0024c8315ba40c55e24]
+link SearchPage to MusicsContainer--><path d="M248,93.225 C248,101.125 248,111.578 248,120.598 " fill="none" id="SearchPage-&gt;MusicsContainer" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="248,125.713,252,116.713,248,120.713,244,116.713,248,125.713" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[9c29c2185ca50aa39304f05a7c9a6839]
+link store to RootReducer--><path d="M480.496,33.548 C497.457,63.702 543.156,144.944 563.271,180.703 " fill="none" id="store-&gt;RootReducer" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="565.82,185.236,564.893,175.4309,563.3683,180.8784,557.9208,179.3536,565.82,185.236" style="stroke: #000000; stroke-width: 0.5;"/><script type="text/plantuml"><![CDATA[MD5=[fa8a30e09b5cd13a665d535400a4f180]
+@startuml
+
+scale max 1920 width
+top to bottom direction
+
+skinparam nodesep 15
+skinparam ranksep 29
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Tahoma
+skinparam defaultFontSize 12
+skinparam roundCorner 6
+skinparam dpi 150
+skinparam arrowColor black
+skinparam arrowThickness 0.5
+skinparam packageTitleAlignment left
+
+skinparam usecase {
+  borderThickness 0.5
+}
+
+skinparam rectangle {
+  borderThickness 0.5
+}
+
+skinparam component {
+  borderThickness 1
+}
+
+
+rectangle "Action" as _Action
+(Album)
+(AlbumElement)
+(AlbumItemCard)
+(AlbumsContainer)
+(<b>index</b>)
+(MusicElement)
+(MusicItemRow)
+(MusicPlayerReducer)
+(MusicsContainer)
+(MusicSearchReducer)
+(Player)
+(PlaylistContainer)
+(PlaylistElement)
+(RootReducer)
+(SearchPage)
+(store)
+rectangle "TopNav" as _TopNav
+
+
+(Album) ---> _Action
+(Album) --> (MusicElement)
+(AlbumElement) ---> _Action
+(AlbumElement) --> (AlbumItemCard)
+(AlbumsContainer) --> (AlbumElement)
+(<b>index</b>) --[thickness=1]> (Album)
+(<b>index</b>) --[thickness=1]> (Player)
+(<b>index</b>) --[thickness=1]> (PlaylistContainer)
+(<b>index</b>) --[thickness=1]> (SearchPage)
+(<b>index</b>) -[thickness=1]> (store)
+(<b>index</b>) --[thickness=1]> _TopNav
+(MusicElement) ---> _Action
+(MusicElement) --> (MusicItemRow)
+(MusicPlayerReducer) --> _Action
+(MusicsContainer) --> (MusicElement)
+(MusicSearchReducer) --> _Action
+(Player) ---> _Action
+(PlaylistContainer) ---> _Action
+(PlaylistContainer) --> (PlaylistElement)
+(PlaylistElement) --> (MusicItemRow)
+(RootReducer) --> (MusicPlayerReducer)
+(RootReducer) --> (MusicSearchReducer)
+(SearchPage) ---> _Action
+(SearchPage) --> (AlbumsContainer)
+(SearchPage) --> (MusicsContainer)
+(store) --> (RootReducer)
+
+@enduml
+
+
+' View and edit on https://arkit.pro
+]]></script></g></svg>

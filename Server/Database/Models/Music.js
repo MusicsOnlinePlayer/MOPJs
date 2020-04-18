@@ -1,21 +1,21 @@
-var mongoose = require('mongoose');
-var mongoosastic = require('mongoosastic');
+const mongoose = require('mongoose');
+const mongoosastic = require('mongoosastic');
 
-var MusicSchema = new mongoose.Schema({
+const MusicSchema = new mongoose.Schema({
 	Title: { type: String, es_indexed: true, es_boost: 8.0 },
-	Artist: { type: String, es_indexed: true, es_boost: 2.0 },
+	Artist: { type: String, es_indexed: true, es_boost: 1.0 },
 	Album: { type: String, es_indexed: true },
 	TrackNumber: Number,
 	FilePath: String,
 	Image: String,
 });
 
-var AlbumSchema = new mongoose.Schema({
+const AlbumSchema = new mongoose.Schema({
 	Name: { type: String, es_indexed: true },
 	MusicsId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Music' }],
 });
 
-var ArtistSchema = new mongoose.Schema({
+const ArtistSchema = new mongoose.Schema({
 	Name: { type: String, es_indexed: true },
 	AlbumsId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Album' }],
 	ImagePath: String,
@@ -37,9 +37,9 @@ AlbumSchema.static('findOneOrCreate', async function findOneOrCreate(condition, 
 	return one || this.create(doc);
 });
 
-var MusicModel = mongoose.model('Music', MusicSchema, 'Music');
-var AlbumModel = mongoose.model('Album', AlbumSchema, 'Album');
-var ArtistModel = mongoose.model('Artist', ArtistSchema, 'Artist');
+const MusicModel = mongoose.model('Music', MusicSchema, 'Music');
+const AlbumModel = mongoose.model('Album', AlbumSchema, 'Album');
+const ArtistModel = mongoose.model('Artist', ArtistSchema, 'Artist');
 
 module.exports = {
 	Music: MusicModel,
