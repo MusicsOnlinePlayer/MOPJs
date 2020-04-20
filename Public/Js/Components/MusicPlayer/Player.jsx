@@ -1,4 +1,6 @@
-import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons';
+import {
+	faPlay, faPause, faStepForward, faStepBackward,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import {
@@ -14,6 +16,7 @@ const mapStateToProps = (state) => ({
 	NextMusic:
 		state.MusicPlayerReducer.Playlist.Musics[state.MusicPlayerReducer.Playlist.PlayingId + 1],
 	CurrentMusicId: state.MusicPlayerReducer.Playlist.PlayingId,
+	PlaylistLength: state.MusicPlayerReducer.Playlist.Musics.length,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -39,12 +42,14 @@ class PlayerConnected extends React.Component {
 			Title: PropTypes.string.isRequired,
 		}),
 		CurrentMusicId: PropTypes.number,
+		PlaylistLength: PropTypes.number,
 	}
 
 	static defaultProps = {
 		PlayingMusic: undefined,
 		NextMusic: undefined,
 		CurrentMusicId: undefined,
+		PlaylistLength: undefined,
 	}
 
 	constructor(props) {
@@ -71,6 +76,16 @@ class PlayerConnected extends React.Component {
 			}
 		});
 	};
+
+	HandleNext = () => {
+		const { NextMusic, ChangePlayingId, CurrentMusicId } = this.props;
+		if (NextMusic) ChangePlayingId(CurrentMusicId + 1);
+	}
+
+	HandleBack = () => {
+		const { ChangePlayingId, CurrentMusicId } = this.props;
+		if (CurrentMusicId !== 0) ChangePlayingId(CurrentMusicId - 1);
+	}
 
 	HandleSliderChange = (event) => {
 		this.player.currentTime = event.target.value;
@@ -138,19 +153,26 @@ class PlayerConnected extends React.Component {
 									className="PlayerImage my-auto"
 									height="75em"
 									rounded
+									onClick={this.HandleOpenPlaylist}
 									src={PlayingMusic.Image ? `data:image/jpeg;base64,${PlayingMusic.Image.toString('base64')}` : '/Ressources/noMusic.jpg'}
 								/>
-								<Col className="my-1 col-md-auto">
+								<Col className="my-1 mt-0 col-md-auto  text-truncate" onClick={this.HandleOpenPlaylist}>
 									<h6>{PlayingMusic.Title}</h6>
 									<p>
 										{PlayingMusic.Artist}
 									</p>
 								</Col>
-								<div className="my-auto ml-auto mr-1" onClick={this.HandlePlay}>
-									<FontAwesomeIcon style={{ color: '#bebebe' }} icon={PlayingIcon} size="lg" pull="right" />
-								</div>
+								<Button variant="outline-light" className="my-auto mx-1 ml-auto" onClick={this.HandleBack} style={{ fontSize: '1.25rem' }}>
+									<FontAwesomeIcon style={{ color: '#bebebe' }} icon={faStepBackward} size="lg" pull="right" />
+								</Button>
+								<Button variant="outline-light" className="my-auto mx-1" onClick={this.HandlePlay} style={{ fontSize: '1.25rem' }}>
+									<FontAwesomeIcon style={{ color: '#bebebe' }} icon={PlayingIcon} size="lg" />
+								</Button>
+								<Button variant="outline-light" className="my-auto mx-1" onClick={this.HandleNext} style={{ fontSize: '1.25rem' }}>
+									<FontAwesomeIcon style={{ color: '#bebebe' }} icon={faStepForward} size="lg" pull="left" />
+								</Button>
 
-								<Button variant="light" className="my-auto ml-1 mt-1" onClick={this.HandleOpenPlaylist}>
+								<Button variant="light" className="my-auto ml-1 mt-1 d-none d-lg-block" onClick={this.HandleOpenPlaylist}>
 									{NextMusic ? `Next: ${NextMusic.Title}` : 'Queue'}
 								</Button>
 							</Row>
