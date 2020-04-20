@@ -8,22 +8,36 @@ const MusicSchema = new mongoose.Schema({
 	TrackNumber: Number,
 	FilePath: String,
 	Image: String,
+	ImageFormat: String,
 });
 
 const AlbumSchema = new mongoose.Schema({
 	Name: { type: String, es_indexed: true },
-	MusicsId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Music' }],
+	MusicsId: [{
+		type: mongoose.Schema.Types.ObjectId, ref: 'Music', es_schema: MusicSchema, es_indexed: 'true', es_select: 'Title',
+	}],
 });
 
 const ArtistSchema = new mongoose.Schema({
 	Name: { type: String, es_indexed: true },
-	AlbumsId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Album' }],
+	AlbumsId: [{
+		type: mongoose.Schema.Types.ObjectId, ref: 'Album', es_schema: AlbumSchema, es_indexed: 'true', es_select: 'Name',
+	}],
 	ImagePath: String,
 });
 
 MusicSchema.plugin(mongoosastic);
-AlbumSchema.plugin(mongoosastic);
-ArtistSchema.plugin(mongoosastic);
+AlbumSchema.plugin(mongoosastic, {
+	populate: [
+		{ path: 'MusicsId', select: 'Title' },
+	],
+});
+ArtistSchema.plugin(mongoosastic, {
+	populate: [
+		{ path: 'AlbumsId', select: 'Name' },
+	],
+}); //! Can be wrong here
+
 
 ArtistSchema.static('findOneOrCreate', async function findOneOrCreate(condition, doc) {
 	const one = await this.findOne(condition);
@@ -40,6 +54,10 @@ AlbumSchema.static('findOneOrCreate', async function findOneOrCreate(condition, 
 const MusicModel = mongoose.model('Music', MusicSchema, 'Music');
 const AlbumModel = mongoose.model('Album', AlbumSchema, 'Album');
 const ArtistModel = mongoose.model('Artist', ArtistSchema, 'Artist');
+
+MusicModel.synchronize();
+AlbumModel.synchronize();
+ArtistModel.synchronize();
 
 module.exports = {
 	Music: MusicModel,

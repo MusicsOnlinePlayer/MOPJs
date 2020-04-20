@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-
+const fs = require('fs');
 const MusicModel = require('../Database/Models').Music;
 const AlbumModel = require('../Database/Models').Album;
 const ArtistModel = require('../Database/Models').Artist;
@@ -108,7 +108,13 @@ app.get('/Artist/id/:id', (req, res) => {
 	ArtistModel.findById(req.params.id, (err, doc) => {
 		const ArtistDoc = doc;
 		if (err) console.error(err);
-		ArtistDoc.ImagePath = path.basename(ArtistDoc.ImagePath);
+		if (ArtistDoc) {
+			if (fs.existsSync(ArtistDoc.ImagePath)) {
+				ArtistDoc.ImagePath = path.basename(ArtistDoc.ImagePath);
+			} else {
+				ArtistDoc.ImagePath = undefined;
+			}
+		}
 		res.send(ArtistDoc);
 	});
 });

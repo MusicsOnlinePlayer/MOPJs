@@ -29,15 +29,17 @@ class AlbumsContainerConnected extends React.Component {
 
 		if (IsFetching) {
 			return (
-				<Spinner animation="border" role="status" size="lg" className="mx-auto">
-					<span className="sr-only">Loading...</span>
-				</Spinner>
+				<div className="m-5">
+					<Spinner animation="border" role="status" size="lg">
+						<span className="sr-only">Loading...</span>
+					</Spinner>
+				</div>
 			);
 		} if (SearchResults) {
 			const MusicsItems = SearchResults
 				.map((SearchRes) => <AlbumElement key={SearchRes} id={SearchRes} />);
 			return (
-				<div className="m-4 ">
+				<div className="m-4">
 					<small className="text-muted">
 						<h5>Albums</h5>
 					</small>

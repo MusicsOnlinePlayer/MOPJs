@@ -29,9 +29,11 @@ class MusicsContainerConnected extends React.Component {
 
 		if (IsFetching) {
 			return (
-				<Spinner animation="border" role="status" size="lg" className="mx-auto">
-					<span className="sr-only">Loading...</span>
-				</Spinner>
+				<div className="m-5">
+					<Spinner animation="border" role="status" size="lg">
+						<span className="sr-only">Loading...</span>
+					</Spinner>
+				</div>
 			);
 		} if (SearchResults) {
 			const MusicsItems = SearchResults

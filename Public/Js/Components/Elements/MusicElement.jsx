@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MusicItemRow from '../Items/MusicItemRow';
 import { ChangePlayingMusic as ChangePlayingMusicRedux, AddMusic as AddMusicRedux } from '../../Actions/Action';
 
+
 const mapDispatchToProps = (dispatch) => ({
 	ChangePlayingMusic: (Music) => {
 		dispatch(ChangePlayingMusicRedux(Music));
@@ -69,7 +70,7 @@ class MusicElementConnected extends React.Component {
 
 		return (
 			<MusicItemRow
-				Image={ApiResult ? ApiResult.Image : '/Ressources/noMusic.jpg'}
+				Image={ApiResult ? ApiResult.Image : undefined}
 				Title={ApiResult ? ApiResult.Title : 'Loading...'}
 				Artist={ApiResult ? ApiResult.Artist : 'Loading...'}
 				onClick={this.onClick}

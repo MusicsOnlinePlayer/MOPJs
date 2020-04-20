@@ -64,7 +64,12 @@ class PlayerConnected extends React.Component {
 	};
 
 	HandlePlay = () => {
-		this.setState((prevState) => ({ IsPlaying: !prevState.IsPlaying }));
+		this.setState((prevState) => ({ IsPlaying: !prevState.IsPlaying }), () => {
+			const { IsPlaying } = this.state;
+			if (this.player) {
+				IsPlaying ? this.player.play() : this.player.pause();
+			}
+		});
 	};
 
 	HandleSliderChange = (event) => {
@@ -76,17 +81,29 @@ class PlayerConnected extends React.Component {
 		clearInterval(this.refreshPlayer);
 	};
 
-	componentDidUpdate = () => {
+	componentDidMount = () => {
 		const { IsPlaying } = this.state;
 		if (this.player) {
 			IsPlaying ? this.player.play() : this.player.pause();
 		}
-	};
+	}
 
 	OnPlayerEnd = () => {
 		const { NextMusic, ChangePlayingId, CurrentMusicId } = this.props;
 		NextMusic ? ChangePlayingId(CurrentMusicId + 1) : this.setState({ IsPlaying: false });
 	};
+
+	OnPlay = () => {
+		this.setState({
+			IsPlaying: true,
+		});
+	}
+
+	OnPause = () => {
+		this.setState({
+			IsPlaying: false,
+		});
+	}
 
 	GetSliderMaxValue = () => {
 		if (this.player) {
@@ -106,18 +123,17 @@ class PlayerConnected extends React.Component {
 		if (PlayingMusic) {
 			return (
 				<>
-					<Navbar fixed="bottom" bg="light" className="px-2 mh-50">
+					<Navbar fixed="bottom" bg="light" className="px-2 mh-50 pt-0">
 						<div className="d-flex flex-column w-100 overflow-auto">
 							<Row className="w-100 mx-0 py-0">
 								<input
-									className="PlayerSlider my-1"
+									className="PlayerSlider mb-1"
 									type="Range"
 									step="0.1"
 									onChange={this.HandleSliderChange}
 									value={this.player ? this.player.currentTime : 0}
 									max={this.GetSliderMaxValue()}
 								/>
-
 								<Image
 									className="PlayerImage my-auto"
 									height="75em"
@@ -127,9 +143,6 @@ class PlayerConnected extends React.Component {
 								<Col className="my-1 col-md-auto">
 									<h6>{PlayingMusic.Title}</h6>
 									<p>
-										{PlayingMusic.Album}
-										{' '}
-										-
 										{PlayingMusic.Artist}
 									</p>
 								</Col>
@@ -137,7 +150,7 @@ class PlayerConnected extends React.Component {
 									<FontAwesomeIcon style={{ color: '#bebebe' }} icon={PlayingIcon} size="lg" pull="right" />
 								</div>
 
-								<Button variant="light" className="my-auto ml-1" onClick={this.HandleOpenPlaylist}>
+								<Button variant="light" className="my-auto ml-1 mt-1" onClick={this.HandleOpenPlaylist}>
 									{NextMusic ? `Next: ${NextMusic.Title}` : 'Queue'}
 								</Button>
 							</Row>
@@ -147,6 +160,9 @@ class PlayerConnected extends React.Component {
 								src={PlayingMusic.FilePath}
 								onTimeUpdate={this.HandleTimeUpdate}
 								onEnded={this.OnPlayerEnd}
+								onPlay={this.OnPlay}
+								onPause={this.OnPause}
+								autoPlay
 							>
 								No html5 player
 							</audio>

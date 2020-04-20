@@ -44,7 +44,7 @@ class PlaylistContainerConnected extends React.Component {
 		));
 
 		return (
-			<div className="m-5">
+			<div className="m-4">
 				<small className="text-muted">
 					<h5>Current Playlist</h5>
 				</small>

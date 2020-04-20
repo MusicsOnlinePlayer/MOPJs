@@ -3,27 +3,21 @@ const path = require('path');
 const MusicsFolder = path.join(__dirname, './../../../MusicsFolderProd');
 const ArtistsImageFolder = path.join(__dirname, './../../../ArtistImages');
 const fs = require('fs');
-const NodeID3 = require('node-id3');
+const mm = require('musicmetadata');
 const ArtistModel = require('../Models').Artist;
 
 const MusicModel = require('../Models').Music;
 const AlbumModel = require('../Models').Album;
 
 const HandleNewMusic = async (tags, MusicFilePath) => {
-	const NewTrackNumber = parseInt(tags.trackNumber.split('/')[0], 10);
-
-	if (isNaN(NewTrackNumber)) {
-		console.warn(`[Music Indexer] Skipped because of track number - ${MusicFilePath}`);
-		return;
-	}
-
 	const doctags = {
 		Title: tags.title,
 		Album: tags.album,
-		Artist: tags.artist,
-		TrackNumber: NewTrackNumber,
+		Artist: tags.artist[0],
+		TrackNumber: tags.track.no,
 		FilePath: MusicFilePath,
-		Image: tags.image ? tags.image.imageBuffer.toString('base64') : '',
+		Image: tags.picture[0] ? tags.picture[0].data.toString('base64') : '',
+		ImageFormat: tags.picture[0] ? tags.picture[0].format : '',
 	};
 
 	const guessedPath = path.join(ArtistsImageFolder, `${doctags.Artist}.jpg`);
@@ -48,6 +42,13 @@ const HandleNewMusic = async (tags, MusicFilePath) => {
 	}
 };
 
+const getTags = (filePath) => new Promise((resolve, reject) => {
+	mm(fs.createReadStream(filePath), (err, meta) => {
+		if (err) reject(err);
+		resolve(meta);
+	});
+});
+
 const Indexation = async () => {
 	console.log('[Music Indexer] Starting indexing');
 	console.time('[Music Indexer] Time ');
@@ -60,13 +61,14 @@ const Indexation = async () => {
 		const count = await MusicModel.countDocuments({ FilePath: MusicFilePath });
 
 		if (count === 0) {
-			const tags = NodeID3.read(MusicFilePath);
-			if (tags.title && tags.album && tags.artist && tags.trackNumber) {
+			const tags = await getTags(MusicFilePath);
+			// console.log(tags);
+			if (tags.title && tags.album && tags.artist[0] && tags.track.no) {
 				await HandleNewMusic(tags, MusicFilePath);
 			}
 		}
 	}
-	console.log('[Music Indexer] Done');
+	console.log(`[Music Indexer] Done - ${files.length} musics`);
 	console.timeEnd('[Music Indexer] Time ');
 };
 

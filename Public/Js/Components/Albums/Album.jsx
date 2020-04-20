@@ -69,14 +69,14 @@ class AlbumConnected extends React.Component {
 			.map((id) => <MusicElement key={id} id={id} onDataReceived={this.onDataReceived} />);
 
 		return (
-			<div className="m-5">
+			<div className="m-4">
 				<Row className="p-1">
 					<Col>
 						<small className="text-muted">
 							<h5>{AlbumName}</h5>
 						</small>
 					</Col>
-					<Col>
+					<Col className="">
 						<FontAwesomeIcon onClick={this.onPlayAlbum} className="py-auto px-2" style={{ color: '#bebebe' }} icon={faPlay} size="lg" pull="right" />
 					</Col>
 				</Row>

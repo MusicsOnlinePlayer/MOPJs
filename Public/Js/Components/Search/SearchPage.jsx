@@ -12,6 +12,7 @@ import {
 } from '../../Actions/Action';
 import MusicsContainer from '../Containers/MusicsContainer';
 import AlbumsContainer from '../Containers/AlbumsContainer';
+import ArtistsContainer from '../Containers/ArtistsContainer';
 
 const mapStateToProps = (state) => ({
 	IsFetching: state.MusicSearchReducer.IsFetching,
@@ -104,6 +105,7 @@ class SearchPageConnected extends React.Component {
 			<div>
 				<MusicsContainer />
 				<AlbumsContainer />
+				<ArtistsContainer />
 			</div>
 		);
 	}

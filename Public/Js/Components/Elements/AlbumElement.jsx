@@ -50,9 +50,9 @@ class AlbumElementConnected extends React.Component {
 
 	render() {
 		const { ApiResult } = this.state;
-		const { Image, Name } = ApiResult;
+		const { Image, Name, ImageFormat } = ApiResult;
 		return (
-			<AlbumItemCard Image={Image} Name={Name} onClick={this.onClick}>
+			<AlbumItemCard Image={Image} ImageFormat={ImageFormat} Name={Name} onClick={this.onClick}>
 				<td className="align-middle" onClick={this.HandleAdd}>
 					<FontAwesomeIcon style={{ color: '#bebebe' }} icon={faPlus} size="lg" pull="right" />
 				</td>
