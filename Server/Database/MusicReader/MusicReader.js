@@ -60,7 +60,8 @@ const Indexation = async () => {
 
 		const count = await MusicModel.countDocuments({ FilePath: MusicFilePath });
 
-		if (count === 0) {
+		if (count === 0 && path.extname(MusicFilePath) === '.mp3') {
+			console.log(`[Music Indexer] Adding ${MusicFilePath}`);
 			const tags = await getTags(MusicFilePath);
 			// console.log(tags);
 			if (tags.title && tags.album && tags.artist[0] && tags.track.no) {

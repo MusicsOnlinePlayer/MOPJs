@@ -6,13 +6,15 @@ const app = module.exports;
 // const compression = require('compression');
 const { ReadAllMusics } = require('../Database/MusicReader/MusicReader');
 const { ConnectToDB } = require('../Database/Db');
-
 // app.use(compression);
 
 ConnectToDB().then(() => {
 	// ClearMusics().then(() => {
 	ReadAllMusics();
 	// });
+
+	app.use('/Music', require('./Music'));
+	app.use('/User', require('./User'));
 });
 
 app.get('/', (req, res) => {
@@ -33,5 +35,3 @@ app.use((req, res, next) => {
 	console.log(`[Path - Log] ${req.url}`);
 	next();
 });
-
-app.use('/Music', require('./Music'));

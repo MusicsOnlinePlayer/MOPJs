@@ -10,6 +10,8 @@ import PlaylistContainer from './Components/Containers/PlaylistContainer';
 import Album from './Components/Albums/Album';
 import Artist from './Components/Albums/Artist';
 import ScrollToTop from './Components/ScrollToTop';
+import Login from './Components/Authentification/Login';
+import Register from './Components/Authentification/Register';
 
 const App = () => (
 	<Provider store={store}>
@@ -17,6 +19,8 @@ const App = () => (
 			<ScrollToTop />
 			<Route path="/" component={TopNav} />
 			<Route path="/" component={Player} />
+			<Route path="/Login" component={Login} />
+			<Route path="/Register" component={Register} />
 			<Route path="/Search" component={SearchPage} />
 			<Route path="/Playlist" component={PlaylistContainer} />
 			<Route path="/Album/:id" component={Album} />

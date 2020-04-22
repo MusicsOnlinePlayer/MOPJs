@@ -86,3 +86,13 @@ export function ClearPlaylist() {
 		type: CLEAR_PLAYLIST,
 	};
 }
+
+
+export const ADD_MY_ACCOUNT = 'ADD_MY_ACCOUNT';
+
+export function AddMyAccount(MyAccount) {
+	return {
+		type: ADD_MY_ACCOUNT,
+		Account: MyAccount,
+	};
+}

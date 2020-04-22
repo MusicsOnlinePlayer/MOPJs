@@ -42,14 +42,12 @@ class PlayerConnected extends React.Component {
 			Title: PropTypes.string.isRequired,
 		}),
 		CurrentMusicId: PropTypes.number,
-		PlaylistLength: PropTypes.number,
 	}
 
 	static defaultProps = {
 		PlayingMusic: undefined,
 		NextMusic: undefined,
 		CurrentMusicId: undefined,
-		PlaylistLength: undefined,
 	}
 
 	constructor(props) {

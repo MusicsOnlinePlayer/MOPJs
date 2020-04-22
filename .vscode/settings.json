@@ -7,5 +7,6 @@
 	"prettier.printWidth": 200,
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": true
-	}
+	},
+	"todo-tree.globs": ["!**/node_modules","!**/resources"]
 }
