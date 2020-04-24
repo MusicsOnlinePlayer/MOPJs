@@ -4,10 +4,19 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+    {
+        "type": "node",
+        "request": "launch",
+        "name": "Launch index file",
+        "program": "${workspaceFolder}/index.js",
+        "skipFiles": [
+            "<node_internals>/**"
+        ]
+    },
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "Launch this file",
             "skipFiles": [
                 "<node_internals>/**"
             ],

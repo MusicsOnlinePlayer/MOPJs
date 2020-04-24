@@ -5,7 +5,7 @@ const MusicModel = require('../Database/Models').Music;
 const AlbumModel = require('../Database/Models').Album;
 const ArtistModel = require('../Database/Models').Artist;
 const { AddSearchToDb } = require('../Deezer');
-const { AddToQueueAsync } = require('../Deezer/Downloader');
+const { Downloader } = require('../Deezer/Downloader');
 
 module.exports = express();
 const app = module.exports;
@@ -90,24 +90,33 @@ app.get('/Music/id/:id', (req, res) => {
 	MusicModel.findById(req.params.id, (err, doc) => {
 		const MusicDoc = doc;
 		if (err) console.error(err);
-		if (MusicDoc) MusicDoc.FilePath = MusicDoc.FilePath ? path.basename(MusicDoc.FilePath) : '';
+		if (MusicDoc) {
+			MusicDoc.FilePath = MusicDoc.FilePath
+				? path.basename(MusicDoc.FilePath) : undefined;
+		}
 		res.send(MusicDoc);
 	});
 });
 
 app.get('/Music/get/:id', (req, res) => {
-	MusicModel.findById(req.params.id, (err, doc) => {
+	MusicModel.findById(req.params.id, async (err, doc) => {
 		const MusicDoc = doc;
-		if (err) console.error(err);
-		if (!MusicDoc) res.send({ FilePath: '' });
-		if (!MusicDoc.DeezerId) res.send({ FilePath: MusicDoc.FilePath ? path.basename(MusicDoc.FilePath) : '' });
+		if (err) {
+			console.error(err);
+			return;
+		}
+		if (!MusicDoc) {
+			res.send({ FilePath: '' });
+			return;
+		}
+
+		if (!MusicDoc.DeezerId || MusicDoc.FilePath) {
+			res.send({ FilePath: MusicDoc.FilePath ? path.basename(MusicDoc.FilePath) : '' });
+			return;
+		}
+
 		// TODO Check if it a valid deezer id
-		AddToQueueAsync(MusicDoc.DeezerId).then((FilePath) => {
-			res.send({ FilePath });
-		})
-			.catch((err) => {
-				res.send({ FilePath: '' });
-			});
+		res.send({ FilePath: await Downloader.AddToQueueAsync(MusicDoc.DeezerId) });
 	});
 });
 
