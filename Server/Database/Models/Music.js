@@ -5,11 +5,12 @@ const MusicSchema = new mongoose.Schema({
 	Title: { type: String, es_indexed: true, es_boost: 8.0 },
 	Artist: { type: String, es_indexed: true, es_boost: 1.0 },
 	Album: { type: String, es_indexed: true },
+	PublishedDate: { type: Date, es_type: 'date', es_indexed: true },
 	TrackNumber: Number,
 	FilePath: String,
 	Image: String,
 	ImageFormat: String,
-});
+}); // TODO Use timestamps = true
 
 const AlbumSchema = new mongoose.Schema({
 	Name: { type: String, es_indexed: true },

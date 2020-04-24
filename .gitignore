@@ -2,3 +2,5 @@
 *jpg
 *mp3
 /node_modules/**
+*properties
+deeezertest.js
