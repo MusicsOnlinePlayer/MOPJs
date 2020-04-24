@@ -6,20 +6,36 @@ const path = require('path');
 const { MusicsFolder, getTags, HandleNewMusic } = require('../Database/MusicReader/MusicReader');
 
 const downloadQueue = queue();
-downloadQueue.autostart = true;
 downloadQueue.concurrency = 1;
+
+const PyShell = new PythonShell(path.join(__dirname, 'Deezloader.py'), { args: [MusicsFolder] });
+
+
+PyShell.on('message', (msg) => {
+	if (msg === 'ready') { downloadQueue.start(); }
+});
+
+
+const SendDownloadMusicPython = (musicId) => {
+	PyShell.send(JSON.stringify({ type: 1, dl: musicId }));
+};
+
+const GotEndedMessage = () => new Promise((resolve, reject) => {
+	PyShell.on('message', (msg) => {
+		if (msg === 'end') resolve();
+		else reject();
+	});
+});
+
 
 const AddtoDownload = (musicId) => {
 	downloadQueue.push(() => new Promise((resolve, reject) => {
 		console.log(`[Deezer - Python] Starting download of musics id ${musicId}`);
 		console.time('[Deezer - Python] Time ');
-		PythonShell.run(path.join(__dirname, 'Deezloader.py'), { args: [musicId, MusicsFolder] },
-			async (err) => {
-				if (err) {
-					console.error('[Deezer - Python] Python Error, see details above');
-					console.log(err);
-					reject(err);
-				}
+
+
+		GotEndedMessage()
+			.then(async () => {
 				console.log('[Deezer - Python] Done.');
 				console.timeEnd('[Deezer - Python] Time ');
 				console.log('[Deezer - Database] Adding to database');
@@ -31,9 +47,13 @@ const AddtoDownload = (musicId) => {
 					console.log('[Deezer - Database] Missing tags');
 				}
 				console.log('[Deezer - Database] Done.');
-
 				resolve(MusicPath);
+			}).catch((err) => {
+				console.log('[Deezer - Python] Fail !');
+				console.log(err);
+				reject(err);
 			});
+		SendDownloadMusicPython(musicId);
 	}));
 };
 

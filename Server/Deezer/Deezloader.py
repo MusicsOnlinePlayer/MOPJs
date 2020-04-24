@@ -1,27 +1,35 @@
 import deezloader;
 import configparser;
 import os
-import sys
+import sys, json
 
-config = configparser.RawConfigParser();
-path = os.path.join(os.path.dirname(__file__), 'Deezer.properties')
+def main():
+	config = configparser.RawConfigParser();
+	path = os.path.join(os.path.dirname(__file__), 'Deezer.properties')
 
-try:
-    config.read(path)
-except Exception as e :
-    print(str(e))
+	try:
+		config.read(path)
+	except Exception as e :
+		print(str(e))
 
-deez = deezloader.Login(config.get('Deezer', 'arl'))
+	deez = deezloader.Login(config.get('Deezer', 'arl'))
 
-outpath = deez.download_trackdee(
-	"https://www.deezer.com/en/track/" + sys.argv[1],
-	output = sys.argv[2],
-	quality = "MP3_128",
-	recursive_quality = False,
-	recursive_download = False,
-	not_interface = False
-)
+	while 1:
+		print('ready', flush=True);
+		line = sys.stdin.readline()
+		node = json.loads(line);
+		if(node["type"] == 1):
+			deez.download_trackdee(
+				"https://www.deezer.com/en/track/" + str(node["dl"]),
+				output = sys.argv[1],
+				quality = "MP3_128",
+				recursive_quality = False,
+				recursive_download = False,
+				not_interface = False
+			)
+			print('end', flush=True);
+			
 
-sys.stdout.write(outpath);
-sys.stdout.flush();
-sys.exit(0);
+
+if __name__ == '__main__':
+	main()
