@@ -36,7 +36,6 @@ class ArtistElement extends React.Component {
 
 	render() {
 		const { ApiResult } = this.state;
-
 		return <ArtistItemCard Name={ApiResult ? ApiResult.Name : 'Loading...'} ImagePath={ApiResult ? ApiResult.ImagePath : '/Ressources/noMusic.jpg'} onClick={this.onCardClick} />;
 	}
 }

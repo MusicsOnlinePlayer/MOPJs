@@ -71,6 +71,7 @@ class MusicElementConnected extends React.Component {
 		return (
 			<MusicItemRow
 				Image={ApiResult ? ApiResult.Image : undefined}
+				ImageDz={ApiResult ? ApiResult.ImagePathDeezer : undefined}
 				Title={ApiResult ? ApiResult.Title : 'Loading...'}
 				Artist={ApiResult ? ApiResult.Artist : 'Loading...'}
 				onClick={this.onClick}

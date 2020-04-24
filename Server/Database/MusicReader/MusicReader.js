@@ -9,24 +9,58 @@ const ArtistModel = require('../Models').Artist;
 const MusicModel = require('../Models').Music;
 const AlbumModel = require('../Models').Album;
 
-const HandleNewMusic = async (tags, MusicFilePath) => {
-	const { birthtime } = fs.statSync(MusicFilePath);
+const AddMusicFromDeezer = (DeezerId, filePath) => new Promise((resolve, reject) => {
+	MusicModel.findOne({ DeezerId })
+		.then(async (doc) => {
+			const musicDeezerDB = doc;
+			musicDeezerDB.FilePath = filePath;
+			await musicDeezerDB.save();
+			resolve();
+		})
+		.catch((err) => {
+			reject(err);
+		});
+});
 
-	const doctags = {
-		Title: tags.title,
-		Album: tags.album,
-		Artist: tags.artist[0],
-		PublishedDate: birthtime,
-		TrackNumber: tags.track.no,
-		FilePath: MusicFilePath,
-		Image: tags.picture[0] ? tags.picture[0].data.toString('base64') : '',
-		ImageFormat: tags.picture[0] ? tags.picture[0].format : '',
-	};
+const HandleNewMusic = async (tags, MusicFilePath, fromDeezer = false, DeezerId = undefined, ArtistImage = undefined) => {
+	const count = await MusicModel.countDocuments({ Title: tags.title });
 
-	const guessedPath = path.join(ArtistsImageFolder, `${doctags.Artist}.jpg`);
+	if (count > 0) return;
+
+
+	let doctags;
+
+	if (!fromDeezer) {
+		const { birthtime } = fs.statSync(MusicFilePath);
+		doctags = {
+			Title: tags.title,
+			Album: tags.album,
+			Artist: tags.artist[0],
+			PublishedDate: birthtime,
+			TrackNumber: tags.track.no,
+			FilePath: MusicFilePath,
+			Image: tags.picture[0] ? tags.picture[0].data.toString('base64') : '',
+			ImageFormat: tags.picture[0] ? tags.picture[0].format : '',
+		};
+	} else {
+		doctags = {
+			Title: tags.title,
+			Album: tags.album,
+			Artist: tags.artist[0],
+			PublishedDate: Date.now(),
+			TrackNumber: tags.track.no,
+			ImagePathDeezer: tags.picture[0],
+			DeezerId,
+		};
+	}//! Need refactor here
+
+	const guessedPath = `${doctags.Artist}.jpg`;
 
 	const newMusic = new MusicModel(doctags);
-	const newArtist = new ArtistModel({ Name: doctags.Artist, ImagePath: guessedPath });
+	const newArtist = new ArtistModel({
+		Name: doctags.Artist,
+		ImagePath: ArtistImage || guessedPath,
+	});
 	const newAlbum = new AlbumModel({ Name: doctags.Album });
 
 	const musicDoc = await newMusic.save();
@@ -82,6 +116,7 @@ module.exports = {
 	ArtistsImageFolder,
 	getTags,
 	HandleNewMusic,
+	AddMusicFromDeezer,
 	ReadAllMusics: () => new Promise(() => {
 		Indexation();
 	}),
