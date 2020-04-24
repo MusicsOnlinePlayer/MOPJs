@@ -4,33 +4,38 @@ const fs = require('fs');
 const MusicModel = require('../Database/Models').Music;
 const AlbumModel = require('../Database/Models').Album;
 const ArtistModel = require('../Database/Models').Artist;
+const { AddSearchToDb } = require('../Deezer');
+const { AddToQueueAsync } = require('../Deezer/Downloader');
 
 module.exports = express();
 const app = module.exports;
 
 
 app.get('/Search/Music/Name/:name', (req, res) => {
-	MusicModel.search(
-		{
-			query_string: {
-				query: req.params.name,
-			},
-		},
-		{
-			size: 8,
-		},
-		(err, result) => {
-			if (err) {
-				console.error(err);
-			}
-			const ClientResults = [];
+	AddSearchToDb(req.params.name)
+		.then(() => {
+			MusicModel.search(
+				{
+					query_string: {
+						query: req.params.name,
+					},
+				},
+				{
+					size: 8,
+				},
+				(err, result) => {
+					if (err) {
+						console.error(err);
+					}
+					const ClientResults = [];
 
-			result.hits.hits.map((hit) => {
-				ClientResults.push(hit._id);
-			});
-			res.send(ClientResults);
-		},
-	);
+					result.hits.hits.map((hit) => {
+						ClientResults.push(hit._id);
+					});
+					res.send(ClientResults);
+				},
+			);
+		});
 });
 
 app.get('/Search/Album/Name/:name', (req, res) => {
@@ -85,8 +90,24 @@ app.get('/Music/id/:id', (req, res) => {
 	MusicModel.findById(req.params.id, (err, doc) => {
 		const MusicDoc = doc;
 		if (err) console.error(err);
-		if (MusicDoc) MusicDoc.FilePath = path.basename(MusicDoc.FilePath);
+		if (MusicDoc) MusicDoc.FilePath = MusicDoc.FilePath ? path.basename(MusicDoc.FilePath) : '';
 		res.send(MusicDoc);
+	});
+});
+
+app.get('/Music/get/:id', (req, res) => {
+	MusicModel.findById(req.params.id, (err, doc) => {
+		const MusicDoc = doc;
+		if (err) console.error(err);
+		if (!MusicDoc) res.send({ FilePath: '' });
+		if (!MusicDoc.DeezerId) res.send({ FilePath: MusicDoc.FilePath ? path.basename(MusicDoc.FilePath) : '' });
+		// TODO Check if it a valid deezer id
+		AddToQueueAsync(MusicDoc.DeezerId).then((FilePath) => {
+			res.send({ FilePath });
+		})
+			.catch((err) => {
+				res.send({ FilePath: '' });
+			});
 	});
 });
 
@@ -98,6 +119,7 @@ app.get('/Album/id/:id', (req, res) => {
 			if (err) console.error(err);
 			MusicModel.findById(AlbumDoc.MusicsId[0], (musicerr, musicdoc) => {
 				AlbumDoc.Image = musicdoc.Image;
+				AlbumDoc.ImagePathDeezer = musicdoc.ImagePathDeezer;
 				res.send(doc);
 			});
 			// doc.FilePath = path.basename(doc.FilePath);
@@ -108,13 +130,7 @@ app.get('/Artist/id/:id', (req, res) => {
 	ArtistModel.findById(req.params.id, (err, doc) => {
 		const ArtistDoc = doc;
 		if (err) console.error(err);
-		if (ArtistDoc) {
-			if (fs.existsSync(ArtistDoc.ImagePath)) {
-				ArtistDoc.ImagePath = path.basename(ArtistDoc.ImagePath);
-			} else {
-				ArtistDoc.ImagePath = undefined;
-			}
-		}
+
 		res.send(ArtistDoc);
 	});
 });

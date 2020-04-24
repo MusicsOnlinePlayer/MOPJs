@@ -10,19 +10,21 @@ const MusicSchema = new mongoose.Schema({
 	FilePath: String,
 	Image: String,
 	ImageFormat: String,
+	ImagePathDeezer: String,
+	DeezerId: Number,
 }); // TODO Use timestamps = true
 
 const AlbumSchema = new mongoose.Schema({
 	Name: { type: String, es_indexed: true },
 	MusicsId: [{
-		type: mongoose.Schema.Types.ObjectId, ref: 'Music', es_schema: MusicSchema, es_indexed: 'true', es_select: 'Title',
+		type: mongoose.Schema.Types.ObjectId, ref: 'Music',
 	}],
 });
 
 const ArtistSchema = new mongoose.Schema({
 	Name: { type: String, es_indexed: true },
 	AlbumsId: [{
-		type: mongoose.Schema.Types.ObjectId, ref: 'Album', es_schema: AlbumSchema, es_indexed: 'true', es_select: 'Name',
+		type: mongoose.Schema.Types.ObjectId, ref: 'Album',
 	}],
 	ImagePath: String,
 });

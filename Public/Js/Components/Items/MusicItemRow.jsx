@@ -5,13 +5,16 @@ import { Image as ImgBootstrap } from 'react-bootstrap';
 const MusicItemRow = ({
 	onClick,
 	Image,
+	ImageDz,
 	Title,
 	Artist,
 	children,
 }) => (
 	<tr className="w-100 mx-0 p-1 ">
 		<td className="align-middle py-2" onClick={onClick} style={{ width: '50px' }}>
-			<ImgBootstrap className="PlayerImage my-auto" rounded height="50em" src={Image ? `data:image/jpeg;base64,${Image.toString('base64')}` : '/Ressources/noMusic.jpg'} />
+			{ImageDz ? <ImgBootstrap className="PlayerImage my-auto" rounded height="50em" src={ImageDz} />
+				: <ImgBootstrap className="PlayerImage my-auto" rounded height="50em" src={Image ? `data:image/jpeg;base64,${Image.toString('base64')}` : '/Ressources/noMusic.jpg'} />}
+
 		</td>
 		<td className="align-middle text px-1 py-1" style={{ maxHeight: '50em' }} onClick={onClick}>
 			<span>
@@ -30,6 +33,7 @@ const MusicItemRow = ({
 MusicItemRow.propTypes = {
 	onClick: PropTypes.func.isRequired,
 	Image: PropTypes.string,
+	ImageDz: PropTypes.string,
 	Title: PropTypes.string.isRequired,
 	Artist: PropTypes.string.isRequired,
 	children: PropTypes.element,
@@ -37,6 +41,7 @@ MusicItemRow.propTypes = {
 
 MusicItemRow.defaultProps = {
 	Image: undefined,
+	ImageDz: undefined,
 	children: <></>,
 };
 

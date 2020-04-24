@@ -3,7 +3,7 @@ const queue = require('queue');
 const fs = require('fs');
 
 const path = require('path');
-const { MusicsFolder, getTags, HandleNewMusic } = require('../Database/MusicReader/MusicReader');
+const { MusicsFolder, getTags, AddMusicFromDeezer } = require('../Database/MusicReader/MusicReader');
 
 const downloadQueue = queue();
 downloadQueue.concurrency = 1;
@@ -28,6 +28,8 @@ const GotEndedMessage = () => new Promise((resolve, reject) => {
 });
 
 
+const GetPathFromMusicId = (musicId) => path.join(MusicsFolder, `${musicId}.mp3`);
+
 const AddtoDownload = (musicId) => {
 	downloadQueue.push(() => new Promise((resolve, reject) => {
 		console.log(`[Deezer - Python] Starting download of musics id ${musicId}`);
@@ -39,15 +41,23 @@ const AddtoDownload = (musicId) => {
 				console.log('[Deezer - Python] Done.');
 				console.timeEnd('[Deezer - Python] Time ');
 				console.log('[Deezer - Database] Adding to database');
-				const MusicPath = path.join(MusicsFolder, `${musicId}.mp3`);
+				const MusicPath = GetPathFromMusicId(musicId);
 				const tags = await getTags(MusicPath);
 				if (tags.title && tags.album && tags.artist[0] && tags.track.no) {
-					await HandleNewMusic(tags, MusicPath);
+					AddMusicFromDeezer(musicId, MusicPath)
+						.then(() => {
+							console.log('[Deezer - Database] Done.');
+							resolve(musicId);
+						})
+						.catch((err) => {
+							console.log('[Deezer - Database] Cannot insert');
+							console.log(err);
+							reject();
+						});
 				} else {
 					console.log('[Deezer - Database] Missing tags');
+					reject();
 				}
-				console.log('[Deezer - Database] Done.');
-				resolve(MusicPath);
 			}).catch((err) => {
 				console.log('[Deezer - Python] Fail !');
 				console.log(err);
@@ -57,10 +67,18 @@ const AddtoDownload = (musicId) => {
 	}));
 };
 
+const AddToQueue = (musicId) => {
+	console.log(`[Deezer] Added to queue music with id: ${musicId} - Position ${downloadQueue.length}`);
+	if (!fs.existsSync(path.join(MusicsFolder, `${musicId}.mp3`))) { AddtoDownload(musicId); } else console.log('[Deezer] Already exist skipping...');
+};
 
 module.exports = {
-	AddToQueue: (musicId) => {
-		console.log(`[Deezer] Added to queue music with id: ${musicId}`);
-		if (!fs.existsSync(path.join(MusicsFolder, `${musicId}.mp3`))) { AddtoDownload(musicId); } else console.log('[Deezer] Already exist skipping...');
-	},
+	AddToQueue,
+	AddToQueueAsync: (musicId) => new Promise((resolve, reject) => {
+		AddToQueue(musicId);
+		downloadQueue.on('success', (result) => {
+			if (result === musicId) resolve(GetPathFromMusicId(musicId));
+		});
+		// TODO Implement errors
+	}),
 };
