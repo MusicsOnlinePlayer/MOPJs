@@ -40,6 +40,7 @@ class PlayerConnected extends React.Component {
 		AddCustomFilePath: PropTypes.func.isRequired,
 		MusicFilePath: PropTypes.string,
 		PlayingMusic: PropTypes.shape({
+			_id: PropTypes.string.isRequired,
 			Title: PropTypes.string.isRequired,
 			Image: PropTypes.string.isRequired,
 			Album: PropTypes.string.isRequired,
