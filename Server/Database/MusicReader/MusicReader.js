@@ -10,10 +10,13 @@ const MusicModel = require('../Models').Music;
 const AlbumModel = require('../Models').Album;
 
 const HandleNewMusic = async (tags, MusicFilePath) => {
+	const { birthtime } = fs.statSync(MusicFilePath);
+
 	const doctags = {
 		Title: tags.title,
 		Album: tags.album,
 		Artist: tags.artist[0],
+		PublishedDate: birthtime,
 		TrackNumber: tags.track.no,
 		FilePath: MusicFilePath,
 		Image: tags.picture[0] ? tags.picture[0].data.toString('base64') : '',
@@ -77,6 +80,8 @@ const Indexation = async () => {
 module.exports = {
 	MusicsFolder,
 	ArtistsImageFolder,
+	getTags,
+	HandleNewMusic,
 	ReadAllMusics: () => new Promise(() => {
 		Indexation();
 	}),
