@@ -8,7 +8,8 @@ import {
 } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { ChangePlayingId as ChangePlayingIdRedux } from '../../Actions/Action';
+import Axios from 'axios';
+import { ChangePlayingId as ChangePlayingIdRedux, AddCustomFilePath as AddCustomFilePathRedux } from '../../Actions/Action';
 
 const mapStateToProps = (state) => ({
 	PlayingMusic:
@@ -17,11 +18,16 @@ const mapStateToProps = (state) => ({
 		state.MusicPlayerReducer.Playlist.Musics[state.MusicPlayerReducer.Playlist.PlayingId + 1],
 	CurrentMusicId: state.MusicPlayerReducer.Playlist.PlayingId,
 	PlaylistLength: state.MusicPlayerReducer.Playlist.Musics.length,
+	MusicFilePath:
+		state.MusicPlayerReducer.CustomFilePath ? state.MusicPlayerReducer.CustomFilePath : undefined,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	ChangePlayingId: (id) => {
 		dispatch(ChangePlayingIdRedux(id));
+	},
+	AddCustomFilePath: (path) => {
+		dispatch(AddCustomFilePathRedux(path));
 	},
 });
 
@@ -31,6 +37,8 @@ class PlayerConnected extends React.Component {
 			push: PropTypes.func.isRequired,
 		}).isRequired,
 		ChangePlayingId: PropTypes.func.isRequired,
+		AddCustomFilePath: PropTypes.func.isRequired,
+		MusicFilePath: PropTypes.string,
 		PlayingMusic: PropTypes.shape({
 			Title: PropTypes.string.isRequired,
 			Image: PropTypes.string.isRequired,
@@ -48,6 +56,7 @@ class PlayerConnected extends React.Component {
 		PlayingMusic: undefined,
 		NextMusic: undefined,
 		CurrentMusicId: undefined,
+		MusicFilePath: undefined,
 	}
 
 	constructor(props) {
@@ -57,10 +66,6 @@ class PlayerConnected extends React.Component {
 		};
 	}
 
-	HandleOpenPlaylist = () => {
-		const { history } = this.props;
-		history.push('/Playlist/Current');
-	};
 
 	HandleTimeUpdate = () => {
 		this.forceUpdate();
@@ -101,6 +106,26 @@ class PlayerConnected extends React.Component {
 		}
 	}
 
+	componentDidUpdate = (prevProps) => {
+		const { PlayingMusic, MusicFilePath } = this.props;
+		if (PlayingMusic) {
+			if (!MusicFilePath || prevProps.PlayingMusic !== PlayingMusic) {
+				this.GetNewFilePath();
+			}
+		}
+	}
+
+	GetNewFilePath = () => {
+		const { PlayingMusic, AddCustomFilePath } = this.props;
+
+		Axios.get(`/Music/Music/get/${PlayingMusic._id}`)
+			.then((res) => {
+				AddCustomFilePath(res.data.FilePath);
+				// this.forceUpdate();
+			});
+	}
+
+
 	OnPlayerEnd = () => {
 		const { NextMusic, ChangePlayingId, CurrentMusicId } = this.props;
 		NextMusic ? ChangePlayingId(CurrentMusicId + 1) : this.setState({ IsPlaying: false });
@@ -125,9 +150,15 @@ class PlayerConnected extends React.Component {
 		return 0;
 	}
 
+
+	HandleOpenPlaylist = () => {
+		const { history } = this.props;
+		history.push('/Playlist/Current');
+	};
+
 	render() {
 		const { IsPlaying } = this.state;
-		const { PlayingMusic, NextMusic } = this.props;
+		const { PlayingMusic, NextMusic, MusicFilePath } = this.props;
 
 		const PlayingIcon = !IsPlaying ? faPlay : faPause;
 
@@ -177,7 +208,7 @@ class PlayerConnected extends React.Component {
 
 							<audio
 								ref={(ref) => { this.player = ref; }}
-								src={PlayingMusic.FilePath}
+								src={MusicFilePath}
 								onTimeUpdate={this.HandleTimeUpdate}
 								onEnded={this.OnPlayerEnd}
 								onPlay={this.OnPlay}

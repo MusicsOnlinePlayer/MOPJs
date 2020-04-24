@@ -5,80 +5,101 @@ const fs = require('fs');
 const path = require('path');
 const { MusicsFolder, getTags, AddMusicFromDeezer } = require('../Database/MusicReader/MusicReader');
 
-const downloadQueue = queue();
-downloadQueue.concurrency = 1;
 
-const PyShell = new PythonShell(path.join(__dirname, 'Deezloader.py'), { args: [MusicsFolder] });
+class DzDownloader {
+	constructor() {
+		this.downloadQueue = queue();
+		this.downloadQueue.concurrency = 1;
 
+		this.PyShell = new PythonShell(path.join(__dirname, 'Deezloader.py'), { args: [MusicsFolder] });
+		this.PyShell.on('message', (msg) => {
+			console.log(`[Python] ${msg}`);
+			if (msg === 'ready') { this.downloadQueue.autostart = true; }
+		});
+	}
 
-PyShell.on('message', (msg) => {
-	if (msg === 'ready') { downloadQueue.start(); }
-});
+	SendDownloadMusicPython(musicId) {
+		this.PyShell.send(JSON.stringify({ type: 1, dl: musicId }));
+	}
 
-
-const SendDownloadMusicPython = (musicId) => {
-	PyShell.send(JSON.stringify({ type: 1, dl: musicId }));
-};
-
-const GotEndedMessage = () => new Promise((resolve, reject) => {
-	PyShell.on('message', (msg) => {
-		if (msg === 'end') resolve();
-		else reject();
-	});
-});
-
-
-const GetPathFromMusicId = (musicId) => path.join(MusicsFolder, `${musicId}.mp3`);
-
-const AddtoDownload = (musicId) => {
-	downloadQueue.push(() => new Promise((resolve, reject) => {
-		console.log(`[Deezer - Python] Starting download of musics id ${musicId}`);
-		console.time('[Deezer - Python] Time ');
-
-
-		GotEndedMessage()
-			.then(async () => {
-				console.log('[Deezer - Python] Done.');
-				console.timeEnd('[Deezer - Python] Time ');
-				console.log('[Deezer - Database] Adding to database');
-				const MusicPath = GetPathFromMusicId(musicId);
-				const tags = await getTags(MusicPath);
-				if (tags.title && tags.album && tags.artist[0] && tags.track.no) {
-					AddMusicFromDeezer(musicId, MusicPath)
-						.then(() => {
-							console.log('[Deezer - Database] Done.');
-							resolve(musicId);
-						})
-						.catch((err) => {
-							console.log('[Deezer - Database] Cannot insert');
-							console.log(err);
-							reject();
-						});
-				} else {
-					console.log('[Deezer - Database] Missing tags');
-					reject();
-				}
-			}).catch((err) => {
-				console.log('[Deezer - Python] Fail !');
-				console.log(err);
-				reject(err);
+	GotEndedMessage() {
+		return new Promise((resolve, reject) => {
+			this.PyShell.on('message', (msg) => {
+				if (msg === 'end') resolve();
+				else reject();
 			});
-		SendDownloadMusicPython(musicId);
-	}));
-};
+		});
+	}
 
-const AddToQueue = (musicId) => {
-	console.log(`[Deezer] Added to queue music with id: ${musicId} - Position ${downloadQueue.length}`);
-	if (!fs.existsSync(path.join(MusicsFolder, `${musicId}.mp3`))) { AddtoDownload(musicId); } else console.log('[Deezer] Already exist skipping...');
-};
+	static GetPathFromMusicId(musicId) {
+		return path.join(MusicsFolder, `${musicId}.mp3`);
+	}
+
+	static CheckIfMusicAlreadyExist(musicId) {
+		if (fs.existsSync(DzDownloader.GetPathFromMusicId(musicId))) { return true; }
+		return undefined;
+	}
+
+	AddtoDownload(musicId) {
+		this.downloadQueue.push(() => new Promise((resolve, reject) => {
+			console.log(`[Deezer - Python] Starting download of musics id ${musicId}`);
+			console.time('[Deezer - Python] Time ');
+
+			if (DzDownloader.CheckIfMusicAlreadyExist(musicId)) {
+				console.time('[Deezer - Python] Already downloaded in this queue');
+				return (DzDownloader.GetPathFromMusicId(musicId));
+			}
+
+			this.SendDownloadMusicPython(musicId);
+			this.GotEndedMessage()
+				.then(async () => {
+					console.log('[Deezer - Python] Done.');
+					console.timeEnd('[Deezer - Python] Time ');
+					console.log('[Deezer - Database] Adding to database');
+					const MusicPath = DzDownloader.GetPathFromMusicId(musicId);
+					const tags = await getTags(MusicPath);
+					if (tags.title && tags.album && tags.artist[0] && tags.track.no) {
+						AddMusicFromDeezer(musicId, MusicPath)
+							.then(() => {
+								console.log('[Deezer - Database] Done.');
+								resolve(musicId);
+							})
+							.catch((err) => {
+								console.log('[Deezer - Database] Cannot insert');
+								console.log(err);
+								reject();
+							});
+					} else {
+						console.log('[Deezer - Database] Missing tags');
+						reject();
+					}
+				}).catch((err) => {
+					console.log('[Deezer - Python] Fail !');
+					console.log(err);
+					reject(err);
+				});
+		}));
+	}
+
+	AddToQueue(musicId) {
+		if (!fs.existsSync(path.join(MusicsFolder, `${musicId}.mp3`))) { this.AddtoDownload(musicId); } else console.log('[Deezer] Already exist skipping...');
+	}
+
+	AddToQueueAsync(musicId) {
+		return new Promise((resolve, reject) => {
+			this.downloadQueue.on('success', (result) => {
+				if (result === musicId) resolve(path.basename(DzDownloader.GetPathFromMusicId(musicId)));
+			});
+			console.log(`[Deezer] Added to queue music with id: ${musicId} - Position ${this.downloadQueue.length}`);
+			this.AddToQueue(musicId);
+
+		// TODO Implement errors
+		});
+	}
+}
+
+const Downloader = new DzDownloader();
 
 module.exports = {
-	AddToQueue,
-	AddToQueueAsync: (musicId) => new Promise((resolve, reject) => {
-		AddToQueue(musicId);
-		downloadQueue.on('success', (result) => {
-			if (result === musicId) resolve(GetPathFromMusicId(musicId));
-		});
-		// TODO Implement errors
-	}),
+	Downloader,
 };
