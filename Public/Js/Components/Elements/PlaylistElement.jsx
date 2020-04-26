@@ -10,6 +10,7 @@ class PlaylistElement extends React.Component {
 			Title: PropTypes.string.isRequired,
 			Artist: PropTypes.string.isRequired,
 			Image: PropTypes.string,
+			ImagePathDeezer: PropTypes.string,
 		}).isRequired,
 	}
 
@@ -20,10 +21,13 @@ class PlaylistElement extends React.Component {
 
 	render() {
 		const { Music } = this.props;
-		const { Image, Title, Artist } = Music;
+		const {
+			Image, Title, Artist, ImagePathDeezer,
+		} = Music;
 		return (
 			<MusicItemRow
-				Image={Image}
+				Image={Image || undefined}
+				ImageDz={ImagePathDeezer || undefined}
 				Title={Title}
 				Artist={Artist}
 				onClick={this.onPlaylistClick}

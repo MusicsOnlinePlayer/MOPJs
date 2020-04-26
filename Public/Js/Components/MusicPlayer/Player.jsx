@@ -42,10 +42,11 @@ class PlayerConnected extends React.Component {
 		PlayingMusic: PropTypes.shape({
 			_id: PropTypes.string.isRequired,
 			Title: PropTypes.string.isRequired,
-			Image: PropTypes.string.isRequired,
+			Image: PropTypes.string,
 			Album: PropTypes.string.isRequired,
 			Artist: PropTypes.string.isRequired,
 			FilePath: PropTypes.string.isRequired,
+			ImagePathDeezer: PropTypes.string,
 		}),
 		NextMusic: PropTypes.shape({
 			Title: PropTypes.string.isRequired,
@@ -179,13 +180,9 @@ class PlayerConnected extends React.Component {
 									value={this.player ? this.player.currentTime : 0}
 									max={this.GetSliderMaxValue()}
 								/>
-								<Image
-									className="PlayerImage my-auto"
-									height="75em"
-									rounded
-									onClick={this.HandleOpenPlaylist}
-									src={PlayingMusic.Image ? `data:image/jpeg;base64,${PlayingMusic.Image.toString('base64')}` : '/Ressources/noMusic.jpg'}
-								/>
+								{PlayingMusic.ImagePathDeezer ? <Image className="PlayerImage my-auto" rounded height="75em" src={PlayingMusic.ImagePathDeezer} />
+									: <Image className="PlayerImage my-auto" rounded height="75em" src={PlayingMusic.Image ? `data:image/jpeg;base64,${PlayingMusic.Image.toString('base64')}` : '/Ressources/noMusic.jpg'} />}
+
 								<Col className="my-1 mt-0 col-md-auto  text-truncate" onClick={this.HandleOpenPlaylist}>
 									<h6>{PlayingMusic.Title}</h6>
 									<p>

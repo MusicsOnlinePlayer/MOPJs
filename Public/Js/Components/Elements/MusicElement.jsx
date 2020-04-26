@@ -53,6 +53,12 @@ class MusicElementConnected extends React.Component {
 		AddMusic(ApiResult);
 	};
 
+	componentWillUnmount = () => {
+		this.setState = () => {
+
+		};
+	}
+
 	componentDidMount = () => {
 		const { id, onDataReceived } = this.props;
 

@@ -48,6 +48,12 @@ class AlbumElementConnected extends React.Component {
 		});
 	};
 
+	componentWillUnmount = () => {
+		this.setState = () => {
+
+		};
+	}
+
 	render() {
 		const { ApiResult } = this.state;
 		const {

@@ -6,7 +6,7 @@ const ArtistItemCard = ({
 	onClick, ImagePath, Name,
 }) => (
 	<Card style={{ width: '18rem' }} className="m-2" onClick={onClick}>
-		<Card.Img variant="top" rounded-circle src={ImagePath || '/Ressources/noMusic.jpg'} />
+		<Card.Img variant="top" src={ImagePath || '/Ressources/noMusic.jpg'} />
 		<Card.Body>
 			<Card.Title>{Name}</Card.Title>
 		</Card.Body>

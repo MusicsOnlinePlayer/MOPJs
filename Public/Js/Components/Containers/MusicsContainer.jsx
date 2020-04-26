@@ -30,12 +30,15 @@ class MusicsContainerConnected extends React.Component {
 		if (IsFetching) {
 			return (
 				<div className="m-5">
+					<small className="text-muted">
+						<h5>Musics</h5>
+					</small>
 					<Spinner animation="border" role="status" size="lg">
 						<span className="sr-only">Loading...</span>
 					</Spinner>
 				</div>
 			);
-		} if (SearchResults) {
+		} if (SearchResults.length > 0) {
 			const MusicsItems = SearchResults
 				.map((SearchRes) => <MusicElement key={SearchRes} id={SearchRes} />);
 			return (

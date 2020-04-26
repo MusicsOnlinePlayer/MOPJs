@@ -21,6 +21,9 @@ app.get('/Search/Music/Name/:name', (req, res) => {
 				},
 				{
 					size: 8,
+					sort: [{
+						Views: { order: 'desc' },
+					}],
 				},
 				(err, result) => {
 					if (err) {
@@ -101,6 +104,7 @@ app.get('/Music/get/:id', (req, res) => {
 	MusicModel.findById(req.params.id, async (err, doc) => {
 		const MusicDoc = doc;
 		MusicDoc.Views += 1;
+		MusicDoc.LastView = Date.now();
 		MusicDoc.save();
 		if (err) {
 			console.error(err);

@@ -28,6 +28,12 @@ class ArtistElement extends React.Component {
 		});
 	}
 
+	componentWillUnmount = () => {
+		this.setState = () => {
+
+		};
+	}
+
 	onCardClick = () => {
 		const { ApiResult } = this.state;
 		const { history } = this.props;
