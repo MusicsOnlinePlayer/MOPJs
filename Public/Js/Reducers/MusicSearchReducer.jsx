@@ -23,6 +23,7 @@ export default function MusicSearchReducer(state = InitialState, action) {
 		return {
 			...state,
 			IsFetching: true,
+			SearchResults: {},
 			SearchQuery: action.SearchQuery,
 			RequestedAt: action.RequestedAt,
 			Errors: {},
