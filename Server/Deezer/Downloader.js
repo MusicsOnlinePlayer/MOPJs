@@ -1,17 +1,17 @@
 const { PythonShell } = require('python-shell');
 const queue = require('queue');
 const fs = require('fs');
-
 const path = require('path');
+const { DeezerArlToken } = require('../Config/MopConf.json');
 const { MusicsFolder, getTags, AddMusicFromDeezer } = require('../Database/MusicReader/MusicReader');
 
 
 class DzDownloader {
-	constructor() {
+	constructor(arlToken) {
 		this.downloadQueue = queue();
 		this.downloadQueue.concurrency = 1;
 
-		this.PyShell = new PythonShell(path.join(__dirname, 'Deezloader.py'), { args: [MusicsFolder] });
+		this.PyShell = new PythonShell(path.join(__dirname, 'Deezloader.py'), { args: [MusicsFolder, arlToken] });
 		this.PyShell.on('message', (msg) => {
 			console.log(`[Python] ${msg}`);
 			if (msg === 'ready') { this.downloadQueue.autostart = true; }
@@ -86,7 +86,7 @@ class DzDownloader {
 	}
 
 	AddToQueueAsync(musicId) {
-		return new Promise((resolve, reject) => {
+		return new Promise((resolve) => {
 			this.downloadQueue.on('success', (result) => {
 				if (result === musicId) resolve(path.basename(DzDownloader.GetPathFromMusicId(musicId)));
 			});
@@ -98,7 +98,7 @@ class DzDownloader {
 	}
 }
 
-const Downloader = new DzDownloader();
+const Downloader = new DzDownloader(DeezerArlToken);
 
 module.exports = {
 	Downloader,

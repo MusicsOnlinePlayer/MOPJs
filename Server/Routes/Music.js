@@ -100,6 +100,8 @@ app.get('/Music/id/:id', (req, res) => {
 app.get('/Music/get/:id', (req, res) => {
 	MusicModel.findById(req.params.id, async (err, doc) => {
 		const MusicDoc = doc;
+		MusicDoc.Views += 1;
+		MusicDoc.save();
 		if (err) {
 			console.error(err);
 			return;

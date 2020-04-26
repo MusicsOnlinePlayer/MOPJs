@@ -1,18 +1,9 @@
 import deezloader;
-import configparser;
 import os
 import sys, json
 
 def main():
-	config = configparser.RawConfigParser();
-	path = os.path.join(os.path.dirname(__file__), 'Deezer.properties')
-
-	try:
-		config.read(path)
-	except Exception as e :
-		print(str(e))
-
-	deez = deezloader.Login(config.get('Deezer', 'arl'))
+	deez = deezloader.Login(sys.argv[2])
 
 	while 1:
 		print('ready', flush=True);

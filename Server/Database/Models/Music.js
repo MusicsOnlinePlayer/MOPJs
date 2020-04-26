@@ -12,6 +12,7 @@ const MusicSchema = new mongoose.Schema({
 	ImageFormat: String,
 	ImagePathDeezer: String,
 	DeezerId: Number,
+	Views: { type: Number, default: 0, es_indexed: true },
 }); // TODO Use timestamps = true
 
 const AlbumSchema = new mongoose.Schema({
