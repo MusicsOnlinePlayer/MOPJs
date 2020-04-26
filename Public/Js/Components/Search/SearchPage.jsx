@@ -69,25 +69,23 @@ class SearchPageConnected extends React.Component {
 			Axios.get(`/Music/Search/Music/Name/${values.q}*`)
 				.then((res) => {
 					ReceiveMusics(res.data);
+					Axios.get(`/Music/Search/Album/Name/${values.q}*`)
+						.then((res2) => {
+							ReceiveAlbums(res2.data);
+							Axios.get(`/Music/Search/Artist/Name/${values.q}*`)
+								.then((res3) => {
+									ReceiveArtists(res3.data);
+								})
+								.catch((err3) => {
+									FailSearch(err3.message);
+								});
+						})
+						.catch((err2) => {
+							FailSearch(err2.message);
+						});
 				})
-				.catch((res) => {
-					FailSearch(res.message);
-				});
-
-			Axios.get(`/Music/Search/Album/Name/${values.q}*`)
-				.then((res) => {
-					ReceiveAlbums(res.data);
-				})
-				.catch((res) => {
-					FailSearch(res.message);
-				});
-
-			Axios.get(`/Music/Search/Artist/Name/${values.q}*`)
-				.then((res) => {
-					ReceiveArtists(res.data);
-				})
-				.catch((res) => {
-					FailSearch(res.message);
+				.catch((err) => {
+					FailSearch(err.message);
 				});
 		}
 	};
