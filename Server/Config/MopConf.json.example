@@ -1,3 +1,4 @@
 {
-    "DeezerArlToken": "enter your deezer ARL token here"
+    "DeezerArlToken": "enter your deezer ARL token here",
+    "EsHost" : "localhost:9200",
 }

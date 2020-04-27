@@ -16,14 +16,12 @@ app.get('/Search/Music/Name/:name', (req, res) => {
 			MusicModel.search(
 				{
 					query_string: {
+						analyze_wildcard: true,
 						query: req.params.name,
 					},
 				},
 				{
 					size: 8,
-					sort: [{
-						Views: { order: 'desc' },
-					}],
 				},
 				(err, result) => {
 					if (err) {

@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const mongoosastic = require('mongoosastic');
+const { EsHost } = require('../../Config/MopConf.json');
+
 
 const MusicSchema = new mongoose.Schema({
 	Title: { type: String, es_indexed: true, es_boost: 8.0 },
@@ -31,16 +33,14 @@ const ArtistSchema = new mongoose.Schema({
 	ImagePath: String,
 });
 
-MusicSchema.plugin(mongoosastic);
+MusicSchema.plugin(mongoosastic, {
+	hosts: [EsHost],
+});
 AlbumSchema.plugin(mongoosastic, {
-	populate: [
-		{ path: 'MusicsId', select: 'Title' },
-	],
+	hosts: [EsHost],
 });
 ArtistSchema.plugin(mongoosastic, {
-	populate: [
-		{ path: 'AlbumsId', select: 'Name' },
-	],
+	hosts: [EsHost],
 }); //! Can be wrong here
 
 
