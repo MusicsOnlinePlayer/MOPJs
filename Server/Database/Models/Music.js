@@ -68,4 +68,5 @@ module.exports = {
 	Music: MusicModel,
 	Album: AlbumModel,
 	Artist: ArtistModel,
+	MusicSchema,
 };

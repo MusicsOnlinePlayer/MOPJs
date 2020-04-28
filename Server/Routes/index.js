@@ -13,8 +13,9 @@ ConnectToDB().then(() => {
 	ReadAllMusics();
 	// });
 
-	app.use('/Music', require('./Music'));
+
 	app.use('/User', require('./User'));
+	app.use('/Music', require('./Music'));
 });
 
 app.get('/', (req, res) => {

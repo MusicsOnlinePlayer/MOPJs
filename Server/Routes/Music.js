@@ -3,6 +3,7 @@ const path = require('path');
 const MusicModel = require('../Database/Models').Music;
 const AlbumModel = require('../Database/Models').Album;
 const ArtistModel = require('../Database/Models').Artist;
+const { User } = require('../Database/Models');
 const { AddSearchToDb } = require('../Deezer');
 const { Downloader } = require('../Deezer/Downloader');
 
@@ -104,6 +105,18 @@ app.get('/Music/get/:id', (req, res) => {
 		MusicDoc.Views += 1;
 		MusicDoc.LastView = Date.now();
 		MusicDoc.save();
+		if (req.user) {
+			User.findById(req.user._id, (Usererr, Userdoc) => {
+				if (Usererr) {
+					console.log(Usererr);
+					return;
+				}
+				Userdoc.ViewedMusics.push(MusicDoc._id);
+				Userdoc.save();
+				console.log('[Musics] Saved to user history');
+			});
+		}
+
 		if (err) {
 			console.error(err);
 			return;

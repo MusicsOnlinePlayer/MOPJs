@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { HashRouter, Route } from 'react-router-dom';
+import Axios from 'axios';
 import TopNav from './Components/Search/TopNav';
 import store from './store';
 import SearchPage from './Components/Search/SearchPage';
@@ -12,6 +13,8 @@ import Artist from './Components/Albums/Artist';
 import ScrollToTop from './Components/ScrollToTop';
 import Login from './Components/Authentification/Login';
 import Register from './Components/Authentification/Register';
+
+Axios.defaults.withCredentials = true;
 
 const App = () => (
 	<Provider store={store}>
