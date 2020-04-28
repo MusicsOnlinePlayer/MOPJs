@@ -20,6 +20,7 @@ const MusicSchema = new mongoose.Schema({
 
 const AlbumSchema = new mongoose.Schema({
 	Name: { type: String, es_indexed: true },
+	DeezerId: Number,
 	MusicsId: [{
 		type: mongoose.Schema.Types.ObjectId, ref: 'Music',
 	}],
@@ -27,6 +28,7 @@ const AlbumSchema = new mongoose.Schema({
 
 const ArtistSchema = new mongoose.Schema({
 	Name: { type: String, es_indexed: true },
+	DeezerId: Number,
 	AlbumsId: [{
 		type: mongoose.Schema.Types.ObjectId, ref: 'Album',
 	}],

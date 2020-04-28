@@ -3,7 +3,7 @@ const queue = require('queue');
 const fs = require('fs');
 const path = require('path');
 const { DeezerArlToken } = require('../Config/MopConf.json');
-const { MusicsFolder, getTags, AddMusicFromDeezer } = require('../Database/MusicReader/MusicReader');
+const { MusicsFolder, ReadTags, RegisterDownloadedFile } = require('../Database/MusicReader');
 
 
 class DzDownloader {
@@ -57,9 +57,9 @@ class DzDownloader {
 					console.timeEnd('[Deezer - Python] Time ');
 					console.log('[Deezer - Database] Adding to database');
 					const MusicPath = DzDownloader.GetPathFromMusicId(musicId);
-					const tags = await getTags(MusicPath);
+					const tags = await ReadTags(MusicPath);
 					if (tags.title && tags.album && tags.artist[0] && tags.track.no) {
-						AddMusicFromDeezer(musicId, MusicPath)
+						RegisterDownloadedFile(musicId, MusicPath)
 							.then(() => {
 								console.log('[Deezer - Database] Done.');
 								resolve(musicId);

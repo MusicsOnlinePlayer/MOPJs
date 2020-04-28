@@ -4,7 +4,7 @@ const MusicModel = require('../Database/Models').Music;
 const AlbumModel = require('../Database/Models').Album;
 const ArtistModel = require('../Database/Models').Artist;
 const { User } = require('../Database/Models');
-const { AddSearchToDb } = require('../Deezer');
+const { AddSearchToDb, AddMusicOfAlbumToDb } = require('../Deezer');
 const { Downloader } = require('../Deezer/Downloader');
 
 module.exports = express();
@@ -140,12 +140,20 @@ app.get('/Album/id/:id', (req, res) => {
 	AlbumModel.findById(req.params.id)
 		.lean()
 		.exec((err, doc) => {
-			const AlbumDoc = doc;
 			if (err) console.error(err);
-			MusicModel.findById(AlbumDoc.MusicsId[0], (musicerr, musicdoc) => {
+			let AlbumDoc = doc;
+
+
+			MusicModel.findById(AlbumDoc.MusicsId[0], async (musicerr, musicdoc) => {
+				if (musicerr) console.error(err);
+
+				if (AlbumDoc.DeezerId) {
+					await AddMusicOfAlbumToDb(AlbumDoc.DeezerId, AlbumDoc.Name, musicdoc.ImagePathDeezer);
+					AlbumDoc = await AlbumModel.findById(req.params.id).lean();
+				}
 				AlbumDoc.Image = musicdoc.Image;
 				AlbumDoc.ImagePathDeezer = musicdoc.ImagePathDeezer;
-				res.send(doc);
+				res.send(AlbumDoc);
 			});
 			// doc.FilePath = path.basename(doc.FilePath);
 		});

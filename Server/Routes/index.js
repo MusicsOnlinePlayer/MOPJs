@@ -4,13 +4,13 @@ const path = require('path');
 module.exports = express();
 const app = module.exports;
 // const compression = require('compression');
-const { ReadAllMusics } = require('../Database/MusicReader/MusicReader');
+const { DoIndexation } = require('../Database/MusicReader');
 const { ConnectToDB } = require('../Database/Db');
 // app.use(compression);
 
 ConnectToDB().then(() => {
 	// ClearMusics().then(() => {
-	ReadAllMusics();
+	DoIndexation();
 	// });
 
 
@@ -23,12 +23,11 @@ app.get('/', (req, res) => {
 });
 
 const staticPath = path.join(__dirname, '../../Public/');
-const musicPath = require('../Database/MusicReader/MusicReader').MusicsFolder;
-const ArtistImagePath = require('../Database/MusicReader/MusicReader').ArtistsImageFolder;
+const { MusicsFolder, ArtistsImageFolder } = require('../Database/MusicReader');
 
 app.use(express.static(staticPath));
-app.use(express.static(musicPath));
-app.use(express.static(ArtistImagePath));
+app.use(express.static(MusicsFolder));
+app.use(express.static(ArtistsImageFolder));
 
 
 app.use((req, res, next) => {
