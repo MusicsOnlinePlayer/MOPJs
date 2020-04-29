@@ -10,9 +10,6 @@ const MusicSchema = new mongoose.Schema({
 	PublishedDate: { type: Date, es_type: 'date', es_indexed: true },
 	TrackNumber: Number,
 	FilePath: String,
-	Image: String,
-	ImageFormat: String,
-	ImagePathDeezer: String,
 	DeezerId: Number,
 	Views: { type: Number, default: 0, es_indexed: true },
 	LastView: { type: Date, es_type: 'date', es_indexed: true },
@@ -21,6 +18,9 @@ const MusicSchema = new mongoose.Schema({
 const AlbumSchema = new mongoose.Schema({
 	Name: { type: String, es_indexed: true },
 	DeezerId: Number,
+	Image: String,
+	ImageFormat: String,
+	ImagePathDeezer: String,
 	IsComplete: { type: Boolean, default: false },
 	MusicsId: [{
 		type: mongoose.Schema.Types.ObjectId, ref: 'Music',

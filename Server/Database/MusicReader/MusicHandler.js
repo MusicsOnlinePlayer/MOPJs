@@ -2,6 +2,8 @@ const { Music } = require('../Models');
 const { ConvertTagsFromDisc, ConvertTagsFromDz } = require('./Tags');
 const {
 	AddMusicToDatabase, AppendOrUpdateMusicToAlbum, UpdateAlbumCompleteStatus, AppendAlbumsToArtist,
+	AppendDzCoverToAlbum,
+	AppendDzImageToArtist,
 } = require('./MusicHandlerBackEnd');
 
 const HandleNewMusicFromDisk = async (tags, MusicFilePath) => {
@@ -15,7 +17,7 @@ const HandleNewMusicFromDz = async (tags) => {
 	const count = await Music.countDocuments({ Title: tags.title });
 	if (count > 0) return;
 
-	await AddMusicToDatabase(ConvertTagsFromDz(tags, tags.id), tags.artist.picture_big);
+	await AddMusicToDatabase(ConvertTagsFromDz(tags, tags.id), tags.artist.picture_big, true);
 };
 
 const HandleMusicsFromDz = async (MusicsTags, AlbumName, AlbumDzId, AlbumCoverPath) => {
@@ -36,7 +38,7 @@ const HandleMusicsFromDz = async (MusicsTags, AlbumName, AlbumDzId, AlbumCoverPa
 const HandleAlbumsFromDz = async (ArtistId, DeezerData) => {
 	const Albums = [];
 	DeezerData.forEach((album) => {
-		Albums.push({ Name: album.title, DeezerId: album.id });
+		Albums.push({ Name: album.title, DeezerId: album.id, ImagePathDeezer: album.cover_big });
 	});
 	await AppendAlbumsToArtist(ArtistId, Albums);
 	console.log('[Music Handler] Added albums to artist');
@@ -55,6 +57,21 @@ const RegisterDownloadedFile = (DeezerId, filePath) => new Promise((resolve, rej
 		});
 });
 
+const HandleNewCoverFromDz = (AlbumDzId, DeezerData) => new Promise((resolve) => {
+	AppendDzCoverToAlbum(AlbumDzId, DeezerData.cover_big)
+		.then(() => {
+			console.log('[Music Handler] Added cover to album');
+			resolve();
+		});
+});
+
+const HandleNewImageFromDz = (ArtistDzId, DeezerData) => new Promise((resolve) => {
+	AppendDzImageToArtist(ArtistDzId, DeezerData.picture_big)
+		.then(() => {
+			console.log('[Music Handler] Added image to artist');
+			resolve();
+		});
+});
 
 module.exports = {
 	HandleNewMusicFromDisk,
@@ -62,4 +79,6 @@ module.exports = {
 	RegisterDownloadedFile,
 	HandleMusicsFromDz,
 	HandleAlbumsFromDz,
+	HandleNewCoverFromDz,
+	HandleNewImageFromDz,
 };

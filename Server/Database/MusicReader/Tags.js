@@ -27,6 +27,14 @@ function ConvertTagsFromDz(
 	tags,
 	DeezerId, CustomAlbumName = undefined, CustomAlbumDzId = undefined, CustomCoverPath = undefined,
 ) {
+	if (!tags.album) {
+		console.log(`[Tags - Deezer] Found empty album for track ${tags.title} - Deezer id ${DeezerId}`);
+		if (!CustomCoverPath) {
+			console.log('[Tags - Deezer] And no custom cover path provided');
+		}
+		console.log(`[Tags - Deezer] Additional args provided - CustomAlbumName: ${CustomAlbumName} CustomAlbumDzId: ${CustomAlbumDzId}`);
+	}
+
 	const doctags = {
 		Title: tags.title,
 		Album: CustomAlbumName || tags.album.title,

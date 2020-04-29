@@ -1,4 +1,7 @@
+const fs = require('fs');
+const path = require('path');
 const { Music, Album, Artist } = require('../Models');
+const { ArtistsImageFolder } = require('./Utils');
 
 const SaveAndIndex = (MyMusicModel) => new Promise((resolve) => {
 	MyMusicModel.save((err, savedModel) => {
@@ -12,18 +15,39 @@ const SaveAndIndex = (MyMusicModel) => new Promise((resolve) => {
 	});
 });
 
-async function AddMusicToDatabase(doctags, ArtistImage = undefined) {
-	const guessedPath = `${doctags.Artist}.jpg`;
-	const newMusic = new Music(doctags);
+async function AddMusicToDatabase(doctags, ArtistImage = undefined, EnableEsIndexWait = false) {
+	let guessedPath = `${doctags.Artist}.jpg`;
+
+	if (!fs.existsSync(path.join(ArtistsImageFolder, guessedPath))) { guessedPath = undefined; }
+
+	const NewTagsForAlbum = {
+		Name: doctags.Album,
+		DeezerId: doctags.AlbumDzId,
+		Image: doctags.Image,
+		ImagePathDeezer: doctags.ImagePathDeezer,
+		ImageFormat: doctags.ImageFormat,
+	};
+
+	const NewTagsForMusicDocs = doctags;
+
+	NewTagsForMusicDocs.Image = undefined;
+	NewTagsForMusicDocs.ImagePathDeezer = undefined;
+	NewTagsForMusicDocs.ImageFormat = undefined;
+
+
+	const newMusic = new Music(NewTagsForMusicDocs);
+	const newAlbum = new Album(NewTagsForAlbum);
 	const newArtist = new Artist({
 		Name: doctags.Artist,
 		DeezerId: doctags.ArtistDzId,
 		ImagePath: ArtistImage || guessedPath,
 	});
-	const newAlbum = new Album({ Name: doctags.Album, DeezerId: doctags.AlbumDzId });
-	const musicDoc = await SaveAndIndex(newMusic);
-	const artistDoc = await Artist.findOneOrCreate({ Name: newArtist.Name }, newArtist);
+
+
+	const musicDoc = EnableEsIndexWait ? await SaveAndIndex(newMusic) : await newMusic.save();
 	const albumDoc = await Album.findOneOrCreate({ Name: newAlbum.Name }, newAlbum);
+	const artistDoc = await Artist.findOneOrCreate({ Name: newArtist.Name }, newArtist);
+
 
 	albumDoc.DeezerId = newAlbum.DeezerId;
 	artistDoc.DeezerId = newArtist.DeezerId;
@@ -67,7 +91,11 @@ async function AppendAlbumsToArtist(ArtistDzId, Albums) {
 	const artistDoc = await (await Artist.findOne({ DeezerId: ArtistDzId })).populate('AlbumsId').execPopulate();
 	Albums.forEach(async (AlbumElement) => {
 		if (!artistDoc.AlbumsId.some((e) => e.DeezerId === AlbumElement.DeezerId)) {
-			const AlbumDoc = new Album({ Name: AlbumElement.Name, DeezerId: AlbumElement.DeezerId });
+			const AlbumDoc = new Album({
+				Name: AlbumElement.Name,
+				DeezerId: AlbumElement.DeezerId,
+				ImagePathDeezer: AlbumElement.ImagePathDeezer,
+			});
 			await AlbumDoc.save();
 		}
 	});
@@ -77,9 +105,19 @@ async function UpdateAlbumCompleteStatus(AlbumDzId) {
 	await Album.findOneAndUpdate({ DeezerId: AlbumDzId }, { IsComplete: true });
 }
 
+async function AppendDzCoverToAlbum(AlbumDzId, ImagePathDeezer) {
+	await Album.findOneAndUpdate({ DeezerId: AlbumDzId }, { ImagePathDeezer });
+}
+
+async function AppendDzImageToArtist(ArtistDzId, ImagePath) {
+	await Artist.findOneAndUpdate({ DeezerId: ArtistDzId }, { ImagePath });
+}
+
 module.exports = {
 	AddMusicToDatabase,
 	AppendOrUpdateMusicToAlbum,
 	UpdateAlbumCompleteStatus,
 	AppendAlbumsToArtist,
+	AppendDzCoverToAlbum,
+	AppendDzImageToArtist,
 };

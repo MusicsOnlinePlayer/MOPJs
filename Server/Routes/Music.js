@@ -1,10 +1,14 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const MusicModel = require('../Database/Models').Music;
 const AlbumModel = require('../Database/Models').Album;
 const ArtistModel = require('../Database/Models').Artist;
 const { User } = require('../Database/Models');
-const { AddSearchToDb, AddMusicOfAlbumToDb, AddAlbumOfArtistToDb } = require('../Deezer');
+const {
+	AddSearchToDb, AddMusicOfAlbumToDb, AddAlbumOfArtistToDb, AddCoverOfAlbumToDb,
+	AddImageOfArtistToDb,
+} = require('../Deezer');
 const { Downloader } = require('../Deezer/Downloader');
 
 module.exports = express();
@@ -88,12 +92,17 @@ app.get('/Search/Artist/Name/:name', (req, res) => {
 });
 
 app.get('/Music/id/:id', (req, res) => {
-	MusicModel.findById(req.params.id, (err, doc) => {
-		const MusicDoc = doc;
+	MusicModel.findById(req.params.id, async (err, doc) => {
+		const MusicDoc = doc.toObject();
 		if (err) console.error(err);
 		if (MusicDoc) {
 			MusicDoc.FilePath = MusicDoc.FilePath
 				? path.basename(MusicDoc.FilePath) : undefined;
+
+			const AlbumOfMusic = await AlbumModel.findOne({ Name: MusicDoc.Album });
+			MusicDoc.Image = AlbumOfMusic.Image;
+			MusicDoc.ImagePathDeezer = AlbumOfMusic.ImagePathDeezer;
+			MusicDoc.ImageFormat = AlbumOfMusic.ImageFormat;
 		}
 		res.send(MusicDoc);
 	});
@@ -139,24 +148,19 @@ app.get('/Music/get/:id', (req, res) => {
 app.get('/Album/id/:id', (req, res) => {
 	AlbumModel.findById(req.params.id)
 		.lean()
-		.exec((err, doc) => {
+		.exec(async (err, doc) => {
 			if (err) console.error(err);
 			let AlbumDoc = doc;
 
-
-			MusicModel.findById(AlbumDoc.MusicsId[0], async (musicerr, musicdoc) => {
-				if (musicerr) console.error(err);
-
-				if (AlbumDoc.DeezerId) {
-					if (!AlbumDoc.IsComplete) {
-						await AddMusicOfAlbumToDb(AlbumDoc.DeezerId, AlbumDoc.Name, musicdoc.ImagePathDeezer);
-						AlbumDoc = await AlbumModel.findById(req.params.id).lean();
-					}
+			if (AlbumDoc.DeezerId) {
+				if (!AlbumDoc.IsComplete) {
+					await AddMusicOfAlbumToDb(AlbumDoc.DeezerId,
+						AlbumDoc.Name,
+						AlbumDoc.ImagePathDeezer || await AddCoverOfAlbumToDb(AlbumDoc.DeezerId));
+					AlbumDoc = await AlbumModel.findById(req.params.id).lean();
 				}
-				AlbumDoc.Image = musicdoc.Image;
-				AlbumDoc.ImagePathDeezer = musicdoc.ImagePathDeezer;
-				res.send(AlbumDoc);
-			});
+			}
+			res.send(AlbumDoc);
 			// doc.FilePath = path.basename(doc.FilePath);
 		});
 });
@@ -167,6 +171,9 @@ app.get('/Artist/id/:id', (req, res) => {
 		if (err) console.error(err);
 
 		if (ArtistDoc.DeezerId) {
+			if (!ArtistDoc.ImagePath) {
+				ArtistDoc.ImagePath = await AddImageOfArtistToDb(ArtistDoc.DeezerId);
+			}
 			await AddAlbumOfArtistToDb(ArtistDoc.DeezerId);
 			ArtistDoc = await ArtistModel.findById(req.params.id);
 		}
