@@ -4,7 +4,7 @@ const MusicModel = require('../Database/Models').Music;
 const AlbumModel = require('../Database/Models').Album;
 const ArtistModel = require('../Database/Models').Artist;
 const { User } = require('../Database/Models');
-const { AddSearchToDb, AddMusicOfAlbumToDb } = require('../Deezer');
+const { AddSearchToDb, AddMusicOfAlbumToDb, AddAlbumOfArtistToDb } = require('../Deezer');
 const { Downloader } = require('../Deezer/Downloader');
 
 module.exports = express();
@@ -162,9 +162,14 @@ app.get('/Album/id/:id', (req, res) => {
 });
 
 app.get('/Artist/id/:id', (req, res) => {
-	ArtistModel.findById(req.params.id, (err, doc) => {
-		const ArtistDoc = doc;
+	ArtistModel.findById(req.params.id, async (err, doc) => {
+		let ArtistDoc = doc;
 		if (err) console.error(err);
+
+		if (ArtistDoc.DeezerId) {
+			await AddAlbumOfArtistToDb(ArtistDoc.DeezerId);
+			ArtistDoc = await ArtistModel.findById(req.params.id);
+		}
 
 		res.send(ArtistDoc);
 	});

@@ -63,6 +63,16 @@ async function AppendOrUpdateMusicToAlbum(musicTags) {
 	}
 }
 
+async function AppendAlbumsToArtist(ArtistDzId, Albums) {
+	const artistDoc = await (await Artist.findOne({ DeezerId: ArtistDzId })).populate('AlbumsId').execPopulate();
+	Albums.forEach(async (AlbumElement) => {
+		if (!artistDoc.AlbumsId.some((e) => e.DeezerId === AlbumElement.DeezerId)) {
+			const AlbumDoc = new Album({ Name: AlbumElement.Name, DeezerId: AlbumElement.DeezerId });
+			await AlbumDoc.save();
+		}
+	});
+}
+
 async function UpdateAlbumCompleteStatus(AlbumDzId) {
 	await Album.findOneAndUpdate({ DeezerId: AlbumDzId }, { IsComplete: true });
 }
@@ -71,4 +81,5 @@ module.exports = {
 	AddMusicToDatabase,
 	AppendOrUpdateMusicToAlbum,
 	UpdateAlbumCompleteStatus,
+	AppendAlbumsToArtist,
 };

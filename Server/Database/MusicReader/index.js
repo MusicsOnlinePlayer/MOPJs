@@ -1,6 +1,8 @@
 const { ReadTags } = require('./Tags');
 const { MusicsFolder, ArtistsImageFolder } = require('./Utils');
-const { RegisterDownloadedFile, HandleNewMusicFromDz, HandleMusicsFromDz } = require('./MusicHandler');
+const {
+	RegisterDownloadedFile, HandleNewMusicFromDz, HandleMusicsFromDz, HandleAlbumsFromDz,
+} = require('./MusicHandler');
 const { DoIndexation } = require('./Indexer');
 
 module.exports = {
@@ -11,4 +13,5 @@ module.exports = {
 	DoIndexation,
 	ArtistsImageFolder,
 	HandleMusicsFromDz,
+	HandleAlbumsFromDz,
 };

@@ -1,5 +1,5 @@
 const Axios = require('axios').default;
-const { HandleNewMusicFromDz, HandleMusicsFromDz } = require('../Database/MusicReader');
+const { HandleNewMusicFromDz, HandleMusicsFromDz, HandleAlbumsFromDz } = require('../Database/MusicReader');
 
 
 module.exports = {
@@ -24,6 +24,19 @@ module.exports = {
 			.then(async (res) => {
 				const dzRes = res.data.data;
 				await HandleMusicsFromDz(dzRes, AlbumName, AlbumDzId, AlbumCoverPath);
+				resolve();
+			})
+			.catch((err) => {
+				console.log(err);
+				reject();
+			});
+	}),
+
+	AddAlbumOfArtistToDb: (ArtistDzId) => new Promise((resolve, reject) => {
+		Axios.get(`https://api.deezer.com/artist/${ArtistDzId}/albums`)
+			.then(async (res) => {
+				const dzRes = res.data.data;
+				HandleAlbumsFromDz(ArtistDzId, dzRes);
 				resolve();
 			})
 			.catch((err) => {
