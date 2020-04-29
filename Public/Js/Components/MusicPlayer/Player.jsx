@@ -35,6 +35,10 @@ class PlayerConnected extends React.Component {
 	static propTypes = {
 		history: PropTypes.shape({
 			push: PropTypes.func.isRequired,
+			goBack: PropTypes.func.isRequired,
+			location: PropTypes.shape({
+				pathname: PropTypes.string.isRequired,
+			}),
 		}).isRequired,
 		ChangePlayingId: PropTypes.func.isRequired,
 		AddCustomFilePath: PropTypes.func.isRequired,
@@ -155,7 +159,11 @@ class PlayerConnected extends React.Component {
 
 	HandleOpenPlaylist = () => {
 		const { history } = this.props;
-		history.push('/Playlist/Current');
+		if (history.location.pathname === '/Playlist/Current') {
+			history.goBack();
+		} else {
+			history.push('/Playlist/Current');
+		}
 	};
 
 	render() {
