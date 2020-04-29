@@ -1,6 +1,5 @@
 const express = require('express');
 const path = require('path');
-const fs = require('fs');
 const MusicModel = require('../Database/Models').Music;
 const AlbumModel = require('../Database/Models').Album;
 const ArtistModel = require('../Database/Models').Artist;
@@ -153,7 +152,7 @@ app.get('/Album/id/:id', (req, res) => {
 			let AlbumDoc = doc;
 
 			if (AlbumDoc.DeezerId) {
-				if (!AlbumDoc.IsComplete) {
+				if (!AlbumDoc.IsComplete && req.query.mode === 'all') {
 					await AddMusicOfAlbumToDb(AlbumDoc.DeezerId,
 						AlbumDoc.Name,
 						AlbumDoc.ImagePathDeezer || await AddCoverOfAlbumToDb(AlbumDoc.DeezerId));
@@ -169,13 +168,14 @@ app.get('/Artist/id/:id', (req, res) => {
 	ArtistModel.findById(req.params.id, async (err, doc) => {
 		let ArtistDoc = doc;
 		if (err) console.error(err);
-
 		if (ArtistDoc.DeezerId) {
 			if (!ArtistDoc.ImagePath) {
 				ArtistDoc.ImagePath = await AddImageOfArtistToDb(ArtistDoc.DeezerId);
 			}
-			await AddAlbumOfArtistToDb(ArtistDoc.DeezerId);
-			ArtistDoc = await ArtistModel.findById(req.params.id);
+			if (req.query.mode === 'all') {
+				await AddAlbumOfArtistToDb(ArtistDoc.DeezerId);
+				ArtistDoc = await ArtistModel.findById(req.params.id);
+			}
 		}
 
 		res.send(ArtistDoc);

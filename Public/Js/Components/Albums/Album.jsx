@@ -46,7 +46,7 @@ class AlbumConnected extends React.Component {
 	componentDidMount = () => {
 		const { match } = this.props;
 
-		Axios.get(`/Music/Album/id/${match.params.id}`).then((res) => {
+		Axios.get(`/Music/Album/id/${match.params.id}?mode=all`).then((res) => {
 			this.setState({
 				MusicsId: res.data.MusicsId,
 				AlbumName: res.data.Name,
