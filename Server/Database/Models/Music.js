@@ -21,6 +21,7 @@ const MusicSchema = new mongoose.Schema({
 const AlbumSchema = new mongoose.Schema({
 	Name: { type: String, es_indexed: true },
 	DeezerId: Number,
+	IsComplete: { type: Boolean, default: false },
 	MusicsId: [{
 		type: mongoose.Schema.Types.ObjectId, ref: 'Music',
 	}],

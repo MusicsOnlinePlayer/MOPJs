@@ -148,8 +148,10 @@ app.get('/Album/id/:id', (req, res) => {
 				if (musicerr) console.error(err);
 
 				if (AlbumDoc.DeezerId) {
-					await AddMusicOfAlbumToDb(AlbumDoc.DeezerId, AlbumDoc.Name, musicdoc.ImagePathDeezer);
-					AlbumDoc = await AlbumModel.findById(req.params.id).lean();
+					if (!AlbumDoc.IsComplete) {
+						await AddMusicOfAlbumToDb(AlbumDoc.DeezerId, AlbumDoc.Name, musicdoc.ImagePathDeezer);
+						AlbumDoc = await AlbumModel.findById(req.params.id).lean();
+					}
 				}
 				AlbumDoc.Image = musicdoc.Image;
 				AlbumDoc.ImagePathDeezer = musicdoc.ImagePathDeezer;

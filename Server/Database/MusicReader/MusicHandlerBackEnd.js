@@ -63,7 +63,12 @@ async function AppendOrUpdateMusicToAlbum(musicTags) {
 	}
 }
 
+async function UpdateAlbumCompleteStatus(AlbumDzId) {
+	await Album.findOneAndUpdate({ DeezerId: AlbumDzId }, { IsComplete: true });
+}
+
 module.exports = {
 	AddMusicToDatabase,
 	AppendOrUpdateMusicToAlbum,
+	UpdateAlbumCompleteStatus,
 };

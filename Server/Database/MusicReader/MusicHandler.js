@@ -1,6 +1,6 @@
 const { Music } = require('../Models');
 const { ConvertTagsFromDisc, ConvertTagsFromDz } = require('./Tags');
-const { AddMusicToDatabase, AppendOrUpdateMusicToAlbum } = require('./MusicHandlerBackEnd');
+const { AddMusicToDatabase, AppendOrUpdateMusicToAlbum, UpdateAlbumCompleteStatus } = require('./MusicHandlerBackEnd');
 
 const HandleNewMusicFromDisk = async (tags, MusicFilePath) => {
 	const count = await Music.countDocuments({ Title: tags.title });
@@ -27,6 +27,8 @@ const HandleMusicsFromDz = async (MusicsTags, AlbumName, AlbumDzId, AlbumCoverPa
 	});
 	await Promise.all(musicTasks);
 	console.log('[Music Handler] Musics have been added / updated');
+	await UpdateAlbumCompleteStatus(AlbumDzId);
+	console.log('[Music Handler] Marked this album as complete');
 };
 
 const RegisterDownloadedFile = (DeezerId, filePath) => new Promise((resolve, reject) => {
