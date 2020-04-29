@@ -1,4 +1,5 @@
 const Axios = require('axios').default;
+const MopConsole = require('../Tools/MopConsole');
 const {
 	HandleNewMusicFromDz, HandleMusicsFromDz, HandleAlbumsFromDz, HandleNewCoverFromDz,
 	HandleNewImageFromDz,
@@ -17,14 +18,14 @@ module.exports = {
 				resolve();
 			})
 			.catch((err) => {
-				console.log(err);
+				MopConsole.error('Deezer - API', err);
 				reject();
 			});
 	}),
 
 	AddMusicOfAlbumToDb: (AlbumDzId, AlbumName, AlbumCoverPath) => new Promise((resolve, reject) => {
 		if (!AlbumCoverPath) {
-			console.log(`[Deezer] Provided empty cover for album ${AlbumName} - Deezer id ${AlbumDzId}`);
+			MopConsole.warn('Deezer - API', `Provided empty cover for album ${AlbumName} - Deezer id ${AlbumDzId}`);
 		}
 		Axios.get(`https://api.deezer.com/album/${AlbumDzId}/tracks`)
 			.then(async (res) => {
@@ -33,7 +34,7 @@ module.exports = {
 				resolve();
 			})
 			.catch((err) => {
-				console.log(err);
+				MopConsole.error('Deezer - API', err);
 				reject();
 			});
 	}),
@@ -46,7 +47,7 @@ module.exports = {
 				resolve();
 			})
 			.catch((err) => {
-				console.log(err);
+				MopConsole.error('Deezer - API', err);
 				reject();
 			});
 	}),
@@ -59,7 +60,7 @@ module.exports = {
 				resolve(dzRes.cover_big);
 			})
 			.catch((err) => {
-				console.log(err);
+				MopConsole.error('Deezer - API', err);
 				reject();
 			});
 	}),
@@ -72,7 +73,7 @@ module.exports = {
 				resolve(dzRes.picture_big);
 			})
 			.catch((err) => {
-				console.log(err);
+				MopConsole.error('Deezer - API', err);
 				reject();
 			});
 	}),

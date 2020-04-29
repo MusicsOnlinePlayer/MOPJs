@@ -4,10 +4,11 @@ const {
 const { ReadTags } = require('./Tags');
 const { HandleNewMusicFromDisk } = require('./MusicHandler');
 const { Music } = require('../Models');
+const MopConsole = require('../../Tools/MopConsole');
 
 const Indexation = async () => {
-	console.log('[Music Indexer] Starting indexing');
-	console.time('[Music Indexer] Time ');
+	MopConsole.info('Music Indexer', 'Starting indexing');
+	MopConsole.time('Music Indexer', 'Time ');
 	const files = GetFilesOfDir(MusicsFolder);
 	/* eslint no-restricted-syntax: "off" */
 	for (const file of files) {
@@ -16,7 +17,7 @@ const Indexation = async () => {
 		const count = await Music.countDocuments({ FilePath: MusicFilePath });
 
 		if (count === 0 && CheckIfFileHasCorrectFormat(MusicFilePath)) {
-			console.log(`[Music Indexer] Adding ${MusicFilePath}`);
+			MopConsole.info('Music Indexer', `Adding ${MusicFilePath}`);
 			const tags = await ReadTags(MusicFilePath);
 			// console.log(tags);
 			if (tags.title && tags.album && tags.artist[0] && tags.track.no) {
@@ -24,8 +25,8 @@ const Indexation = async () => {
 			}
 		}
 	}
-	console.log(`[Music Indexer] Done - ${files.length} musics`);
-	console.timeEnd('[Music Indexer] Time ');
+	MopConsole.info('Music Indexer', `Done - ${files.length} musics`);
+	MopConsole.timeEnd('Music Indexer', 'Time ');
 };
 
 module.exports = {

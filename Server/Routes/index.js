@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const MopConsole = require('../Tools/MopConsole');
 
 module.exports = express();
 const app = module.exports;
@@ -31,7 +32,6 @@ app.use(express.static(ArtistsImageFolder));
 
 
 app.use((req, res, next) => {
-	console.log();
-	console.log(`[Path - Log] ${req.url}`);
+	MopConsole.log('Path - Log', req.url);
 	next();
 });

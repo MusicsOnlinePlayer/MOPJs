@@ -21,7 +21,7 @@
 	},
 	"plugins": ["react"],
 	"rules": {
-		"no-console": "off",
+		"no-console": "error",
 		"indent": ["error", "tab"],
 		"no-tabs": ["error", { "allowIndentationTabs": true }],
 		"no-await-in-loop": "warn",

@@ -1,5 +1,6 @@
 const { Music } = require('../Models');
 const { ConvertTagsFromDisc, ConvertTagsFromDz } = require('./Tags');
+const MopConsole = require('../../Tools/MopConsole');
 const {
 	AddMusicToDatabase, AppendOrUpdateMusicToAlbum, UpdateAlbumCompleteStatus, AppendAlbumsToArtist,
 	AppendDzCoverToAlbum,
@@ -30,9 +31,9 @@ const HandleMusicsFromDz = async (MusicsTags, AlbumName, AlbumDzId, AlbumCoverPa
 		);
 	});
 	await Promise.all(musicTasks);
-	console.log('[Music Handler] Musics have been added / updated');
+	MopConsole.log('Music Handler', 'Musics have been added / updated');
 	await UpdateAlbumCompleteStatus(AlbumDzId);
-	console.log('[Music Handler] Marked this album as complete');
+	MopConsole.log('Music Handler', 'Marked this album as complete');
 };
 
 const HandleAlbumsFromDz = async (ArtistId, DeezerData) => {
@@ -41,7 +42,7 @@ const HandleAlbumsFromDz = async (ArtistId, DeezerData) => {
 		Albums.push({ Name: album.title, DeezerId: album.id, ImagePathDeezer: album.cover_big });
 	});
 	await AppendAlbumsToArtist(ArtistId, Albums);
-	console.log('[Music Handler] Added albums to artist');
+	MopConsole.log('Music Handler', 'Added albums to artist');
 };
 
 const RegisterDownloadedFile = (DeezerId, filePath) => new Promise((resolve, reject) => {
@@ -60,7 +61,7 @@ const RegisterDownloadedFile = (DeezerId, filePath) => new Promise((resolve, rej
 const HandleNewCoverFromDz = (AlbumDzId, DeezerData) => new Promise((resolve) => {
 	AppendDzCoverToAlbum(AlbumDzId, DeezerData.cover_big)
 		.then(() => {
-			console.log('[Music Handler] Added cover to album');
+			MopConsole.log('Music Handler', 'Added cover to album');
 			resolve();
 		});
 });

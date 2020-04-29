@@ -1,13 +1,14 @@
 const express = require('express');
 const passport = require('passport');
 const { User } = require('../Database/Models');
+const MopConsole = require('../Tools/MopConsole');
 
 module.exports = express();
 const app = module.exports;
 
 app.post('/Login', passport.authenticate('local'), (req, res) => {
 	res.send({ success: true });
-	console.log('[User] User logged in');
+	MopConsole.info('User', 'User logged in');
 });
 app.post('/Register', async (req, res) => {
 	if (!req.body.name) { res.send({ success: false }); }
@@ -20,10 +21,10 @@ app.post('/Register', async (req, res) => {
 		await user.setPassword(req.body.password);
 		await user.save();
 		res.send({ success: true });
-		console.log(`[User] Added user ${req.body.name}`);
+		MopConsole.info('User', `Added user ${req.body.name}`);
 	} catch (err) {
-		console.log("[User] Couldn't register user");
-		console.log(err);
+		MopConsole.warn('User', "Couldn't register user");
+		MopConsole.warn('User', err);
 		res.send({ success: false });
 	}
 	// const { user } = await User.authenticate()(req.body.username, req.body.password);
@@ -43,4 +44,5 @@ app.get('/Me', (req, res) => {
 app.get('/Logout', (req, res) => {
 	req.logout();
 	res.sendStatus(200);
+	MopConsole.info('User', 'User logged out');
 });

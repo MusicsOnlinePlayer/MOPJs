@@ -1,5 +1,6 @@
 const fs = require('fs');
 const mm = require('musicmetadata');
+const MopConsole = require('../../Tools/MopConsole');
 
 const ReadTags = (filePath) => new Promise((resolve, reject) => {
 	mm(fs.createReadStream(filePath), (err, meta) => {
@@ -28,11 +29,11 @@ function ConvertTagsFromDz(
 	DeezerId, CustomAlbumName = undefined, CustomAlbumDzId = undefined, CustomCoverPath = undefined,
 ) {
 	if (!tags.album) {
-		console.log(`[Tags - Deezer] Found empty album for track ${tags.title} - Deezer id ${DeezerId}`);
+		MopConsole.warn('Tags - Deezer', `Found empty album for track ${tags.title} - Deezer id ${DeezerId}`);
 		if (!CustomCoverPath) {
-			console.log('[Tags - Deezer] And no custom cover path provided');
+			MopConsole.warn('Tags - Deezer', 'And no custom cover path provided');
 		}
-		console.log(`[Tags - Deezer] Additional args provided - CustomAlbumName: ${CustomAlbumName} CustomAlbumDzId: ${CustomAlbumDzId}`);
+		MopConsole.warn('Tags - Deezer', `Additional args provided - CustomAlbumName: ${CustomAlbumName} CustomAlbumDzId: ${CustomAlbumDzId}`);
 	}
 
 	const doctags = {

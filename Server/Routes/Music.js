@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const MopConsole = require('../Tools/MopConsole');
 const MusicModel = require('../Database/Models').Music;
 const AlbumModel = require('../Database/Models').Album;
 const ArtistModel = require('../Database/Models').Artist;
@@ -29,7 +30,7 @@ app.get('/Search/Music/Name/:name', (req, res) => {
 				},
 				(err, result) => {
 					if (err) {
-						console.error(err);
+						MopConsole.error('Music - Search', err);
 					}
 					const ClientResults = [];
 
@@ -54,7 +55,7 @@ app.get('/Search/Album/Name/:name', (req, res) => {
 		},
 		(err, result) => {
 			if (err) {
-				console.error(err);
+				MopConsole.error('Music - Search', err);
 			}
 			const ClientResults = [];
 
@@ -78,7 +79,7 @@ app.get('/Search/Artist/Name/:name', (req, res) => {
 		},
 		(err, result) => {
 			if (err) {
-				console.error(err);
+				MopConsole.error('Music - Search', err);
 			}
 			const ClientResults = [];
 
@@ -93,7 +94,7 @@ app.get('/Search/Artist/Name/:name', (req, res) => {
 app.get('/Music/id/:id', (req, res) => {
 	MusicModel.findById(req.params.id, async (err, doc) => {
 		const MusicDoc = doc.toObject();
-		if (err) console.error(err);
+		if (err) MopConsole.error('Music', err);
 		if (MusicDoc) {
 			MusicDoc.FilePath = MusicDoc.FilePath
 				? path.basename(MusicDoc.FilePath) : undefined;
@@ -116,17 +117,17 @@ app.get('/Music/get/:id', (req, res) => {
 		if (req.user) {
 			User.findById(req.user._id, (Usererr, Userdoc) => {
 				if (Usererr) {
-					console.log(Usererr);
+					MopConsole.error('Music - User - History', Usererr);
 					return;
 				}
 				Userdoc.ViewedMusics.push(MusicDoc._id);
 				Userdoc.save();
-				console.log('[Musics] Saved to user history');
+				MopConsole.info('Musics', 'Saved to user history');
 			});
 		}
 
 		if (err) {
-			console.error(err);
+			MopConsole.error('Music', err);
 			return;
 		}
 		if (!MusicDoc) {
@@ -148,7 +149,7 @@ app.get('/Album/id/:id', (req, res) => {
 	AlbumModel.findById(req.params.id)
 		.lean()
 		.exec(async (err, doc) => {
-			if (err) console.error(err);
+			if (err) MopConsole.error('Music', err);
 			let AlbumDoc = doc;
 
 			if (AlbumDoc.DeezerId) {
@@ -167,7 +168,7 @@ app.get('/Album/id/:id', (req, res) => {
 app.get('/Artist/id/:id', (req, res) => {
 	ArtistModel.findById(req.params.id, async (err, doc) => {
 		let ArtistDoc = doc;
-		if (err) console.error(err);
+		if (err) MopConsole.error('Music', err);
 		if (ArtistDoc.DeezerId) {
 			if (!ArtistDoc.ImagePath) {
 				ArtistDoc.ImagePath = await AddImageOfArtistToDb(ArtistDoc.DeezerId);

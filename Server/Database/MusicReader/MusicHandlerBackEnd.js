@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const MopConsole = require('../../Tools/MopConsole');
 const { Music, Album, Artist } = require('../Models');
 const { ArtistsImageFolder } = require('./Utils');
 
@@ -55,7 +56,7 @@ async function AddMusicToDatabase(doctags, ArtistImage = undefined, EnableEsInde
 	albumDoc.MusicsId.push(musicDoc._id);
 	const savedAlbum = await albumDoc.save();
 	if (artistDoc.AlbumsId.indexOf(savedAlbum._id) === -1) {
-		console.log(`[Music Indexer] Added ${savedAlbum.Name}`);
+		MopConsole.log('Music - Indexer', `Added ${savedAlbum.Name}`);
 		artistDoc.AlbumsId.push(savedAlbum);
 		await artistDoc.save();
 	}
@@ -75,7 +76,7 @@ const AppendMusicToAlbum = async (tags) => {
 	const albumDoc = await Album.findOne({ Name: tags.Album });
 	albumDoc.MusicsId.push(savedMusic._id);
 	await albumDoc.save();
-	console.log(`[Music Indexer] Added new music to ${albumDoc.Name}`);
+	MopConsole.log('Music - Indexer', `Added new music to ${albumDoc.Name}`);
 };
 
 async function AppendOrUpdateMusicToAlbum(musicTags) {
