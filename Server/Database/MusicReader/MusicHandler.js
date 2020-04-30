@@ -69,7 +69,7 @@ const HandleNewCoverFromDz = (AlbumDzId, DeezerData) => new Promise((resolve) =>
 const HandleNewImageFromDz = (ArtistDzId, DeezerData) => new Promise((resolve) => {
 	AppendDzImageToArtist(ArtistDzId, DeezerData.picture_big)
 		.then(() => {
-			console.log('[Music Handler] Added image to artist');
+			MopConsole.log('Music Handler', 'Added image to artist');
 			resolve();
 		});
 });
