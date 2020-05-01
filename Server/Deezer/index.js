@@ -30,6 +30,7 @@ module.exports = {
 		Axios.get(`https://api.deezer.com/album/${AlbumDzId}/tracks`)
 			.then(async (res) => {
 				const dzRes = res.data.data;
+				MopConsole.info('Deezer - API', `Found ${dzRes.length} musics for this album`);
 				await HandleMusicsFromDz(dzRes, AlbumName, AlbumDzId, AlbumCoverPath);
 				resolve();
 			})
@@ -43,6 +44,7 @@ module.exports = {
 		Axios.get(`https://api.deezer.com/artist/${ArtistDzId}/albums`)
 			.then(async (res) => {
 				const dzRes = res.data.data;
+				MopConsole.info('Deezer - API', `Found ${dzRes.length} albums for this artist`);
 				await HandleAlbumsFromDz(ArtistDzId, dzRes);
 				resolve();
 			})

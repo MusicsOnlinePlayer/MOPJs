@@ -10,14 +10,14 @@ const MusicSchema = new mongoose.Schema({
 	PublishedDate: { type: Date, es_type: 'date', es_indexed: true },
 	TrackNumber: Number,
 	FilePath: String,
-	DeezerId: Number,
+	DeezerId: { type: Number, index: { unique: true, dropDups: true, sparse: true } },
 	Views: { type: Number, default: 0, es_indexed: true },
 	LastView: { type: Date, es_type: 'date', es_indexed: true },
 }); // TODO Use timestamps = true
 
 const AlbumSchema = new mongoose.Schema({
 	Name: { type: String, es_indexed: true },
-	DeezerId: Number,
+	DeezerId: { type: Number, index: { unique: true, dropDups: true, sparse: true } },
 	Image: String,
 	ImageFormat: String,
 	ImagePathDeezer: String,
@@ -29,7 +29,7 @@ const AlbumSchema = new mongoose.Schema({
 
 const ArtistSchema = new mongoose.Schema({
 	Name: { type: String, es_indexed: true },
-	DeezerId: Number,
+	DeezerId: { type: Number, index: { unique: true, dropDups: true, sparse: true } },
 	AlbumsId: [{
 		type: mongoose.Schema.Types.ObjectId, ref: 'Album',
 	}],

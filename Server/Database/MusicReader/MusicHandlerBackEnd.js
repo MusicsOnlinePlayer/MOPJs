@@ -91,13 +91,14 @@ async function AppendOrUpdateMusicToAlbum(musicTags) {
 async function AppendAlbumsToArtist(ArtistDzId, Albums) {
 	const artistDoc = await (await Artist.findOne({ DeezerId: ArtistDzId })).populate('AlbumsId').execPopulate();
 	Albums.forEach(async (AlbumElement) => {
-		if (!artistDoc.AlbumsId.some((e) => e.DeezerId === AlbumElement.DeezerId)) {
+		if (!artistDoc.AlbumsId.some((e) => e.Name === AlbumElement.Name)) {
 			const AlbumDoc = new Album({
 				Name: AlbumElement.Name,
 				DeezerId: AlbumElement.DeezerId,
 				ImagePathDeezer: AlbumElement.ImagePathDeezer,
 			});
-			await AlbumDoc.save();
+			const newAlbum = await Album.findOneOrCreate({ Name: AlbumDoc.Name }, AlbumDoc);
+			artistDoc.AlbumsId.push(newAlbum._id);
 		}
 	});
 }

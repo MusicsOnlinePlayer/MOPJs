@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="542px" preserveAspectRatio="none" style="width:704px;height:542px;" version="1.1" viewBox="0 0 704 542" width="704px" zoomAndPan="magnify"><defs/><g><ellipse cx="47.0811" cy="129.6648" fill="#F8F8F8" rx="15.0811" ry="12.6648" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="16" x="39.0811" y="133.407">Db</text><ellipse cx="514.9914" cy="76.242" fill="#F8F8F8" rx="31.9914" ry="13.242" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="41" x="494.4914" y="79.9842">Deezer</text><ellipse cx="612.7904" cy="76.242" fill="#F8F8F8" rx="51.7904" ry="13.242" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="69" x="578.2904" y="79.9842">Downloader</text><ellipse cx="484.9056" cy="237.242" fill="#F8F8F8" rx="33.4056" ry="13.242" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="43" x="463.4056" y="240.9842">Indexer</text><ellipse cx="215.9914" cy="409.242" fill="#F8F8F8" rx="31.9914" ry="13.242" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="41" x="195.4914" y="412.9842">Models</text><ellipse cx="244.0862" cy="517.7172" fill="#F8F8F8" rx="56.5862" ry="13.7172" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="79" x="204.5862" y="521.4594">Models/Music</text><ellipse cx="281.9117" cy="463.242" fill="#F8F8F8" rx="53.9117" ry="13.242" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="72" x="245.9117" y="466.9842">Models/User</text><ellipse cx="436.9117" cy="463.242" fill="#F8F8F8" rx="53.9117" ry="13.242" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="72" x="400.9117" y="466.9842">MopConsole</text><ellipse cx="382.9903" cy="291.4981" fill="#F8F8F8" rx="55.4903" ry="13.4981" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="76" x="344.9903" y="295.2402">MusicHandler</text><ellipse cx="373.2321" cy="350.4464" fill="#F8F8F8" rx="75.2321" ry="17.4464" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="125" x="310.7321" y="354.1886">MusicHandlerBackEnd</text><ellipse cx="514.9117" cy="183.242" fill="#F8F8F8" rx="53.9117" ry="13.242" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="72" x="478.9117" y="186.9842">MusicReader</text><ellipse cx="156.0269" cy="21.742" fill="#F8F8F8" rx="35.5269" ry="13.242" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="46" x="133.0269" y="25.4842">Routes</text><ellipse cx="515.2187" cy="21.6437" fill="#F8F8F8" rx="56.2187" ry="13.6437" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="78" x="476.2187" y="25.3859">Routes/Music</text><ellipse cx="81.2046" cy="291.742" fill="#F8F8F8" rx="53.2046" ry="13.242" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="71" x="45.7046" y="295.4842">Routes/User</text><ellipse cx="514.799" cy="350.742" fill="#F8F8F8" rx="22.799" ry="13.242" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="28" x="500.799" y="354.4842">Tags</text><ellipse cx="560.1777" cy="409.242" fill="#F8F8F8" rx="20.6777" ry="13.242" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="25" x="547.6777" y="412.9842">Utils</text><!--MD5=[8fdfa73d83505b061c59e197d92bbba4]
+link Db to MopConsole--><path d="M40.0449,140.765 C28.3474,159.056 6,198.861 6,236 C6,236 6,236 6,351.5 C6,470.7935 298.062,444.3479 343,450 C356.956,451.7554 372.076,453.6768 386.024,455.4575 " fill="none" id="Db-&gt;MopConsole" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="391.106,456.1066,382.6861,450.9972,386.1464,455.4723,381.6713,458.9326,391.106,456.1066" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[c5cf95bfeda0a006665006710cbf7dc5]
+link Deezer to MopConsole--><path d="M525.452,88.514 C552.01,119.016 620,205.41 620,290.5 C620,290.5 620,290.5 620,351.5 C620,386.096 613.532,399.797 587,422 C561.013,443.7466 524.372,453.7808 493.809,458.3617 " fill="none" id="Deezer-&gt;MopConsole" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="488.569,459.1032,498.0404,461.8038,493.5198,458.4032,496.9204,453.8826,488.569,459.1032" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[147988793fc50fbe754d4b03e4ee4ee7]
+link Deezer to MusicReader--><path d="M515,89.045 C515,107.617 515,143.329 515,164.674 " fill="none" id="Deezer-&gt;MusicReader" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="515,169.772,519,160.772,515,164.772,511,160.772,515,169.772" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[6fd49487c35246042d1f4a67b49f26da]
+link Downloader to MopConsole--><path d="M620.31,89.116 C631.093,108.173 650,146.63 650,182 C650,182 650,182 650,351.5 C650,387.525 638.875,400.458 610,422 C577.147,446.5096 531.753,456.3498 495.707,460.147 " fill="none" id="Downloader-&gt;MopConsole" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="490.459,460.6645,499.8086,463.7606,495.4348,460.1731,499.0223,455.7993,490.459,460.6645" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[626d6b55b869b4d6f07da96d345458ff]
+link Downloader to MusicReader--><path d="M601.758,89.045 C583.962,108.112 549.306,145.244 529.607,166.349 " fill="none" id="Downloader-&gt;MusicReader" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="526.111,170.096,535.1758,166.245,529.5223,166.4404,529.3269,160.787,526.111,170.096" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[f9713c61f1ee4e6b1cba528b7a3d46fc]
+link Indexer to Models--><path d="M451.839,239.351 C395.847,243.624 283.713,261.204 233,333 C220.889,350.146 217.242,374.521 216.231,390.778 " fill="none" id="Indexer-&gt;Models" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="215.98,395.958,220.4099,387.1616,216.2214,390.9638,212.4192,386.7754,215.98,395.958" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[7807c7d9cbda8eb5bc8e080ec700b137]
+link Indexer to MopConsole--><path d="M482.419,250.043 C474.41,287.418 449.961,401.516 440.652,444.9594 " fill="none" id="Indexer-&gt;MopConsole" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="439.593,449.8972,445.3902,441.9353,440.6408,445.0082,437.5679,440.2588,439.593,449.8972" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[32c334dd4b1ab43e5541361fe68d265d]
+link Indexer to MusicHandler--><path d="M465.815,247.875 C450.095,255.966 427.662,267.512 410.108,276.547 " fill="none" id="Indexer-&gt;MusicHandler" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="405.296,279.024,415.1288,278.4612,409.7415,276.7355,411.4672,271.3483,405.296,279.024" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[8077f26967ea82cf383fcea110956de8]
+link Indexer to Tags--><path d="M488.325,250.358 C493.692,270.305 504.277,309.647 510.376,332.314 " fill="none" id="Indexer-&gt;Tags" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="511.751,337.425,513.2737,327.6946,510.4511,332.5969,505.5488,329.7744,511.751,337.425" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[089c3ff822c9defe4c9ac92a73284068]
+link Indexer to Utils--><path d="M492.807,249.856 C498.008,257.792 504.969,268.487 511,278 C526.388,302.271 534.46,306.265 545,333 C552.461,351.924 556.364,375.055 558.295,390.583 " fill="none" id="Indexer-&gt;Utils" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="558.921,395.937,561.8502,386.5338,558.3411,390.9707,553.9042,387.4617,558.921,395.937" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[aaf56899ff49333c55016a099589c411]
+link Models to Models/Music--><path d="M215.343,422.461 C214.996,435.9576 215.502,457.9743 221,476 C223.492,484.1693 227.843,492.4919 232.095,499.4506 " fill="none" id="Models-&gt;Models/Music" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="234.998,504.0316,233.5579,494.2886,232.321,499.8086,226.8011,498.5717,234.998,504.0316" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[06cdadcd5a28988bcd6c159c49c07088]
+link Models to Models/User--><path d="M229.675,420.774 C239.275,428.338 252.244,438.5556 262.868,446.9263 " fill="none" id="Models-&gt;Models/User" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="266.962,450.1516,262.368,441.4398,263.0345,447.0573,257.4171,447.7238,266.962,450.1516" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[3660904d238769411b6128304bb79824]
+link Models/User to Models/Music--><path d="M273.377,475.9131 C268.278,482.9583 261.74,491.9911 256.127,499.7459 " fill="none" id="Models/User-&gt;Models/Music" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="253.119,503.902,261.6365,498.9571,256.0509,499.8518,255.1562,494.2661,253.119,503.902" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[8737ee55365db19e44deab07c2bcee8f]
+link MusicHandler to Models--><path d="M339.845,300.118 C315.918,306.006 286.708,316.106 265,333 C245.2,348.41 230.897,374.179 223.025,391.133 " fill="none" id="MusicHandler-&gt;Models" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="220.79,396.091,228.1362,389.531,222.8454,391.533,220.8434,386.2423,220.79,396.091" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[2d3d5895e52ea0229e0bf4afd420f7f9]
+link MusicHandler to MopConsole--><path d="M340.474,300.377 C321.988,306.14 302.061,316.045 291,333 C282.501,346.028 283.551,354.344 291,368 C314.185,410.503 365.741,436.6729 400.946,450.275 " fill="none" id="MusicHandler-&gt;MopConsole" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="406.016,452.1911,399.0106,445.2684,401.3387,450.4239,396.1831,452.7521,406.016,452.1911" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[40e5f599bbba5b25989c9e0dc20ed333]
+link MusicHandler to MusicHandlerBackEnd--><path d="M380.781,305.15 C379.621,311.759 378.169,320.035 376.835,327.643 " fill="none" id="MusicHandler-&gt;MusicHandlerBackEnd" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="375.934,332.774,381.4296,324.601,376.7984,327.8493,373.5501,323.218,375.934,332.774" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[e2822249cedc57ad8ef2a4f6c56e5c63]
+link MusicHandler to Tags--><path d="M408.764,303.625 C433.14,314.151 469.357,329.791 492.572,339.815 " fill="none" id="MusicHandler-&gt;Tags" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="497.32,341.865,490.6424,334.6256,492.7295,339.8833,487.4717,341.9704,497.32,341.865" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[4ee68692543b524705eb1bc1c63db802]
+link MusicHandlerBackEnd to Models--><path d="M333.787,365.612 C305.688,375.724 268.541,389.092 243.539,398.089 " fill="none" id="MusicHandlerBackEnd-&gt;Models" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="238.707,399.828,248.53,400.5417,243.4112,398.1337,245.8192,393.015,238.707,399.828" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[13fe9d6c26d8e7aeba95ca754b504f28]
+link MusicHandlerBackEnd to MopConsole--><path d="M382.72,368.283 C394.814,389.163 415.336,424.595 427.382,445.3934 " fill="none" id="MusicHandlerBackEnd-&gt;MopConsole" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="429.962,449.8485,428.9116,440.0558,427.4556,445.5221,421.9893,444.0661,429.962,449.8485" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[8e91a332a08a4fd2b95f2d23eb5f5a27]
+link MusicHandlerBackEnd to Utils--><path d="M416.843,364.747 C454.397,376.093 507.007,391.989 536.877,401.014 " fill="none" id="MusicHandlerBackEnd-&gt;Utils" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="541.825,402.509,534.3657,396.0779,537.0385,401.0635,532.0529,403.7363,541.825,402.509" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[7b44590abf4d4c1ad23a32e0747b6de8]
+link MusicReader to Indexer--><path d="M508.042,196.061 C504.028,203.017 498.924,211.865 494.54,219.463 " fill="none" id="MusicReader-&gt;Indexer" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="491.92,224.005,499.8819,218.2078,494.4184,219.6739,492.9522,214.2104,491.92,224.005" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[1db159a0c685395f197a2eecceae39d7]
+link MusicReader to MusicHandler--><path d="M491.46,194.892 C477.049,202.119 458.629,212.391 444,224 C425.316,238.827 407.28,259.539 395.73,273.892 " fill="none" id="MusicReader-&gt;MusicHandler" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="392.36,278.128,401.0934,273.5752,395.4728,274.2152,394.8328,268.5946,392.36,278.128" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[66a887cb3c3184ec8dc7a7c9b7e3d465]
+link MusicReader to Tags--><path d="M518.85,196.108 C521.143,203.967 523.828,214.48 525,224 C529.742,262.521 523.094,307.985 518.576,332.226 " fill="none" id="MusicReader-&gt;Tags" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="517.593,337.35,523.2158,329.2639,518.5343,332.4394,515.3588,327.7579,517.593,337.35" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[ce2963a00f5bec7a38c1993d691a72fa]
+link MusicReader to Utils--><path d="M522.892,196.171 C527.583,203.879 533.317,214.208 537,224 C554.464,270.429 555.635,283.686 561,333 C562.682,348.464 561.194,352.446 561,368 C560.907,375.417 560.718,383.606 560.529,390.632 " fill="none" id="MusicReader-&gt;Utils" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="560.386,395.747,564.6364,386.8625,560.526,390.749,556.6395,386.6385,560.386,395.747" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[9b0bc6e7ced2da8e03b5247ee366e641]
+link <b>Routes</b> to Db--><path d="M139.997,33.379 C129.1,41.104 114.606,52.014 103,63 C85.6699,79.404 68.1962,100.794 57.4852,114.588 " fill="none" id="&lt;b&gt;Routes&lt;/b&gt;-&gt;Db" style="stroke: #000000; stroke-width: 1.0;"/><polygon fill="#000000" points="54.3859,118.611,63.0461,113.9205,57.4364,114.6494,56.7075,109.0397,54.3859,118.611" style="stroke: #000000; stroke-width: 1.0;"/><!--MD5=[c11702f21146e419a7c1a39c346866b6]
+link <b>Routes</b> to MopConsole--><path d="M156,34.582 C156,54.259 156,94.455 156,128.5 C156,128.5 156,128.5 156,351.5 C156,384.194 152.355,400.517 177,422 C184.806,428.805 312.092,446.0494 385.616,455.5225 " fill="none" id="&lt;b&gt;Routes&lt;/b&gt;-&gt;MopConsole" style="stroke: #000000; stroke-width: 1.0;"/><polygon fill="#000000" points="390.815,456.1909,382.3995,451.0742,385.8559,455.5523,381.3779,459.0087,390.815,456.1909" style="stroke: #000000; stroke-width: 1.0;"/><!--MD5=[041e23f6bbcfee62824d13a91ee982e9]
+link <b>Routes</b> to MusicReader--><path d="M177.382,32 C238.853,59.311 416.119,138.068 486.095,169.158 " fill="none" id="&lt;b&gt;Routes&lt;/b&gt;-&gt;MusicReader" style="stroke: #000000; stroke-width: 1.0;"/><polygon fill="#000000" points="490.944,171.312,484.3436,164.0021,486.3748,169.2817,481.0951,171.3129,490.944,171.312" style="stroke: #000000; stroke-width: 1.0;"/><!--MD5=[b5765270f9224afbf6727a6a4e4dff93]
+link <b>Routes</b> to Routes/Music--><path d="M191.76,21.5 C279.038,21.5 366.317,21.5 453.596,21.5 " fill="none" id="&lt;b&gt;Routes&lt;/b&gt;-&gt;Routes/Music" style="stroke: #000000; stroke-width: 1.0;"/><polygon fill="#000000" points="458.812,21.5,449.812,17.5,453.812,21.5,449.812,25.5,458.812,21.5" style="stroke: #000000; stroke-width: 1.0;"/><!--MD5=[c696653a2c17480c2491dba7011ef143]
+link <b>Routes</b> to Routes/User--><path d="M147.902,34.295 C135.697,53.253 114,92.078 114,128.5 C114,128.5 114,128.5 114,184 C114,216.973 99.3888,253.22 89.6111,273.784 " fill="none" id="&lt;b&gt;Routes&lt;/b&gt;-&gt;Routes/User" style="stroke: #000000; stroke-width: 1.0;"/><polygon fill="#000000" points="87.3627,278.418,94.8905,272.0672,89.5455,273.9196,87.6931,268.5747,87.3627,278.418" style="stroke: #000000; stroke-width: 1.0;"/><!--MD5=[ba3330dd4341a42d54d3a6ddb5103b4f]
+link Routes/Music to Deezer--><path d="M515,35.209 C515,41.883 515,50.166 515,57.444 " fill="none" id="Routes/Music-&gt;Deezer" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="515,62.77,519,53.77,515,57.77,511,53.77,515,62.77" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[a049d23b4b337c025bd5fbb29132e84b]
+link Routes/Music to Downloader--><path d="M536.749,34.151 C551.774,42.2 571.81,52.934 587.573,61.378 " fill="none" id="Routes/Music-&gt;Downloader" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="592.318,63.92,586.2731,56.1444,587.9105,61.5591,582.4958,63.1965,592.318,63.92" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[ceba7748bd8a4d827a822cb63abf4440]
+link Routes/Music to Models--><path d="M460.672,24.789 C367.227,31.954 186,61.395 186,182 C186,182 186,182 186,292.5 C186,328.71 199.984,369.315 208.857,391.434 " fill="none" id="Routes/Music-&gt;Models" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="210.774,396.126,211.0723,386.2817,208.8826,391.4975,203.6667,389.3079,210.774,396.126" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[965c7e28970e8efc26b6a8800fd6dcae]
+link Routes/Music to MopConsole--><path d="M561.535,29.072 C602.089,35.741 656.737,47.314 672,63 C692.827,84.404 687,98.635 687,128.5 C687,128.5 687,128.5 687,351.5 C687,434.6825 569.783,455.7583 495.876,460.7795 " fill="none" id="Routes/Music-&gt;MopConsole" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="490.631,461.114,499.8676,464.5324,495.6208,460.7954,499.3579,456.5487,490.631,461.114" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[eaed01417685fc4860e8021367ea7264]
+link Routes/User to Models--><path d="M94.6874,304.21 C119.503,325.441 171.853,370.23 198.948,393.411 " fill="none" id="Routes/User-&gt;Models" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="203.072,396.939,198.8322,388.0494,199.2722,393.6892,193.6325,394.1291,203.072,396.939" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[85df492481c4158f99a97e3378980ce8]
+link Routes/User to MopConsole--><path d="M83.0819,304.565 C88.2911,330.763 104.4979,392.842 145,422 C147.432,423.751 302.754,444.3699 385.839,455.2972 " fill="none" id="Routes/User-&gt;MopConsole" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="391.205,456.0026,382.8029,450.8641,386.2476,455.3512,381.7606,458.7959,391.205,456.0026" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[bd01b6775289bb10b5a60f1bb823f519]
+link Tags to MopConsole--><path d="M510.841,363.497 C505.4,378.178 494.899,403.378 481,422 C474.101,431.2429 464.844,440.0364 456.601,447.0125 " fill="none" id="Tags-&gt;MopConsole" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="452.651,450.2851,462.134,447.6256,456.502,447.0961,457.0315,441.4641,452.651,450.2851" style="stroke: #000000; stroke-width: 0.5;"/><script type="text/plantuml"><![CDATA[MD5=[15f2fc5a48be54f45507fe8956484713]
+@startuml
+
+scale max 1920 width
+top to bottom direction
+
+skinparam nodesep 14
+skinparam ranksep 28
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Tahoma
+skinparam defaultFontSize 12
+skinparam roundCorner 6
+skinparam dpi 150
+skinparam arrowColor black
+skinparam arrowThickness 0.5
+skinparam packageTitleAlignment left
+
+skinparam usecase {
+  borderThickness 0.5
+}
+
+skinparam rectangle {
+  borderThickness 0.5
+}
+
+skinparam component {
+  borderThickness 1
+}
+
+
+(Db)
+(Deezer)
+(Downloader)
+(Indexer)
+(Models)
+(Models/Music)
+(Models/User)
+(MopConsole)
+(MusicHandler)
+(MusicHandlerBackEnd)
+(MusicReader)
+(<b>Routes</b>)
+(Routes/Music)
+(Routes/User)
+(Tags)
+(Utils)
+
+
+(Db) --> (MopConsole)
+(Deezer) --> (MopConsole)
+(Deezer) ---> (MusicReader)
+(Downloader) --> (MopConsole)
+(Downloader) ---> (MusicReader)
+(Indexer) --> (Models)
+(Indexer) ---> (MopConsole)
+(Indexer) --> (MusicHandler)
+(Indexer) --> (Tags)
+(Indexer) --> (Utils)
+(Models) --> (Models/Music)
+(Models) --> (Models/User)
+(Models/User) --> (Models/Music)
+(MusicHandler) --> (Models)
+(MusicHandler) ---> (MopConsole)
+(MusicHandler) --> (MusicHandlerBackEnd)
+(MusicHandler) --> (Tags)
+(MusicHandlerBackEnd) --> (Models)
+(MusicHandlerBackEnd) ---> (MopConsole)
+(MusicHandlerBackEnd) --> (Utils)
+(MusicReader) --> (Indexer)
+(MusicReader) --> (MusicHandler)
+(MusicReader) --> (Tags)
+(MusicReader) --> (Utils)
+(<b>Routes</b>) --[thickness=1]> (Db)
+(<b>Routes</b>) --[thickness=1]> (MopConsole)
+(<b>Routes</b>) ---[thickness=1]> (MusicReader)
+(<b>Routes</b>) -[thickness=1]> (Routes/Music)
+(<b>Routes</b>) -[thickness=1]> (Routes/User)
+(Routes/Music) --> (Deezer)
+(Routes/Music) --> (Downloader)
+(Routes/Music) ---> (Models)
+(Routes/Music) --> (MopConsole)
+(Routes/User) ---> (Models)
+(Routes/User) --> (MopConsole)
+(Tags) ---> (MopConsole)
+
+@enduml
+
+
+' View and edit on https://arkit.pro
+]]></script></g></svg>
