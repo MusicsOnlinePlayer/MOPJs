@@ -1,22 +1,22 @@
-const { Music } = require('../Models');
 const { ConvertTagsFromDisc, ConvertTagsFromDz } = require('./Tags');
 const MopConsole = require('../../Tools/MopConsole');
 const {
 	AddMusicToDatabase, AppendOrUpdateMusicToAlbum, UpdateAlbumCompleteStatus, AppendAlbumsToArtist,
 	AppendDzCoverToAlbum,
 	AppendDzImageToArtist,
+	DoesMusicExistsTitle,
+	RegisterDownloadedFile,
+	DoesMusicExists,
 } = require('./MusicHandlerBackEnd');
 
 const HandleNewMusicFromDisk = async (tags, MusicFilePath) => {
-	const count = await Music.countDocuments({ Title: tags.title });
-	if (count > 0) return;
+	if (DoesMusicExistsTitle(tags.title)) return;
 
 	await AddMusicToDatabase(ConvertTagsFromDisc(tags, MusicFilePath));
 };
 
 const HandleNewMusicFromDz = async (tags) => {
-	const count = await Music.countDocuments({ Title: tags.title });
-	if (count > 0) return;
+	if (DoesMusicExistsTitle(tags.title)) return;
 
 	await AddMusicToDatabase(ConvertTagsFromDz(tags, tags.id), tags.artist.picture_big, true);
 };
@@ -45,19 +45,6 @@ const HandleAlbumsFromDz = async (ArtistId, DeezerData) => {
 	MopConsole.log('Music Handler', 'Added albums to artist');
 };
 
-const RegisterDownloadedFile = (DeezerId, filePath) => new Promise((resolve, reject) => {
-	Music.findOne({ DeezerId })
-		.then(async (doc) => {
-			const musicDeezerDB = doc;
-			musicDeezerDB.FilePath = filePath;
-			await musicDeezerDB.save();
-			resolve();
-		})
-		.catch((err) => {
-			reject(err);
-		});
-});
-
 const HandleNewCoverFromDz = (AlbumDzId, DeezerData) => new Promise((resolve) => {
 	AppendDzCoverToAlbum(AlbumDzId, DeezerData.cover_big)
 		.then(() => {
@@ -82,4 +69,5 @@ module.exports = {
 	HandleAlbumsFromDz,
 	HandleNewCoverFromDz,
 	HandleNewImageFromDz,
+	DoesMusicExists,
 };

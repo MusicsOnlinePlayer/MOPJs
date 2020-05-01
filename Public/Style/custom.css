@@ -109,3 +109,16 @@
     display: inline-block;
     max-width: 100%;
 }
+
+.ButtonIcon {
+    background-color: transparent;
+    border: none;
+    color: gray;
+    padding: 12px 16px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.ButtonIcon:hover {
+    color: black;
+}

@@ -7,6 +7,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MusicItemRow from '../Items/MusicItemRow';
 import { ChangePlayingMusic as ChangePlayingMusicRedux, AddMusic as AddMusicRedux } from '../../Actions/Action';
+import ButtonIcon from '../Helper/ButtonIcon';
 
 
 const mapDispatchToProps = (dispatch) => ({
@@ -82,8 +83,8 @@ class MusicElementConnected extends React.Component {
 				Artist={ApiResult ? ApiResult.Artist : 'Loading...'}
 				onClick={this.onClick}
 			>
-				<td className="align-middle" onClick={this.HandleAdd}>
-					<FontAwesomeIcon style={{ color: '#bebebe' }} icon={faPlus} size="lg" pull="right" />
+				<td className="align-middle">
+					<ButtonIcon faIcon={faPlus} onClick={this.HandleAdd} />
 				</td>
 			</MusicItemRow>
 		);

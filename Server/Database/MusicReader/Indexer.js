@@ -2,8 +2,7 @@ const {
 	MusicsFolder, GetFilesOfDir, CreateFilePathForDb, CheckIfFileHasCorrectFormat,
 } = require('./Utils');
 const { ReadTags } = require('./Tags');
-const { HandleNewMusicFromDisk } = require('./MusicHandler');
-const { Music } = require('../Models');
+const { HandleNewMusicFromDisk, DoesMusicExists } = require('./MusicHandler');
 const MopConsole = require('../../Tools/MopConsole');
 
 const Indexation = async () => {
@@ -14,9 +13,9 @@ const Indexation = async () => {
 	for (const file of files) {
 		const MusicFilePath = CreateFilePathForDb(MusicsFolder, file);
 
-		const count = await Music.countDocuments({ FilePath: MusicFilePath });
+		const exist = await DoesMusicExists(MusicFilePath);
 
-		if (count === 0 && CheckIfFileHasCorrectFormat(MusicFilePath)) {
+		if (!exist && CheckIfFileHasCorrectFormat(MusicFilePath)) {
 			MopConsole.info('Music Indexer', `Adding ${MusicFilePath}`);
 			const tags = await ReadTags(MusicFilePath);
 			// console.log(tags);

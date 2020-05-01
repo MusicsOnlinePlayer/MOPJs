@@ -115,6 +115,29 @@ async function AppendDzImageToArtist(ArtistDzId, ImagePath) {
 	await Artist.findOneAndUpdate({ DeezerId: ArtistDzId }, { ImagePath });
 }
 
+const DoesMusicExists = async (FilePath) => {
+	const count = await Music.countDocuments({ FilePath });
+	return count > 0;
+};
+
+const DoesMusicExistsTitle = async (Title) => {
+	const count = await Music.countDocuments({ Title });
+	return count > 0;
+};
+
+const RegisterDownloadedFile = (DeezerId, filePath) => new Promise((resolve, reject) => {
+	Music.findOne({ DeezerId })
+		.then(async (doc) => {
+			const musicDeezerDB = doc;
+			musicDeezerDB.FilePath = filePath;
+			await musicDeezerDB.save();
+			resolve();
+		})
+		.catch((err) => {
+			reject(err);
+		});
+});
+
 module.exports = {
 	AddMusicToDatabase,
 	AppendOrUpdateMusicToAlbum,
@@ -122,4 +145,7 @@ module.exports = {
 	AppendAlbumsToArtist,
 	AppendDzCoverToAlbum,
 	AppendDzImageToArtist,
+	DoesMusicExists,
+	DoesMusicExistsTitle,
+	RegisterDownloadedFile,
 };
