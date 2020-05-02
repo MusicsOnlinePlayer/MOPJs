@@ -1,7 +1,6 @@
 import {
-	faPlay, faPause, faStepForward, faStepBackward,
+	faPlay, faPause, faStepForward, faStepBackward, faForward,
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import {
 	Col, Image, Navbar, Row, Button,
@@ -9,6 +8,7 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Axios from 'axios';
+import ButtonIcon from '../Helper/ButtonIcon';
 import { ChangePlayingId as ChangePlayingIdRedux, AddCustomFilePath as AddCustomFilePathRedux } from '../../Actions/Action';
 
 const mapStateToProps = (state) => ({
@@ -197,15 +197,12 @@ class PlayerConnected extends React.Component {
 										{PlayingMusic.Artist}
 									</p>
 								</Col>
-								<Button variant="outline-light" className="my-auto mx-2 ml-auto p-0" onClick={this.HandleBack} style={{ fontSize: '1.25rem' }}>
-									<FontAwesomeIcon style={{ color: '#bebebe' }} icon={faStepBackward} size="lg" pull="right" />
-								</Button>
-								<Button variant="outline-light" className="my-auto mx-2 p-0" onClick={this.HandlePlay} style={{ fontSize: '1.25rem' }}>
-									<FontAwesomeIcon style={{ color: '#bebebe' }} icon={PlayingIcon} size="lg" />
-								</Button>
-								<Button variant="outline-light" className="my-auto ml-2 p-0 mr-0" onClick={this.HandleNext} style={{ fontSize: '1.25rem' }}>
-									<FontAwesomeIcon className="mr-0" style={{ color: '#bebebe' }} icon={faStepForward} size="lg" pull="left" />
-								</Button>
+								<ButtonIcon buttonClass="my-auto mx-2 ml-auto p-0" iconFontSize="1.75rem" onClick={this.HandleBack} faIcon={faStepBackward} />
+
+								<ButtonIcon buttonClass="my-auto mx-2 p-0" iconFontSize="1.75rem" onClick={this.HandlePlay} faIcon={PlayingIcon} />
+
+								<ButtonIcon buttonClass="my-auto ml-2 p-0 mr-0" iconFontSize="1.75rem" onClick={this.HandleNext} faIcon={faStepForward} />
+
 
 								<Button variant="light" className="my-auto ml-1 mt-1 d-none d-lg-block" onClick={this.HandleOpenPlaylist}>
 									{NextMusic ? `Next: ${NextMusic.Title}` : 'Queue'}
