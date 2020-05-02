@@ -70,7 +70,8 @@ async function AddMusicToDatabase(doctags, ArtistImage = undefined, EnableEsInde
 }
 
 const UpdateIfNeededTrackNumber = (tags) => new Promise((resolve) => {
-	Music.findOneAndUpdate({ Title: tags.Title }, { TrackNumber: tags.TrackNumber })
+	MopConsole.info('Music - Handler', `Updated tracknumber of music with dzId ${tags.DeezerId} to ${tags.TrackNumber}`);
+	Music.findOneAndUpdate({ DeezerId: tags.DeezerId }, { TrackNumber: tags.TrackNumber })
 		.then(() => {
 			// console.log(`[Music Indexer] Update track number of ${tags.Title}`);
 			resolve();
