@@ -147,10 +147,12 @@ app.get('/Music/get/:id', (req, res) => {
 
 app.get('/Album/id/:id', (req, res) => {
 	AlbumModel.findById(req.params.id)
-		.lean()
+		.populate({ path: 'MusicsId', options: { sort: { TrackNumber: 1 } }, select: 'TrackNumber _id' })
 		.exec(async (err, doc) => {
 			if (err) MopConsole.error('Music', err);
-			let AlbumDoc = doc;
+			let AlbumDoc = doc.toObject();
+
+			AlbumDoc.MusicsId = AlbumDoc.MusicsId.map((obj) => obj._id);
 
 			if (AlbumDoc.DeezerId) {
 				if (!AlbumDoc.IsComplete && req.query.mode === 'all') {
@@ -160,6 +162,7 @@ app.get('/Album/id/:id', (req, res) => {
 					AlbumDoc = await AlbumModel.findById(req.params.id).lean();
 				}
 			}
+
 			res.send(AlbumDoc);
 			// doc.FilePath = path.basename(doc.FilePath);
 		});
