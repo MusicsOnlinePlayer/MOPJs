@@ -93,8 +93,20 @@ app.get('/Search/Artist/Name/:name', (req, res) => {
 
 app.get('/Music/id/:id', (req, res) => {
 	MusicModel.findById(req.params.id, async (err, doc) => {
+		if (err) {
+			MopConsole.error('Music', err);
+			res.send({});
+			return;
+		}
+
+		if (!doc) {
+			MopConsole.warn('Music', `Music id not found ${req.params.id}`);
+			res.send({});
+			return;
+		}
+
 		const MusicDoc = doc.toObject();
-		if (err) MopConsole.error('Music', err);
+
 		if (MusicDoc) {
 			MusicDoc.FilePath = MusicDoc.FilePath
 				? path.basename(MusicDoc.FilePath) : undefined;
@@ -110,6 +122,18 @@ app.get('/Music/id/:id', (req, res) => {
 
 app.get('/Music/get/:id', (req, res) => {
 	MusicModel.findById(req.params.id, async (err, doc) => {
+		if (err) {
+			MopConsole.error('Music', err);
+			res.send({});
+			return;
+		}
+
+		if (!doc) {
+			MopConsole.warn('Music', `Music id not found ${req.params.id}`);
+			res.send({});
+			return;
+		}
+
 		const MusicDoc = doc;
 		MusicDoc.Views += 1;
 		MusicDoc.LastView = Date.now();
@@ -149,7 +173,18 @@ app.get('/Album/id/:id', (req, res) => {
 	AlbumModel.findById(req.params.id)
 		.populate({ path: 'MusicsId', options: { sort: { TrackNumber: 1 } }, select: 'TrackNumber _id' })
 		.exec(async (err, doc) => {
-			if (err) MopConsole.error('Music', err);
+			if (err) {
+				MopConsole.error('Music', err);
+				res.send({});
+				return;
+			}
+
+			if (!doc) {
+				MopConsole.warn('Music', `Album id not found ${req.params.id}`);
+				res.send({});
+				return;
+			}
+
 			let AlbumDoc = doc.toObject();
 
 			AlbumDoc.MusicsId = AlbumDoc.MusicsId.map((obj) => obj._id);
@@ -171,7 +206,18 @@ app.get('/Album/id/:id', (req, res) => {
 app.get('/Artist/id/:id', (req, res) => {
 	ArtistModel.findById(req.params.id, async (err, doc) => {
 		let ArtistDoc = doc;
-		if (err) MopConsole.error('Music', err);
+		if (err) {
+			MopConsole.error('Music', err);
+			res.send({});
+			return;
+		}
+
+		if (!ArtistDoc) {
+			MopConsole.warn('Music', `Artist id not found ${req.params.id}`);
+			res.send({});
+			return;
+		}
+
 		if (ArtistDoc.DeezerId) {
 			if (!ArtistDoc.ImagePath) {
 				ArtistDoc.ImagePath = await AddImageOfArtistToDb(ArtistDoc.DeezerId);
