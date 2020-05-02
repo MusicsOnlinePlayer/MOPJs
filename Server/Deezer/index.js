@@ -5,6 +5,18 @@ const {
 	HandleNewImageFromDz,
 } = require('../Database/MusicReader');
 
+async function AddMusicOfAlbum(res, AlbumName, AlbumDzId, AlbumCoverPath) {
+	const dzRes = res.data.data;
+	MopConsole.info('Deezer - API', `Found ${dzRes.length} musics for this album`);
+	await HandleMusicsFromDz(dzRes, AlbumName, AlbumDzId, AlbumCoverPath);
+}
+
+async function AddAlbumofArtist(res, ArtistDzId) {
+	const dzRes = res.data.data;
+	MopConsole.info('Deezer - API', `Found ${dzRes.length} albums for this artist`);
+	await HandleAlbumsFromDz(ArtistDzId, dzRes);
+}
+
 
 module.exports = {
 	AddSearchToDb: (query) => new Promise((resolve, reject) => {
@@ -29,9 +41,15 @@ module.exports = {
 		}
 		Axios.get(`https://api.deezer.com/album/${AlbumDzId}/tracks`)
 			.then(async (res) => {
-				const dzRes = res.data.data;
-				MopConsole.info('Deezer - API', `Found ${dzRes.length} musics for this album`);
-				await HandleMusicsFromDz(dzRes, AlbumName, AlbumDzId, AlbumCoverPath);
+				await AddMusicOfAlbum(res, AlbumName, AlbumDzId, AlbumCoverPath);
+				let nextUrl = res.data.next;
+
+				while (nextUrl) {
+					const nextRes = await Axios.get(nextUrl);
+					await AddMusicOfAlbum(nextRes, AlbumName, AlbumDzId, AlbumCoverPath);
+					nextUrl = nextRes.data.next;
+				}
+
 				resolve();
 			})
 			.catch((err) => {
@@ -43,9 +61,17 @@ module.exports = {
 	AddAlbumOfArtistToDb: (ArtistDzId) => new Promise((resolve, reject) => {
 		Axios.get(`https://api.deezer.com/artist/${ArtistDzId}/albums`)
 			.then(async (res) => {
-				const dzRes = res.data.data;
-				MopConsole.info('Deezer - API', `Found ${dzRes.length} albums for this artist`);
-				await HandleAlbumsFromDz(ArtistDzId, dzRes);
+				await AddAlbumofArtist(res, ArtistDzId);
+
+				let nextUrl = res.data.next;
+
+				while (nextUrl) {
+					const nextRes = await Axios.get(nextUrl);
+					await AddAlbumofArtist(nextRes, ArtistDzId);
+					nextUrl = nextRes.data.next;
+				}
+
+
 				resolve();
 			})
 			.catch((err) => {

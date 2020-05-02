@@ -97,18 +97,33 @@ async function AppendOrUpdateMusicToAlbum(musicTags) {
 }
 
 async function AppendAlbumsToArtist(ArtistDzId, Albums) {
-	const artistDoc = await (await Artist.findOne({ DeezerId: ArtistDzId })).populate('AlbumsId').execPopulate();
-	Albums.forEach(async (AlbumElement) => {
-		if (!artistDoc.AlbumsId.some((e) => e.Name === AlbumElement.Name)) {
-			const AlbumDoc = new Album({
-				Name: AlbumElement.Name,
-				DeezerId: AlbumElement.DeezerId,
-				ImagePathDeezer: AlbumElement.ImagePathDeezer,
-			});
-			const newAlbum = await Album.findOneOrCreate({ Name: AlbumDoc.Name }, AlbumDoc);
-			artistDoc.AlbumsId.push(newAlbum._id);
-		}
+	const artistDoc = await Artist.findOne({ DeezerId: ArtistDzId });
+	await artistDoc.populate('AlbumsId').execPopulate();
+
+	const AlbumTasks = [];
+
+	Albums.forEach((AlbumElement) => {
+		AlbumTasks.push(new Promise(async (resolve) => {
+			if (!artistDoc.AlbumsId.some((e) => e.Name === AlbumElement.Name)) {
+				const AlbumDoc = new Album({
+					Name: AlbumElement.Name,
+					DeezerId: AlbumElement.DeezerId,
+					ImagePathDeezer: AlbumElement.ImagePathDeezer,
+				});
+				const newAlbum = await Album.findOneOrCreate({ Name: AlbumDoc.Name }, AlbumDoc);
+				artistDoc.AlbumsId.push(newAlbum._id);
+				MopConsole.info('Music Handler', `Added ${AlbumDoc.Name} to artist with dzId ${ArtistDzId}`);
+				resolve();
+			}
+			resolve();
+		}));
 	});
+
+
+	await Promise.all(AlbumTasks);
+
+	await artistDoc.save();
+	MopConsole.info('Music Handler', `Saved ${AlbumTasks.length} albums`);
 }
 
 async function UpdateAlbumCompleteStatus(AlbumDzId) {
