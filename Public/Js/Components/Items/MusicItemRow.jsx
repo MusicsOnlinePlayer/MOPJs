@@ -9,6 +9,7 @@ const MusicItemRow = ({
 	Title,
 	Artist,
 	children,
+	isAvailable,
 }) => (
 	<tr className="w-100 mx-0 p-1 ">
 		<td className="align-middle py-2" onClick={onClick} style={{ width: '50px' }}>
@@ -18,7 +19,7 @@ const MusicItemRow = ({
 		</td>
 		<td className="align-middle text px-1 py-1" style={{ maxHeight: '50em' }} onClick={onClick}>
 			<span>
-				<p>{Title}</p>
+				<p className={isAvailable ? '' : 'font-italic'}>{Title}</p>
 			</span>
 
 		</td>
@@ -37,6 +38,7 @@ MusicItemRow.propTypes = {
 	Title: PropTypes.string.isRequired,
 	Artist: PropTypes.string.isRequired,
 	children: PropTypes.element,
+	isAvailable: PropTypes.bool.isRequired,
 };
 
 MusicItemRow.defaultProps = {

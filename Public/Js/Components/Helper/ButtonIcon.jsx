@@ -12,7 +12,7 @@ const ButtonIcon = ({
 
 ButtonIcon.propTypes = {
 	onClick: PropTypes.func.isRequired,
-	faIcon: PropTypes.string.isRequired,
+	faIcon: PropTypes.shape().isRequired,
 	buttonClass: PropTypes.string,
 	iconFontSize: PropTypes.string,
 };

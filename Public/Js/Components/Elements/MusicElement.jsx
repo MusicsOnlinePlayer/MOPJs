@@ -72,7 +72,7 @@ class MusicElementConnected extends React.Component {
 
 	render() {
 		const { ApiResult } = this.state;
-
+		const isAvailable = ApiResult ? ApiResult.FilePath !== undefined : true;
 
 		return (
 			<MusicItemRow
@@ -81,6 +81,7 @@ class MusicElementConnected extends React.Component {
 				Title={ApiResult ? ApiResult.Title : 'Loading...'}
 				Artist={ApiResult ? ApiResult.Artist : 'Loading...'}
 				onClick={this.onClick}
+				isAvailable={isAvailable}
 			>
 				<td className="align-middle">
 					<ButtonIcon faIcon={faPlus} onClick={this.HandleAdd} buttonClass="float-right" />
