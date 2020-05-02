@@ -66,13 +66,13 @@ class SearchPageConnected extends React.Component {
 		if (!IsFetching && values.q !== SearchQuery) {
 			RequestSearch(values.q);
 
-			Axios.get(`/Music/Search/Music/Name/${values.q}*`)
+			Axios.get(`/Music/Search/Music/Name/${values.q}`)
 				.then((res) => {
 					ReceiveMusics(res.data);
-					Axios.get(`/Music/Search/Album/Name/${values.q}*`)
+					Axios.get(`/Music/Search/Album/Name/${values.q}`)
 						.then((res2) => {
 							ReceiveAlbums(res2.data);
-							Axios.get(`/Music/Search/Artist/Name/${values.q}*`)
+							Axios.get(`/Music/Search/Artist/Name/${values.q}`)
 								.then((res3) => {
 									ReceiveArtists(res3.data);
 								})

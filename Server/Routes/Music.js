@@ -20,9 +20,9 @@ app.get('/Search/Music/Name/:name', (req, res) => {
 		.then(() => {
 			MusicModel.search(
 				{
-					query_string: {
-						analyze_wildcard: true,
+					multi_match: {
 						query: req.params.name,
+						fields: ['Title', 'Artist^2', 'Album^0.5'],
 					},
 				},
 				{
@@ -31,8 +31,16 @@ app.get('/Search/Music/Name/:name', (req, res) => {
 				(err, result) => {
 					if (err) {
 						MopConsole.error('Music - Search', err);
+						return;
 					}
 					const ClientResults = [];
+
+					if (!result) {
+						MopConsole.error('Music - Search', 'Request error !');
+						res.send({});
+						return;
+					}
+
 
 					result.hits.hits.map((hit) => {
 						ClientResults.push(hit._id);
@@ -46,8 +54,9 @@ app.get('/Search/Music/Name/:name', (req, res) => {
 app.get('/Search/Album/Name/:name', (req, res) => {
 	AlbumModel.search(
 		{
-			query_string: {
+			multi_match: {
 				query: req.params.name,
+				fields: ['Name'],
 			},
 		},
 		{
@@ -58,6 +67,12 @@ app.get('/Search/Album/Name/:name', (req, res) => {
 				MopConsole.error('Music - Search', err);
 			}
 			const ClientResults = [];
+
+			if (!result) {
+				MopConsole.error('Music - Search', 'Request error !');
+				res.send({});
+				return;
+			}
 
 			result.hits.hits.map((hit) => {
 				ClientResults.push(hit._id);
@@ -70,8 +85,9 @@ app.get('/Search/Album/Name/:name', (req, res) => {
 app.get('/Search/Artist/Name/:name', (req, res) => {
 	ArtistModel.search(
 		{
-			query_string: {
+			multi_match: {
 				query: req.params.name,
+				fields: ['Name'],
 			},
 		},
 		{
@@ -82,6 +98,12 @@ app.get('/Search/Artist/Name/:name', (req, res) => {
 				MopConsole.error('Music - Search', err);
 			}
 			const ClientResults = [];
+
+			if (!result) {
+				MopConsole.error('Music - Search', 'Request error !');
+				res.send({});
+				return;
+			}
 
 			result.hits.hits.map((hit) => {
 				ClientResults.push(hit._id);
