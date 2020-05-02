@@ -4,7 +4,6 @@ import Axios from 'axios';
 import PropTypes from 'prop-types';
 
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MusicItemRow from '../Items/MusicItemRow';
 import { ChangePlayingMusic as ChangePlayingMusicRedux, AddMusic as AddMusicRedux } from '../../Actions/Action';
 import ButtonIcon from '../Helper/ButtonIcon';
@@ -84,7 +83,7 @@ class MusicElementConnected extends React.Component {
 				onClick={this.onClick}
 			>
 				<td className="align-middle">
-					<ButtonIcon faIcon={faPlus} onClick={this.HandleAdd} />
+					<ButtonIcon faIcon={faPlus} onClick={this.HandleAdd} buttonClass="float-right" />
 				</td>
 			</MusicItemRow>
 		);

@@ -2,11 +2,11 @@ import React from 'react';
 import Axios from 'axios';
 import { Col, Row } from 'react-bootstrap';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { ClearPlaylist as ClearPlaylistRedux, AddMultipleMusics as AddMultipleMusicsRedux } from '../../Actions/Action';
 import MusicElement from '../Elements/MusicElement';
+import ButtonIcon from '../Helper/ButtonIcon';
 
 const mapDispatchToProps = (dispatch) => ({
 	ClearPlaylist: () => {
@@ -77,7 +77,7 @@ class AlbumConnected extends React.Component {
 						</small>
 					</Col>
 					<Col className="">
-						<FontAwesomeIcon onClick={this.onPlayAlbum} className="py-auto px-2" style={{ color: '#bebebe' }} icon={faPlay} size="lg" pull="right" />
+						<ButtonIcon faIcon={faPlay} onClick={this.onPlayAlbum} buttonClass="py-auto pr-4 float-right" />
 					</Col>
 				</Row>
 				<table className="table table-hover">

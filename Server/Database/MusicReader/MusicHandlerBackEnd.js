@@ -44,8 +44,15 @@ async function AddMusicToDatabase(doctags, ArtistImage = undefined, EnableEsInde
 		ImagePath: ArtistImage || guessedPath,
 	});
 
+	let musicDoc;
 
-	const musicDoc = EnableEsIndexWait ? await SaveAndIndex(newMusic) : await newMusic.save();
+	try {
+		musicDoc = EnableEsIndexWait ? await SaveAndIndex(newMusic) : await newMusic.save();
+	} catch (err) {
+		MopConsole.error('Music - Indexer', err);
+		return;
+	}
+
 	const albumDoc = await Album.findOneOrCreate({ Name: newAlbum.Name }, newAlbum);
 	const artistDoc = await Artist.findOneOrCreate({ Name: newArtist.Name }, newArtist);
 

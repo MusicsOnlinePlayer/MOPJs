@@ -10,13 +10,13 @@ const {
 } = require('./MusicHandlerBackEnd');
 
 const HandleNewMusicFromDisk = async (tags, MusicFilePath) => {
-	if (DoesMusicExistsTitle(tags.title)) return;
+	if (await DoesMusicExistsTitle(tags.title)) return;
 
 	await AddMusicToDatabase(ConvertTagsFromDisc(tags, MusicFilePath));
 };
 
 const HandleNewMusicFromDz = async (tags) => {
-	if (DoesMusicExistsTitle(tags.title)) return;
+	if (await DoesMusicExistsTitle(tags.title)) return;
 
 	await AddMusicToDatabase(ConvertTagsFromDz(tags, tags.id), tags.artist.picture_big, true);
 };

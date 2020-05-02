@@ -113,12 +113,12 @@
 .ButtonIcon {
     background-color: transparent;
     border: none;
-    color: gray;
-    padding: 12px 16px;
+    color: #bebebe;
+    padding: 16px 16px;
     font-size: 16px;
     cursor: pointer;
 }
 
 .ButtonIcon:hover {
-    color: black;
+    color: gray;
 }
