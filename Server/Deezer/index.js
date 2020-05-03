@@ -25,7 +25,11 @@ module.exports = {
 				const dzRes = res.data.data;
 				/* eslint no-restricted-syntax: "off" */
 				for (const dzTrack of dzRes) {
-					await HandleNewMusicFromDz(dzTrack);
+					try {
+						await HandleNewMusicFromDz(dzTrack);
+					} catch (handlerErr) {
+						MopConsole.error('Deezer - API', handlerErr);
+					}
 				}
 				resolve();
 			})
@@ -41,13 +45,23 @@ module.exports = {
 		}
 		Axios.get(`https://api.deezer.com/album/${AlbumDzId}/tracks`)
 			.then(async (res) => {
-				await AddMusicOfAlbum(res, AlbumName, AlbumDzId, AlbumCoverPath);
+				try {
+					await AddMusicOfAlbum(res, AlbumName, AlbumDzId, AlbumCoverPath);
+				} catch (handlerErr) {
+					MopConsole.error('Deezer - API', handlerErr);
+				}
 				let nextUrl = res.data.next;
 
 				while (nextUrl) {
-					const nextRes = await Axios.get(nextUrl);
-					await AddMusicOfAlbum(nextRes, AlbumName, AlbumDzId, AlbumCoverPath);
-					nextUrl = nextRes.data.next;
+					let nextRes;
+					try {
+						nextRes = await Axios.get(nextUrl);
+						await AddMusicOfAlbum(nextRes, AlbumName, AlbumDzId, AlbumCoverPath);
+					} catch (handlerErr) {
+						MopConsole.error('Deezer - API', handlerErr);
+					}
+
+					nextUrl = nextRes.data ? nextRes.data.next : undefined;
 				}
 
 				resolve();
@@ -61,14 +75,23 @@ module.exports = {
 	AddAlbumOfArtistToDb: (ArtistDzId) => new Promise((resolve, reject) => {
 		Axios.get(`https://api.deezer.com/artist/${ArtistDzId}/albums`)
 			.then(async (res) => {
-				await AddAlbumofArtist(res, ArtistDzId);
-
+				try {
+					await AddAlbumofArtist(res, ArtistDzId);
+				} catch (handlerErr) {
+					MopConsole.error('Deezer - API', handlerErr);
+				}
 				let nextUrl = res.data.next;
 
 				while (nextUrl) {
-					const nextRes = await Axios.get(nextUrl);
-					await AddAlbumofArtist(nextRes, ArtistDzId);
-					nextUrl = nextRes.data.next;
+					let nextRes;
+
+					try {
+						nextRes = await Axios.get(nextUrl);
+						await AddAlbumofArtist(nextRes, ArtistDzId);
+					} catch (handlerErr) {
+						MopConsole.error('Deezer - API', handlerErr);
+					}
+					nextUrl = nextRes.data ? nextRes.data.next : undefined;
 				}
 
 
@@ -84,7 +107,11 @@ module.exports = {
 		Axios.get(`https://api.deezer.com/album/${AlbumDzId}`)
 			.then(async (res) => {
 				const dzRes = res.data;
-				await HandleNewCoverFromDz(AlbumDzId, dzRes);
+				try {
+					await HandleNewCoverFromDz(AlbumDzId, dzRes);
+				} catch (handlerErr) {
+					MopConsole.error('Deezer - API', handlerErr);
+				}
 				resolve(dzRes.cover_big);
 			})
 			.catch((err) => {
@@ -97,7 +124,11 @@ module.exports = {
 		Axios.get(`https://api.deezer.com/artist/${ArtistDzId}/`)
 			.then(async (res) => {
 				const dzRes = res.data;
-				await HandleNewImageFromDz(ArtistDzId, dzRes);
+				try {
+					await HandleNewImageFromDz(ArtistDzId, dzRes);
+				} catch (handlerErr) {
+					MopConsole.error('Deezer - API', handlerErr);
+				}
 				resolve(dzRes.picture_big);
 			})
 			.catch((err) => {
