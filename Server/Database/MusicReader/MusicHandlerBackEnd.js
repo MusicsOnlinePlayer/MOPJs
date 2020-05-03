@@ -103,20 +103,26 @@ async function AppendAlbumsToArtist(ArtistDzId, Albums) {
 	const AlbumTasks = [];
 
 	Albums.forEach((AlbumElement) => {
-		AlbumTasks.push(new Promise(async (resolve) => {
-			if (!artistDoc.AlbumsId.some((e) => e.Name === AlbumElement.Name)) {
+		if (!artistDoc.AlbumsId.some((e) => e.Name === AlbumElement.Name)) {
+			AlbumTasks.push(new Promise(async (resolve, reject) => {
 				const AlbumDoc = new Album({
 					Name: AlbumElement.Name,
 					DeezerId: AlbumElement.DeezerId,
 					ImagePathDeezer: AlbumElement.ImagePathDeezer,
 				});
-				const newAlbum = await Album.findOneOrCreate({ Name: AlbumDoc.Name }, AlbumDoc);
-				artistDoc.AlbumsId.push(newAlbum._id);
-				MopConsole.info('Music Handler', `Added ${AlbumDoc.Name} to artist with dzId ${ArtistDzId}`);
-				resolve();
-			}
-			resolve();
-		}));
+
+				Album.findOneOrCreate({ Name: AlbumDoc.Name }, AlbumDoc)
+					.then((newAlbum) => {
+						artistDoc.AlbumsId.push(newAlbum._id);
+						MopConsole.info('Music Handler', `Added ${AlbumDoc.Name} to artist with dzId ${ArtistDzId}`);
+						resolve();
+					})
+					.catch((err) => {
+						MopConsole.error('Music Handler', err);
+						resolve();
+					});
+			}));
+		}
 	});
 
 
