@@ -17,10 +17,17 @@ const Indexation = async () => {
 
 		if (!exist && CheckIfFileHasCorrectFormat(MusicFilePath)) {
 			MopConsole.info('Music Indexer', `Adding ${MusicFilePath}`);
-			const tags = await ReadTags(MusicFilePath);
+			let tags;
+			try {
+				tags = await ReadTags(MusicFilePath);
+			} catch (err) {
+				MopConsole.warn('Music Indexer', `Cannot read tags of music file ${MusicFilePath}`);
+			}
 			// console.log(tags);
 			if (tags.title && tags.album && tags.artist[0] && tags.track.no) {
 				await HandleNewMusicFromDisk(tags, MusicFilePath);
+			} else {
+				MopConsole.warn('Music Indexer', `Skipped ${MusicFilePath} (Missing tags)`);
 			}
 		}
 	}

@@ -4,7 +4,11 @@ const MopConsole = require('../../Tools/MopConsole');
 
 const ReadTags = (filePath) => new Promise((resolve, reject) => {
 	mm(fs.createReadStream(filePath), (err, meta) => {
-		if (err) reject(err);
+		if (err) {
+			reject(err);
+			return;
+		}
+
 		resolve(meta);
 	});
 });

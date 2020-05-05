@@ -66,6 +66,8 @@ async function AddMusicToDatabase(doctags, ArtistImage = undefined, EnableEsInde
 		MopConsole.log('Music - Indexer', `Added ${savedAlbum.Name}`);
 		artistDoc.AlbumsId.push(savedAlbum);
 		await artistDoc.save();
+	} else {
+		MopConsole.warn('Music - Indexer', `Skipped ${musicDoc.Title}`);
 	}
 }
 
@@ -104,7 +106,7 @@ async function AppendAlbumsToArtist(ArtistDzId, Albums) {
 
 	Albums.forEach((AlbumElement) => {
 		if (!artistDoc.AlbumsId.some((e) => e.Name === AlbumElement.Name)) {
-			AlbumTasks.push(new Promise(async (resolve, reject) => {
+			AlbumTasks.push(new Promise((resolve) => {
 				const AlbumDoc = new Album({
 					Name: AlbumElement.Name,
 					DeezerId: AlbumElement.DeezerId,
