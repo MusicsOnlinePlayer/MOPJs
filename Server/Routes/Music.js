@@ -10,6 +10,11 @@ const {
 	AddImageOfArtistToDb,
 } = require('../Deezer');
 const { Downloader } = require('../Deezer/Downloader');
+const {
+	SearchMusic,
+	SearchAlbum,
+	SearchArtist,
+} = require('../Search/Music');
 
 module.exports = express();
 const app = module.exports;
@@ -18,99 +23,28 @@ const app = module.exports;
 app.get('/Search/Music/Name/:name', (req, res) => {
 	AddSearchToDb(req.params.name)
 		.then(() => {
-			MusicModel.search(
-				{
-					multi_match: {
-						query: req.params.name,
-						fields: ['Title', 'Artist^2', 'Album^0.5'],
-					},
-				},
-				{
-					size: 8,
-				},
-				(err, result) => {
-					if (err) {
-						MopConsole.error('Music - Search', err);
-						return;
-					}
-					const ClientResults = [];
-
-					if (!result) {
-						MopConsole.error('Music - Search', 'Request error !');
-						res.send({});
-						return;
-					}
-
-
-					result.hits.hits.map((hit) => {
-						ClientResults.push(hit._id);
-					});
-					res.send(ClientResults);
-				},
-			);
+			SearchMusic(req.params.name)
+				.then((searchResult) => {
+					res.send(searchResult);
+				})
+				.catch(() => res.send({}));
 		});
 });
 
 app.get('/Search/Album/Name/:name', (req, res) => {
-	AlbumModel.search(
-		{
-			multi_match: {
-				query: req.params.name,
-				fields: ['Name'],
-			},
-		},
-		{
-			size: 8,
-		},
-		(err, result) => {
-			if (err) {
-				MopConsole.error('Music - Search', err);
-			}
-			const ClientResults = [];
-
-			if (!result) {
-				MopConsole.error('Music - Search', 'Request error !');
-				res.send({});
-				return;
-			}
-
-			result.hits.hits.map((hit) => {
-				ClientResults.push(hit._id);
-			});
-			res.send(ClientResults);
-		},
-	);
+	SearchAlbum(req.params.name)
+		.then((searchResult) => {
+			res.send(searchResult);
+		})
+		.catch(() => res.send({}));
 });
 
 app.get('/Search/Artist/Name/:name', (req, res) => {
-	ArtistModel.search(
-		{
-			multi_match: {
-				query: req.params.name,
-				fields: ['Name'],
-			},
-		},
-		{
-			size: 8,
-		},
-		(err, result) => {
-			if (err) {
-				MopConsole.error('Music - Search', err);
-			}
-			const ClientResults = [];
-
-			if (!result) {
-				MopConsole.error('Music - Search', 'Request error !');
-				res.send({});
-				return;
-			}
-
-			result.hits.hits.map((hit) => {
-				ClientResults.push(hit._id);
-			});
-			res.send(ClientResults);
-		},
-	);
+	SearchArtist(req.params.name)
+		.then((searchResult) => {
+			res.send(searchResult);
+		})
+		.catch(() => res.send({}));
 });
 
 app.get('/Music/id/:id', (req, res) => {
