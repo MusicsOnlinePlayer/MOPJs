@@ -29,6 +29,7 @@ const { MusicsFolder, ArtistsImageFolder } = require('../Database/MusicReader');
 app.use(express.static(staticPath));
 app.use(express.static(MusicsFolder));
 app.use(express.static(ArtistsImageFolder));
+app.use(express.static(path.join(__dirname, '../../Public/Dist')));
 
 
 app.use((req, res, next) => {
