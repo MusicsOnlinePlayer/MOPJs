@@ -31,6 +31,7 @@ class PlaylistElement extends React.Component {
 				Title={Title}
 				Artist={Artist}
 				onClick={this.onPlaylistClick}
+				isAvailable
 			/>
 		);
 	}

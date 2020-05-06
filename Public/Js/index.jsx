@@ -11,9 +11,9 @@ Axios.defaults.withCredentials = true;
 
 const App = () => (
 	<Provider store={store}>
+		<Suspense fallback={<div>Loading...</div>}>
+			<HashRouter>
 
-		<HashRouter>
-			<Suspense fallback={<div>Loading...</div>}>
 				<ScrollToTop />
 				<Route path="/" component={React.lazy(() => import('./Components/Search/TopNav'))} />
 				<Route path="/" component={React.lazy(() => import('./Components/MusicPlayer/Player'))} />
@@ -23,8 +23,9 @@ const App = () => (
 				<Route path="/Playlist" component={React.lazy(() => import('./Components/Containers/PlaylistContainer'))} />
 				<Route path="/Album/:id" component={React.lazy(() => import('./Components/Albums/Album'))} />
 				<Route path="/Artist/:id" component={React.lazy(() => import('./Components/Albums/Artist'))} />
-			</Suspense>
-		</HashRouter>
+
+			</HashRouter>
+		</Suspense>
 	</Provider>
 );
 
