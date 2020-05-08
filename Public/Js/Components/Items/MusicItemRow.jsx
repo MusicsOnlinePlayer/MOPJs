@@ -11,7 +11,7 @@ const MusicItemRow = ({
 	children,
 	isAvailable,
 }) => (
-	<tr className="w-100 mx-0 p-1 ">
+	<tr className="w-100 mx-0 p-1 PointerCursor">
 		<td className="align-middle py-2" onClick={onClick} style={{ width: '50px' }}>
 			{ImageDz ? <ImgBootstrap className="PlayerImage my-auto" rounded height="50em" src={ImageDz} />
 				: <ImgBootstrap className="PlayerImage my-auto" rounded height="50em" src={Image ? `data:image/jpeg;base64,${Image.toString('base64')}` : '/Ressources/noMusic.jpg'} />}

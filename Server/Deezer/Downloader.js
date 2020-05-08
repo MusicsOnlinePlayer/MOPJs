@@ -17,6 +17,14 @@ class DzDownloader {
 			MopConsole.log('Python', msg);
 			if (msg === 'ready') { this.downloadQueue.autostart = true; }
 		});
+		this.PyShell.on('stderr', (err) => {
+			MopConsole.error('Python', 'Internal python script error (see traceback below)');
+			MopConsole.error('Python', err);
+		});
+		this.PyShell.on('error', (err) => {
+			MopConsole.error('Python', 'Internal python script error (see traceback below)');
+			MopConsole.error('Python', err);
+		});
 	}
 
 	SendDownloadMusicPython(musicId) {

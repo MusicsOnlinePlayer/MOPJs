@@ -9,5 +9,5 @@
 		"source.fixAll.eslint": true
 	},
 	"todo-tree.globs": ["!**/node_modules","!**/resources"],
-	"files.eol": "\r\n"
+	"files.eol": "\r\n",
 }

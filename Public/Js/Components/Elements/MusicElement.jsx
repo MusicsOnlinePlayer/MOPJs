@@ -7,6 +7,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import MusicItemRow from '../Items/MusicItemRow';
 import { ChangePlayingMusic as ChangePlayingMusicRedux, AddMusic as AddMusicRedux } from '../../Actions/Action';
 import ButtonIcon from '../Helper/ButtonIcon';
+import LikeButton from '../Helper/LikeButton';
 
 
 const mapDispatchToProps = (dispatch) => ({
@@ -84,8 +85,12 @@ class MusicElementConnected extends React.Component {
 				isAvailable={isAvailable}
 			>
 				<td className="align-middle">
+					<LikeButton onLike={() => {}} />
+				</td>
+				<td className="align-middle" style={{ width: '24px' }}>
 					<ButtonIcon faIcon={faPlus} onClick={this.HandleAdd} buttonClass="float-right" />
 				</td>
+
 			</MusicItemRow>
 		);
 	}

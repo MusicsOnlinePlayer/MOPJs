@@ -127,3 +127,7 @@
 .ButtonIcon:active {
     color: rgb(78, 78, 78);
 }
+
+.PointerCursor {
+    cursor: pointer;
+}
