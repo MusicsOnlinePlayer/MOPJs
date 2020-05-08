@@ -1,6 +1,5 @@
 const express = require('express');
 const { AddSearchToDb } = require('../Deezer');
-
 const {
 	SearchMusic,
 	SearchAlbum,

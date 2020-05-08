@@ -10,4 +10,6 @@
 	},
 	"todo-tree.globs": ["!**/node_modules","!**/resources"],
 	"files.eol": "\r\n",
+	"debug.node.autoAttach": "on",
+	"debug.javascript.usePreview": true
 }
