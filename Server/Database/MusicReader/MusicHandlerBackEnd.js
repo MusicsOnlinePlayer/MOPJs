@@ -84,7 +84,7 @@ async function AddMusicToDatabase(doctags, ArtistImage = undefined, EnableEsInde
 	albumDoc.MusicsId.push(musicDoc._id);
 	const savedAlbum = await albumDoc.save();
 	if (artistDoc.AlbumsId.indexOf(savedAlbum._id) === -1) {
-		MopConsole.log('Music - Indexer', `Added ${savedAlbum.Name}`);
+		MopConsole.info('Music - Indexer', `Added ${savedAlbum.Name}`);
 		artistDoc.AlbumsId.push(savedAlbum);
 		await artistDoc.save();
 	}
@@ -114,7 +114,7 @@ const AppendMusicToAlbum = async (tags, AlbumDzId) => {
 	const albumDoc = await Album.findOne({ Name: tags.Album, DeezerId: AlbumDzId });
 	albumDoc.MusicsId.push(savedMusic._id);
 	await albumDoc.save();
-	MopConsole.log('Music - Indexer', `Added new music to ${albumDoc.Name}`);
+	MopConsole.info('Music - Indexer', `Added new music to ${albumDoc.Name}`);
 };
 
 /** This function decide if a music should be added to an album or just
@@ -247,6 +247,12 @@ const RegisterDownloadedFile = (DeezerId, filePath) => new Promise((resolve, rej
 		});
 });
 
+const GetMusicCount = () => new Promise((resolve, reject) => {
+	Music.countDocuments()
+		.then((count) => resolve(count))
+		.catch((err) => reject(err));
+});
+
 module.exports = {
 	AddMusicToDatabase,
 	AppendOrUpdateMusicToAlbum,
@@ -258,4 +264,5 @@ module.exports = {
 	DoesMusicExistsTitle,
 	RegisterDownloadedFile,
 	FindAlbumContainingMusic,
+	GetMusicCount,
 };

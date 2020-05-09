@@ -8,6 +8,7 @@ const {
 	RegisterDownloadedFile,
 	DoesMusicExists,
 	FindAlbumContainingMusic,
+	GetMusicCount,
 } = require('./MusicHandlerBackEnd');
 
 const HandleNewMusicFromDisk = async (tags, MusicFilePath) => {
@@ -33,9 +34,9 @@ const HandleMusicsFromDz = async (MusicsTags, AlbumName, AlbumDzId, AlbumCoverPa
 		);
 	});
 	await Promise.all(musicTasks);
-	MopConsole.log('Music Handler', 'Musics have been added / updated');
+	MopConsole.info('Music Handler', 'Musics have been added / updated');
 	await UpdateAlbumCompleteStatus(AlbumDzId);
-	MopConsole.log('Music Handler', 'Marked this album as complete');
+	MopConsole.info('Music Handler', 'Marked this album as complete');
 };
 
 const HandleAlbumsFromDz = async (ArtistId, DeezerData) => {
@@ -44,13 +45,13 @@ const HandleAlbumsFromDz = async (ArtistId, DeezerData) => {
 		Albums.push({ Name: album.title, DeezerId: album.id, ImagePathDeezer: album.cover_big });
 	});
 	await AppendAlbumsToArtist(ArtistId, Albums);
-	MopConsole.log('Music Handler', 'Added albums to artist');
+	MopConsole.info('Music Handler', 'Added albums to artist');
 };
 
 const HandleNewCoverFromDz = (AlbumDzId, DeezerData) => new Promise((resolve) => {
 	AppendDzCoverToAlbum(AlbumDzId, DeezerData.cover_big)
 		.then(() => {
-			MopConsole.log('Music Handler', 'Added cover to album');
+			MopConsole.info('Music Handler', 'Added cover to album');
 			resolve();
 		});
 });
@@ -58,7 +59,7 @@ const HandleNewCoverFromDz = (AlbumDzId, DeezerData) => new Promise((resolve) =>
 const HandleNewImageFromDz = (ArtistDzId, DeezerData) => new Promise((resolve) => {
 	AppendDzImageToArtist(ArtistDzId, DeezerData.picture_big)
 		.then(() => {
-			MopConsole.log('Music Handler', 'Added image to artist');
+			MopConsole.info('Music Handler', 'Added image to artist');
 			resolve();
 		});
 });
@@ -73,4 +74,5 @@ module.exports = {
 	HandleNewImageFromDz,
 	DoesMusicExists,
 	FindAlbumContainingMusic,
+	GetMusicCount,
 };

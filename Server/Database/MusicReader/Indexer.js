@@ -2,7 +2,7 @@ const {
 	MusicsFolder, GetFilesOfDir, CreateFilePathForDb, CheckIfFileHasCorrectFormat,
 } = require('./Utils');
 const { ReadTags } = require('./Tags');
-const { HandleNewMusicFromDisk, DoesMusicExists } = require('./MusicHandler');
+const { HandleNewMusicFromDisk, DoesMusicExists, GetMusicCount } = require('./MusicHandler');
 const MopConsole = require('../../Tools/MopConsole');
 
 const Indexation = async () => {
@@ -31,7 +31,7 @@ const Indexation = async () => {
 			}
 		}
 	}
-	MopConsole.info('Music Indexer', `Done - ${files.length} musics`);
+	MopConsole.info('Music Indexer', `Done - ${await GetMusicCount()} musics on Database (${files.length} on the disk)`);
 	MopConsole.timeEnd('Music Indexer', 'Time ');
 };
 

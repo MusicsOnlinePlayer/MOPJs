@@ -14,8 +14,11 @@ class DzDownloader {
 
 		this.PyShell = new PythonShell(path.join(__dirname, 'Deezloader.py'), { args: [MusicsFolder, arlToken] });
 		this.PyShell.on('message', (msg) => {
-			MopConsole.log('Python', msg);
-			if (msg === 'ready') { this.downloadQueue.autostart = true; }
+			// MopConsole.info('Python', msg);
+			if (msg === 'ready') {
+				this.downloadQueue.autostart = true;
+				MopConsole.info('Python', 'Downloader State: Ready');
+			}
 		});
 		this.PyShell.on('stderr', (err) => {
 			MopConsole.error('Python', 'Internal python script error (see traceback below)');
