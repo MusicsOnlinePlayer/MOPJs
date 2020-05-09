@@ -2,6 +2,9 @@ const fs = require('fs');
 const mm = require('musicmetadata');
 const MopConsole = require('../../Tools/MopConsole');
 
+/** This function retreives ID3 tags of a music
+ * @param {string} filePath - File path of the music
+ */
 const ReadTags = (filePath) => new Promise((resolve, reject) => {
 	mm(fs.createReadStream(filePath), (err, meta) => {
 		if (err) {
@@ -13,6 +16,10 @@ const ReadTags = (filePath) => new Promise((resolve, reject) => {
 	});
 });
 
+/** This function normalizes ID3 tags
+ * @param {object} tags - ID3 tags
+ * @param {string} MusicFilePath - Path of the music
+ */
 function ConvertTagsFromDisc(tags, MusicFilePath) {
 	const { birthtime } = fs.statSync(MusicFilePath);
 	const doctags = {
@@ -27,7 +34,14 @@ function ConvertTagsFromDisc(tags, MusicFilePath) {
 	};
 	return doctags;
 }
-
+/** This function normalize tags coming from Deeezer
+ * @param {object} tags - Tags coming from Deezer
+ * @param {number} DeezerId - Deezer id of the music
+ * @param {string=} CustomAlbumName - Override Album name contained in tags
+ * @param {number=} CustomAlbumDzId - Override Deezer Id of album contained in tags
+ * @param {string=} CustomCoverPath - Override Cover Path of album contained in tags
+ * @return {object} Normalize tags, ready to be saved in MongoDB
+ * */
 function ConvertTagsFromDz(
 	tags,
 	DeezerId, CustomAlbumName = undefined, CustomAlbumDzId = undefined, CustomCoverPath = undefined,
