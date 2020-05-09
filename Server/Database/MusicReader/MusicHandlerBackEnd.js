@@ -4,6 +4,10 @@ const MopConsole = require('../../Tools/MopConsole');
 const { Music, Album, Artist } = require('../Models');
 const { ArtistsImageFolder } = require('./Utils');
 
+/** This function performs a save on MongoDB.
+ *  The promise is resolved when the document is indexed in elastic search
+ * @param {Music} MyMusicModel - The music that need to be saved
+ * */
 const SaveAndIndex = (MyMusicModel) => new Promise((resolve) => {
 	MyMusicModel.save((err, savedModel) => {
 		if (err) throw err;
@@ -16,6 +20,21 @@ const SaveAndIndex = (MyMusicModel) => new Promise((resolve) => {
 	});
 });
 
+/** This function performs a save of music in the database while adding
+ * new artist if it doesn't already exists and also adding a new album if it doesn't already exists.
+ * @param {object} doctags - All tags about the music (see Tags.js for more details)
+ * @param {string} doctags.Title - Title of the music
+ * @param {number=} doctags.DeezerId - Deezer Id
+ * @param {string} doctags.Artist - Artist Name
+ * @param {number=} doctags.ArtistDzId - Deezer Id of the music Artist
+ * @param {string} doctags.Album - Album Name
+ * @param {string=} doctags.Image - Cover of album in base64
+ * @param {string=} doctags.ImagePathDeezer - url or path of album cover on deezer
+ * @param {string=} doctags.ImageFormat - Format of the base64 image
+ * @param {string=} ArtistImage - The path of the Artist image
+ * @param {boolean} [EnableEsIndexWait=false] - This option indicate if it should wait for
+ * ElasticSearch index before moving on
+ * */
 async function AddMusicToDatabase(doctags, ArtistImage = undefined, EnableEsIndexWait = false) {
 	let guessedPath = `${doctags.Artist}.jpg`;
 
@@ -71,6 +90,11 @@ async function AddMusicToDatabase(doctags, ArtistImage = undefined, EnableEsInde
 	}
 }
 
+/** This function performs an update directly on the database to change the track number
+ * @param {object} tags - Tags of the music that need to change music id
+ * @param {number} tags.DeezerId - The deezer id of the current music
+ * @param {number} tags.TrackNumber - The new track number
+ */
 const UpdateIfNeededTrackNumber = (tags) => new Promise((resolve) => {
 	MopConsole.info('Music - Handler', `Updated tracknumber of music with dzId ${tags.DeezerId} to ${tags.TrackNumber}`);
 	Music.findOneAndUpdate({ DeezerId: tags.DeezerId }, { TrackNumber: tags.TrackNumber })
@@ -80,6 +104,10 @@ const UpdateIfNeededTrackNumber = (tags) => new Promise((resolve) => {
 		});
 });
 
+/** This function add a new music to an existing album. It will also create and save the music
+ * @param {object} tags - Tags for the music that will be saved
+ * @param {number} AlbumDzId - Deezer id of the album
+ */
 const AppendMusicToAlbum = async (tags, AlbumDzId) => {
 	const newMusic = new Music(tags);
 	const savedMusic = await newMusic.save();
@@ -89,15 +117,24 @@ const AppendMusicToAlbum = async (tags, AlbumDzId) => {
 	MopConsole.log('Music - Indexer', `Added new music to ${albumDoc.Name}`);
 };
 
-async function AppendOrUpdateMusicToAlbum(musicTags, AlbumDzId) {
-	const count = await Music.countDocuments({ Title: musicTags.Title });
+/** This function decide if a music should be added to an album or just
+ * need it's tracknumber to be modified
+ * @param {object} tags - Tags of the music
+ * @param {number} AlbumDzId - Deezer id of the album
+*/
+async function AppendOrUpdateMusicToAlbum(tags, AlbumDzId) {
+	const count = await Music.countDocuments({ Title: tags.Title });
 	if (count > 0) {
-		await UpdateIfNeededTrackNumber(musicTags);
+		await UpdateIfNeededTrackNumber(tags);
 	} else {
-		await AppendMusicToAlbum(musicTags, AlbumDzId);
+		await AppendMusicToAlbum(tags, AlbumDzId);
 	}
 }
 
+/** This function performs an artist search and will add all albums specified if it is unique
+ * @param {number} ArtistDzId - The Deezer Id of the Artist
+ * @param {[object]} Albums - All the albums of the artist that need to be added
+ */
 async function AppendAlbumsToArtist(ArtistDzId, Albums) {
 	const artistDoc = await Artist.findOne({ DeezerId: ArtistDzId });
 	await artistDoc.populate('AlbumsId').execPopulate();
@@ -134,18 +171,37 @@ async function AppendAlbumsToArtist(ArtistDzId, Albums) {
 	MopConsole.info('Music Handler', `Saved ${AlbumTasks.length} albums`);
 }
 
+/** This function modify album states by modifying the IsComplete attribute
+ * @param {number} AlbumDzId - Deezer id of the completed album
+ */
 async function UpdateAlbumCompleteStatus(AlbumDzId) {
 	await Album.findOneAndUpdate({ DeezerId: AlbumDzId }, { IsComplete: true });
 }
 
+/** This function perform an update on the database by modifying the ImagePathDeezer attributes.
+ * It will add album cover comming from deezer
+ * @param {Number} AlbumDzId - The Deezer id of the album that need a new cover
+ * @param {string} ImagePathDeezer - The path or url of the album cover coming from deezer.
+*/
 async function AppendDzCoverToAlbum(AlbumDzId, ImagePathDeezer) {
 	await Album.findOneAndUpdate({ DeezerId: AlbumDzId }, { ImagePathDeezer });
 }
 
+/** This function perform an update on the database by modifying the ImagePath attributes.
+ * It will add the picture of an artist.
+ * @param {Number} ArtistDzId - The Deezer id of the artist that need a new picture
+ * @param {string} ImagePath - The path or url of the picture.
+*/
 async function AppendDzImageToArtist(ArtistDzId, ImagePath) {
 	await Artist.findOneAndUpdate({ DeezerId: ArtistDzId }, { ImagePath });
 }
 
+/** This function performs a search on the database for an album containing a specific music.
+ * @param {object} MyMusic - Music
+ * @param {string} MyMusic.Album - Name of the album
+ * @param {ObjectId} MyMusic._id - MongoDB id
+ * @return {Album} Album of the specified music
+*/
 async function FindAlbumContainingMusic(MyMusic) {
 	const AlbumCandidates = await Album.find({ Name: MyMusic.Album });
 	if (AlbumCandidates.length < 1) return AlbumCandidates[0];
@@ -156,16 +212,28 @@ async function FindAlbumContainingMusic(MyMusic) {
 	return finalAlbum;
 }
 
+/** Check if a music exist in the MongoDB database
+ * @param {string} FilePath - Path of the music that need to be checked
+ * @returns {boolean}
+ */
 const DoesMusicExists = async (FilePath) => {
 	const count = await Music.countDocuments({ FilePath });
 	return count > 0;
 };
 
+/** This function checks if a music exist in the MongoDB database
+ * @param {string} FilePath - Title of the music that need to be checked
+ * @returns {boolean}
+ */
 const DoesMusicExistsTitle = async (Title) => {
 	const count = await Music.countDocuments({ Title });
 	return count > 0;
 };
 
+/** This function updates filepath of a music
+ * @param {number} DeezerId - Deezer Id of the music
+ * @param {string} filePath - New music path of the music
+ */
 const RegisterDownloadedFile = (DeezerId, filePath) => new Promise((resolve, reject) => {
 	Music.findOne({ DeezerId })
 		.then(async (doc) => {
