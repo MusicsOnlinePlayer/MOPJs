@@ -18,6 +18,13 @@ const ReadTags = (filePath) => new Promise((resolve, reject) => {
 
 /** This function normalizes ID3 tags
  * @param {object} tags - ID3 tags
+ * @param {string} tags.title - Name of the Music
+ * @param {string} tags.album - Name of the album
+ * @param {[string]} tags.artist - Artists of the Music
+ * @param {object} tags.track - Details about the song
+ * @param {number} tags.track.no - Track Position in the Album
+ * @param {[object]} tags.picture - Covers of the song
+ *
  * @param {string} MusicFilePath - Path of the music
  */
 function ConvertTagsFromDisc(tags, MusicFilePath) {
@@ -36,10 +43,21 @@ function ConvertTagsFromDisc(tags, MusicFilePath) {
 }
 /** This function normalize tags coming from Deeezer
  * @param {object} tags - Tags coming from Deezer
+ * @param {string} tags.title - Music title
+ * @param {object} tags.album - Album details
+ * @param {string} tags.album.title - Album Title
+ * @param {number} tags.album.id - Deezer Id of Album
+ * @param {string} tags.album.cover_big - Album Cover Path
+ * @param {object} tags.artist - Artist details
+ * @param {string} tags.artist.name - Artist Name
+ * @param {number} tags.artist.id - Deezer Id of Artist
+ * @param {number} tags.track_position - Position of music in album
+ *
  * @param {number} DeezerId - Deezer id of the music
  * @param {string=} CustomAlbumName - Override Album name contained in tags
  * @param {number=} CustomAlbumDzId - Override Deezer Id of album contained in tags
  * @param {string=} CustomCoverPath - Override Cover Path of album contained in tags
+ *
  * @return {object} Normalize tags, ready to be saved in MongoDB
  * */
 function ConvertTagsFromDz(
