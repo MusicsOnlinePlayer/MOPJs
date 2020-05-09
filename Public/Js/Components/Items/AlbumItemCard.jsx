@@ -5,7 +5,7 @@ import { Card } from 'react-bootstrap';
 const AlbumItemCard = ({
 	onClick, Image, Name, Artist, ImageDz,
 }) => (
-	<Card style={{ width: '18rem' }} className="m-2" onClick={onClick}>
+	<Card style={{ width: '18rem', cursor: 'pointer' }} className="m-2" onClick={onClick}>
 		{ImageDz ? <Card.Img variant="top" src={ImageDz} />
 			: <Card.Img variant="top" src={Image ? `data:image/jpeg;base64,${Image.toString('base64')}` : '/Ressources/noMusic.jpg'} />}
 
