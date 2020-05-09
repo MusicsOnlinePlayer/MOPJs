@@ -10,6 +10,7 @@ const {
 	AddImageOfArtistToDb,
 	AddAlbumOfArtistToDb,
 } = require('../Deezer');
+const { FindAlbumContainingMusic } = require('../Database/MusicReader');
 
 const HandleMusicRequestById = (id) => new Promise((resolve, reject) => {
 	Music.findById(id, async (err, doc) => {
@@ -27,7 +28,8 @@ const HandleMusicRequestById = (id) => new Promise((resolve, reject) => {
 		if (MusicDoc) {
 			MusicDoc.FilePath = MusicDoc.FilePath
 				? path.basename(MusicDoc.FilePath) : undefined;
-			const AlbumOfMusic = await Album.findOne({ Name: MusicDoc.Album });
+			const AlbumOfMusic = await FindAlbumContainingMusic(MusicDoc);
+			//! Should search by dz id
 			MusicDoc.Image = AlbumOfMusic.Image;
 			MusicDoc.ImagePathDeezer = AlbumOfMusic.ImagePathDeezer;
 			MusicDoc.ImageFormat = AlbumOfMusic.ImageFormat;

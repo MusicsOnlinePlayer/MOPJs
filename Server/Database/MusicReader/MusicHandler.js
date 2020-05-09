@@ -7,6 +7,7 @@ const {
 	DoesMusicExistsTitle,
 	RegisterDownloadedFile,
 	DoesMusicExists,
+	FindAlbumContainingMusic,
 } = require('./MusicHandlerBackEnd');
 
 const HandleNewMusicFromDisk = async (tags, MusicFilePath) => {
@@ -27,6 +28,7 @@ const HandleMusicsFromDz = async (MusicsTags, AlbumName, AlbumDzId, AlbumCoverPa
 		musicTasks.push(
 			AppendOrUpdateMusicToAlbum(
 				ConvertTagsFromDz(element, element.id, AlbumName, AlbumDzId, AlbumCoverPath),
+				AlbumDzId,
 			),
 		);
 	});
@@ -70,4 +72,5 @@ module.exports = {
 	HandleNewCoverFromDz,
 	HandleNewImageFromDz,
 	DoesMusicExists,
+	FindAlbumContainingMusic,
 };
