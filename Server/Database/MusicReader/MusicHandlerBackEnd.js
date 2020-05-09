@@ -53,7 +53,9 @@ async function AddMusicToDatabase(doctags, ArtistImage = undefined, EnableEsInde
 		return;
 	}
 
-	const albumDoc = await Album.findOneOrCreate({ Name: newAlbum.Name }, newAlbum);
+	const albumDoc = await Album.findOneOrCreate({
+		Name: newAlbum.Name, $or: [{ DeezerId: newAlbum.DeezerId }, { DeezerId: undefined }],
+	}, newAlbum);
 	const artistDoc = await Artist.findOneOrCreate({ Name: newArtist.Name }, newArtist);
 
 
@@ -66,8 +68,6 @@ async function AddMusicToDatabase(doctags, ArtistImage = undefined, EnableEsInde
 		MopConsole.log('Music - Indexer', `Added ${savedAlbum.Name}`);
 		artistDoc.AlbumsId.push(savedAlbum);
 		await artistDoc.save();
-	} else {
-		MopConsole.warn('Music - Indexer', `Skipped ${musicDoc.Title}`);
 	}
 }
 
@@ -80,21 +80,21 @@ const UpdateIfNeededTrackNumber = (tags) => new Promise((resolve) => {
 		});
 });
 
-const AppendMusicToAlbum = async (tags) => {
+const AppendMusicToAlbum = async (tags, AlbumDzId) => {
 	const newMusic = new Music(tags);
 	const savedMusic = await newMusic.save();
-	const albumDoc = await Album.findOne({ Name: tags.Album });
+	const albumDoc = await Album.findOne({ Name: tags.Album, DeezerId: AlbumDzId });
 	albumDoc.MusicsId.push(savedMusic._id);
 	await albumDoc.save();
 	MopConsole.log('Music - Indexer', `Added new music to ${albumDoc.Name}`);
 };
 
-async function AppendOrUpdateMusicToAlbum(musicTags) {
+async function AppendOrUpdateMusicToAlbum(musicTags, AlbumDzId) {
 	const count = await Music.countDocuments({ Title: musicTags.Title });
 	if (count > 0) {
 		await UpdateIfNeededTrackNumber(musicTags);
 	} else {
-		await AppendMusicToAlbum(musicTags);
+		await AppendMusicToAlbum(musicTags, AlbumDzId);
 	}
 }
 
@@ -113,7 +113,7 @@ async function AppendAlbumsToArtist(ArtistDzId, Albums) {
 					ImagePathDeezer: AlbumElement.ImagePathDeezer,
 				});
 
-				Album.findOneOrCreate({ Name: AlbumDoc.Name }, AlbumDoc)
+				Album.findOneOrCreate({ Name: AlbumDoc.Name, DeezerId: AlbumDoc.DeezerId }, AlbumDoc)
 					.then((newAlbum) => {
 						artistDoc.AlbumsId.push(newAlbum._id);
 						MopConsole.info('Music Handler', `Added ${AlbumDoc.Name} to artist with dzId ${ArtistDzId}`);
@@ -144,6 +144,16 @@ async function AppendDzCoverToAlbum(AlbumDzId, ImagePathDeezer) {
 
 async function AppendDzImageToArtist(ArtistDzId, ImagePath) {
 	await Artist.findOneAndUpdate({ DeezerId: ArtistDzId }, { ImagePath });
+}
+
+async function FindAlbumContainingMusic(MyMusic) {
+	const AlbumCandidates = await Album.find({ Name: MyMusic.Album });
+	if (AlbumCandidates.length < 1) return AlbumCandidates[0];
+	let finalAlbum;
+	AlbumCandidates.forEach((AlbumDoc) => {
+		finalAlbum = AlbumDoc.MusicsId.find((id) => MyMusic._id.equals(id)) ? AlbumDoc : finalAlbum;
+	});
+	return finalAlbum;
 }
 
 const DoesMusicExists = async (FilePath) => {
@@ -179,4 +189,5 @@ module.exports = {
 	DoesMusicExists,
 	DoesMusicExistsTitle,
 	RegisterDownloadedFile,
+	FindAlbumContainingMusic,
 };
