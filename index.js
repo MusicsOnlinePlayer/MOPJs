@@ -7,7 +7,12 @@ const passport = require('passport');
 
 const bodyParser = require('body-parser');
 const compression = require('compression');
+const MopConsole = require('./Server/Tools/MopConsole');
 const { User } = require('./Server/Database/Models');
+
+process.on('uncaughtException', (exception) => {
+	MopConsole.error('Exception Handler', exception);
+});
 
 
 app.use(cookieParser());

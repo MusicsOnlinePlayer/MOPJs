@@ -1,4 +1,5 @@
 {
     "DeezerArlToken": "enter your deezer ARL token here",
     "EsHost" : "localhost:9200",
+    "MinLogLevel": 1
 }

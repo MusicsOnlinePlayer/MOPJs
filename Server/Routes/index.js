@@ -33,6 +33,6 @@ app.use(express.static(path.join(__dirname, '../../Public/Dist')));
 
 
 app.use((req, res, next) => {
-	MopConsole.info('Path - Log', req.url);
+	MopConsole.standard('Path - Log', req.url);
 	next();
 });
