@@ -15,6 +15,7 @@
 		"cookie-parser": "^1.4.5",
 		"express": "^4.17.1",
 		"express-session": "^1.17.1",
+		"glob": "^7.1.6",
 		"mongodb": "^3.5.5",
 		"mongoosastic": "^4.6.0",
 		"mongoose": "^5.9.10",

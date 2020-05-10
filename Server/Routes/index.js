@@ -7,6 +7,7 @@ const app = module.exports;
 // const compression = require('compression');
 const { DoIndexation } = require('../Database/MusicReader');
 const { ConnectToDB } = require('../Database/Db');
+const { LoadPlugins } = require('../Plugins/Loader');
 // app.use(compression);
 
 ConnectToDB().then(() => {
@@ -17,6 +18,7 @@ ConnectToDB().then(() => {
 
 	app.use('/User', require('./User'));
 	app.use('/Music', require('./Music'));
+	LoadPlugins();
 });
 
 app.get('/', (req, res) => {
