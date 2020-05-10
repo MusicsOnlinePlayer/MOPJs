@@ -1,12 +1,9 @@
-const MusicModel = require('./Music').Music;
-const AlbumModel = require('./Music').Album;
-const ArtistModel = require('./Music').Artist;
-const UserModel = require('./User').User;
-// TODO Use destructive sentence
+const { Music, Album, Artist } = require('./Music');
+const { User } = require('./User');
 
 module.exports = {
-	Music: MusicModel,
-	Album: AlbumModel,
-	Artist: ArtistModel,
-	User: UserModel,
+	Music,
+	Album,
+	Artist,
+	User,
 };

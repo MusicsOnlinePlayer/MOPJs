@@ -126,7 +126,7 @@ const GetMusicFilePath = (id, UserReq) => new Promise((resolve, reject) => {
 			resolve({ FilePath: MusicDoc.FilePath ? path.basename(MusicDoc.FilePath) : '' });
 			return;
 		}
-		// TODO Check if it a valid deezer id
+
 		resolve({ FilePath: await Downloader.AddToQueueAsync(MusicDoc.DeezerId) });
 	});
 });

@@ -13,7 +13,7 @@ const MusicSchema = new mongoose.Schema({
 	DeezerId: { type: Number, index: { unique: true, dropDups: true, sparse: true } },
 	Views: { type: Number, default: 0, es_indexed: true },
 	LastView: { type: Date, es_type: 'date', es_indexed: true },
-}); // TODO Use timestamps = true
+});
 
 const AlbumSchema = new mongoose.Schema({
 	Name: { type: String, es_indexed: true },
