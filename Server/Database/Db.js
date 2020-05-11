@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 const MopConsole = require('../Tools/MopConsole');
 
-const Url = 'mongodb://localhost:27017/MOP';
+const { MongoUrl } = require('../Config/MopConf.json');
 
 module.exports = {
 	ConnectToDB: () => new Promise((resolve) => {
-		MopConsole.info('DB', `Connecting to mongo database at ${Url}`);
-		mongoose.connect(Url, { useNewUrlParser: true });
+		MopConsole.info('DB', 'Connecting to mongo database');
+		mongoose.connect(MongoUrl, { useNewUrlParser: true, auth: { authSource: 'admin' } });
 		const DataBase = mongoose.connection;
 		DataBase.on('error', (err) => {
 			MopConsole.error('DB', 'Failed to connect');
