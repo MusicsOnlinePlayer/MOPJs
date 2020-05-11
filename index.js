@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 const compression = require('compression');
 const MopConsole = require('./Server/Tools/MopConsole');
 const { User } = require('./Server/Database/Models');
+const { MopPort } = require('./Server/Config/MopConf.json');
 
 process.on('uncaughtException', (exception) => {
 	MopConsole.error('Exception Handler', exception);
@@ -41,4 +42,4 @@ if (process.env.NODE_ENV === 'production') app.use(compression());
 
 app.use(require('./Server/Routes/index'));
 
-app.listen(3000);
+app.listen(MopPort);
