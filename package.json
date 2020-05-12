@@ -59,7 +59,7 @@
 	},
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"StartAll": "webpack --mode development && node index.js",
+		"StartAll": "webpack --mode production && node index.js",
 		"BuildClient": "webpack --mode development --watch",
 		"BuildClientProd": "webpack --mode production --watch",
 		"StartServer": "node index.js",
