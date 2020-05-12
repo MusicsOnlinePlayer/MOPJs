@@ -12,11 +12,15 @@ const {
 	GetMusicFilePath,
 } = require('../Action/Music');
 
+const {
+	EnsureAuth,
+} = require('../Auth/EnsureAuthentification');
+
 module.exports = express();
 const app = module.exports;
 
 
-app.get('/Search/Music/Name/:name', (req, res) => {
+app.get('/Search/Music/Name/:name', EnsureAuth, (req, res) => {
 	AddSearchToDb(req.params.name)
 		.then(() => {
 			SearchMusic(req.params.name)
@@ -25,37 +29,37 @@ app.get('/Search/Music/Name/:name', (req, res) => {
 		});
 });
 
-app.get('/Search/Album/Name/:name', (req, res) => {
+app.get('/Search/Album/Name/:name', EnsureAuth, (req, res) => {
 	SearchAlbum(req.params.name)
 		.then((searchResult) => res.send(searchResult))
 		.catch(() => res.send({}));
 });
 
-app.get('/Search/Artist/Name/:name', (req, res) => {
+app.get('/Search/Artist/Name/:name', EnsureAuth, (req, res) => {
 	SearchArtist(req.params.name)
 		.then((searchResult) => res.send(searchResult))
 		.catch(() => res.send({}));
 });
 
-app.get('/Music/id/:id', (req, res) => {
+app.get('/Music/id/:id', EnsureAuth, (req, res) => {
 	HandleMusicRequestById(req.params.id)
 		.then((Music) => res.send(Music))
 		.catch(() => res.send({}));
 });
 
-app.get('/Music/get/:id', (req, res) => {
+app.get('/Music/get/:id', EnsureAuth, (req, res) => {
 	GetMusicFilePath(req.params.id, req.user)
 		.then((FilePath) => res.send(FilePath))
 		.catch(() => res.send({}));
 });
 
-app.get('/Album/id/:id', (req, res) => {
+app.get('/Album/id/:id', EnsureAuth, (req, res) => {
 	HandleAlbumRequestById(req.params.id, req.query.mode)
 		.then((Album) => res.send(Album))
 		.catch(() => res.send({}));
 });
 
-app.get('/Artist/id/:id', (req, res) => {
+app.get('/Artist/id/:id', EnsureAuth, (req, res) => {
 	HandleArtistRequestById(req.params.id, req.query.mode)
 		.then((Artist) => res.send(Artist))
 		.catch(() => res.send({}));

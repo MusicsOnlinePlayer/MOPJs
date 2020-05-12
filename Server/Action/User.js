@@ -8,8 +8,8 @@ const RegisterUser = (username, password) => new Promise((resolve, reject) => {
 		});
 		user.setPassword(password)
 			.then(async () => {
-				await user.save();
-				resolve();
+				const newUser = await user.save();
+				resolve(newUser);
 				MopConsole.info('User', `Added user ${username}`);
 			})
 			.catch((err) => {

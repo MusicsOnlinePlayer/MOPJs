@@ -37,7 +37,8 @@
 		"no-unused-expressions": ["error", { "allowTernary": true }],
 		"jsx-a11y/media-has-caption": "off",
 		"jsx-a11y/no-static-element-interactions": "off",
-		"linebreak-style": ["error", "windows"]
+		"linebreak-style": ["error", "windows"],
+		"react/jsx-props-no-spreading": "warn"
 	},
 	"parser": "babel-eslint"
 }

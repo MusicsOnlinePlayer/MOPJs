@@ -13,6 +13,7 @@ const { MopPort } = require('./Server/Config/MopConf.json');
 
 process.on('uncaughtException', (exception) => {
 	MopConsole.error('Exception Handler', exception);
+	MopConsole.error('Exception Handler', exception.stack);
 });
 
 

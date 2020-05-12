@@ -15,7 +15,15 @@ app.post('/Register', async (req, res) => {
 	if (!req.body.password) { res.send({ success: false }); }
 
 	RegisterUser(req.body.name, req.body.password)
-		.then(() => res.send({ success: true }))
+		.then((newUser) => {
+			req.logIn(newUser, (err) => {
+				if (err) {
+					MopConsole.error('User', err);
+					res.send({ success: false });
+				}
+				res.send({ success: true });
+			});
+		})
 		.catch(() => res.send({ success: false }));
 	// const { user } = await User.authenticate()(req.body.username, req.body.password);
 });

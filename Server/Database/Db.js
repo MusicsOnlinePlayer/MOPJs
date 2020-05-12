@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
 const MopConsole = require('../Tools/MopConsole');
 
-const { MongoUrl } = require('../Config/MopConf.json');
+const { MongoUrl, EnableMongoAuth } = require('../Config/MopConf.json');
 
 module.exports = {
 	ConnectToDB: () => new Promise((resolve) => {
 		MopConsole.info('DB', 'Connecting to mongo database');
-		mongoose.connect(MongoUrl, { useNewUrlParser: true, auth: { authSource: 'admin' } });
+		const authArgs = { authSource: 'admin' };
+		mongoose.connect(MongoUrl, { useNewUrlParser: true, auth: EnableMongoAuth ? authArgs : undefined });
 		const DataBase = mongoose.connection;
 		DataBase.on('error', (err) => {
 			MopConsole.error('DB', 'Failed to connect');
