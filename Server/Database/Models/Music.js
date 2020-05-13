@@ -36,15 +36,17 @@ const ArtistSchema = new mongoose.Schema({
 	ImagePath: String,
 });
 
-MusicSchema.plugin(mongoosastic, {
-	hosts: [EsHost],
-});
-AlbumSchema.plugin(mongoosastic, {
-	hosts: [EsHost],
-});
-ArtistSchema.plugin(mongoosastic, {
-	hosts: [EsHost],
-}); //! Can be wrong here
+if (process.env.NODE_ENV !== 'test') {
+	MusicSchema.plugin(mongoosastic, {
+		hosts: [EsHost],
+	});
+	AlbumSchema.plugin(mongoosastic, {
+		hosts: [EsHost],
+	});
+	ArtistSchema.plugin(mongoosastic, {
+		hosts: [EsHost],
+	}); //! Can be wrong here
+}
 
 
 ArtistSchema.static('findOneOrCreate', async function findOneOrCreate(condition, doc) {
@@ -63,10 +65,11 @@ const MusicModel = mongoose.model('Music', MusicSchema, 'Music');
 const AlbumModel = mongoose.model('Album', AlbumSchema, 'Album');
 const ArtistModel = mongoose.model('Artist', ArtistSchema, 'Artist');
 
-MusicModel.synchronize();
-AlbumModel.synchronize();
-ArtistModel.synchronize();
-
+if (process.env.NODE_ENV !== 'test') {
+	MusicModel.synchronize();
+	AlbumModel.synchronize();
+	ArtistModel.synchronize();
+}
 module.exports = {
 	Music: MusicModel,
 	Album: AlbumModel,

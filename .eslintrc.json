@@ -2,7 +2,10 @@
 	"env": {
 		"browser": true,
 		"es6": true,
-		"node": true
+		"node": true,
+		
+		"jest/globals": true
+		  
 	},
 	"extends": ["plugin:react/recommended", "airbnb"],
 	"globals": {
@@ -19,7 +22,7 @@
 			"configFile": "./.babelrc"
 		  }
 	},
-	"plugins": ["react"],
+	"plugins": ["react", "jest"],
 	"rules": {
 		"no-console": "error",
 		"indent": ["error", "tab"],
@@ -38,7 +41,11 @@
 		"jsx-a11y/media-has-caption": "off",
 		"jsx-a11y/no-static-element-interactions": "off",
 		"linebreak-style": ["error", "windows"],
-		"react/jsx-props-no-spreading": "warn"
+		"react/jsx-props-no-spreading": "warn",
+		"no-return-await": "off",
+		"import/no-extraneous-dependencies": "off",
+		"no-restricted-syntax": "off",
+		"guard-for-in": "warn"
 	},
 	"parser": "babel-eslint"
 }
