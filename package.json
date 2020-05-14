@@ -62,7 +62,7 @@
     "webpack-dev-server": "^3.10.3"
   },
   "scripts": {
-    "test": "jest",
+    "test": "jest --runInBand --detectOpenHandles",
     "StartAll": "webpack --mode production && node index.js",
     "BuildClient": "webpack --mode development --watch",
     "BuildClientProd": "webpack --mode production --watch",

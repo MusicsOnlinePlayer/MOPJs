@@ -32,6 +32,6 @@ module.exports = class MopConsole {
 
 	static classic(Message) {
 		/* eslint no-console: "off" */
-		console.log(Message);
+		if (process.env.NODE_ENV !== 'test') { console.log(Message); }
 	}
 };
