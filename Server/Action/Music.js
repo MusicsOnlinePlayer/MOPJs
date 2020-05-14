@@ -61,7 +61,12 @@ const HandleAlbumRequestById = (id, QueryMode) => new Promise((resolve, reject) 
 						AlbumDoc.Name,
 						AlbumDoc.ImagePathDeezer || await AddCoverOfAlbumToDb(AlbumDoc.DeezerId),
 					);
-					AlbumDoc = await Album.findById(id).lean();
+					const newAlbum = await Album.findById(id);
+					await newAlbum.populate({ path: 'MusicsId', options: { sort: { TrackNumber: 1 } }, select: 'TrackNumber _id' })
+						.execPopulate();
+
+					AlbumDoc = await newAlbum.toObject();
+					AlbumDoc.MusicsId = AlbumDoc.MusicsId.map((obj) => obj._id);
 				}
 			}
 			resolve(AlbumDoc);
