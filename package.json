@@ -63,6 +63,7 @@
   },
   "scripts": {
     "test": "jest --runInBand --detectOpenHandles",
+    "build": "webpack --mode production",
     "StartAll": "webpack --mode production && node index.js",
     "BuildClient": "webpack --mode development --watch",
     "BuildClientProd": "webpack --mode production --watch",
