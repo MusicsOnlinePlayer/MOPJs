@@ -1,0 +1,8 @@
+{
+    "DeezerArlToken" : "mytoken",
+    "EsHost" : "http://localhost:9200",
+    "MongoUrl" : "mongodb://localhost:27017/MOP",
+    "EnableMongoAuth": false,
+    "MinLogLevel": 0,
+    "MopPort": 8080
+}
