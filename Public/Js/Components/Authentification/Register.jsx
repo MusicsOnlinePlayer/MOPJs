@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import Axios from 'axios';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { AddMyAccount } from '../../Actions/Action';
 
 function RegisterConnected({ history, dispatch }) {
@@ -53,9 +54,16 @@ function RegisterConnected({ history, dispatch }) {
 				{externalError}
 			</Form.Text>
 
-			<Button variant="primary" type="submit">
-				Register
-			</Button>
+			<Row>
+				<div className="col-md-auto py-auto">
+					<Button variant="primary" type="submit">
+						Register
+					</Button>
+				</div>
+				<div className="col-md-auto">
+					<Link className="my-auto" to="/Login">Use an existing account</Link>
+				</div>
+			</Row>
 		</Form>
 	);
 }

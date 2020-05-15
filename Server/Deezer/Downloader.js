@@ -55,7 +55,7 @@ class DzDownloader {
 	AddtoDownload(musicId) {
 		this.downloadQueue.push(() => new Promise((resolve, reject) => {
 			MopConsole.info('Deezer - Python', `Starting download of musics id ${musicId}`);
-			MopConsole.time('[Deezer - Python]', 'Time ');
+			MopConsole.time('Deezer - Python', 'Time ');
 
 			if (DzDownloader.CheckIfMusicAlreadyExist(musicId)) {
 				MopConsole.warn('Deezer - Python', 'Already downloaded in this queue');
@@ -66,7 +66,7 @@ class DzDownloader {
 			this.GotEndedMessage()
 				.then(async () => {
 					MopConsole.info('Deezer - Python', ' Done.');
-					MopConsole.timeEnd('[Deezer - Python]', 'Time ');
+					MopConsole.timeEnd('Deezer - Python', 'Time ');
 					MopConsole.info('Deezer - Python', 'Adding to database');
 					const MusicPath = DzDownloader.GetPathFromMusicId(musicId);
 					const tags = await ReadTags(MusicPath);

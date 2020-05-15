@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import {
+	Form, Button, Col, Row,
+} from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import Axios from 'axios';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { AddMyAccount } from '../../Actions/Action';
 
 function LoginConnected({ history, dispatch }) {
@@ -54,9 +57,16 @@ function LoginConnected({ history, dispatch }) {
 				{externalError}
 			</Form.Text>
 
-			<Button variant="primary" type="submit">
-				Login
-			</Button>
+			<Row>
+				<div className="col-md-auto py-auto">
+					<Button variant="primary" type="submit">
+						Login
+					</Button>
+				</div>
+				<div className="col-md-auto">
+					<Link className="my-auto" to="/Register">Create an account now</Link>
+				</div>
+			</Row>
 		</Form>
 	);
 }
