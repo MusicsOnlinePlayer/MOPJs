@@ -37,7 +37,7 @@ MusicItemRow.propTypes = {
 	ImageDz: PropTypes.string,
 	Title: PropTypes.string.isRequired,
 	Artist: PropTypes.string.isRequired,
-	children: PropTypes.element,
+	children: PropTypes.arrayOf(PropTypes.element),
 	isAvailable: PropTypes.bool.isRequired,
 };
 

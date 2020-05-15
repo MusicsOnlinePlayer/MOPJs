@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-	Form, Button, Col, Row,
+	Form, Button, Row,
 } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import Axios from 'axios';
