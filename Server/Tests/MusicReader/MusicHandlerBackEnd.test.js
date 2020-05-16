@@ -13,6 +13,7 @@ const {
 	AppendAlbumsToArtist,
 	AppendOrUpdateMusicToAlbum,
 	AddMusicToDatabase,
+	LikeMusic,
 } = require('../../Database/MusicReader/MusicHandlerBackEnd');
 const {
 	Artist,
@@ -20,6 +21,9 @@ const {
 	Music,
 } = require('../../Database/Models/Music');
 
+const {
+	User,
+} = require('../../Database/Models/User');
 
 const SampleArtist = {
 	Name: 'U2',
@@ -47,7 +51,7 @@ afterAll(async () => await dbHandler.closeDatabase());
 
 describe('Music Reader BackEnd', () => {
 	it('Should update image of artist', async () => {
-		const imgPath = 'u2imagepath';
+		const imgPath = 'u2ImagePath';
 
 		const c = await Artist.create(SampleArtist);
 		await AppendDzImageToArtist(SampleArtist.DeezerId, imgPath);
@@ -57,7 +61,7 @@ describe('Music Reader BackEnd', () => {
 	});
 
 	it('Should append album cover to existing album', async () => {
-		const coverPath = 'damncover';
+		const coverPath = 'AlbumCover';
 
 		const c = await Album.create(SampleAlbum);
 		await AppendDzCoverToAlbum(c.DeezerId, coverPath);
@@ -73,7 +77,7 @@ describe('Music Reader BackEnd', () => {
 	});
 
 	it('Should update file path of music', async () => {
-		const path = 'myfilepath';
+		const path = 'MyFilePath';
 		const c = await Music.create(SampleMusic);
 
 		await RegisterDownloadedFile(c.DeezerId, path);
@@ -82,7 +86,7 @@ describe('Music Reader BackEnd', () => {
 		expect(foundMusic.FilePath).toEqual(path);
 	});
 
-	it('Should determin if music exist based on the title', async () => {
+	it('Should determine if music exist based on the title', async () => {
 		expect(await DoesMusicExistsTitle(SampleMusic.Title)).toEqual(false);
 
 		await Music.create(SampleMusic);
@@ -90,8 +94,8 @@ describe('Music Reader BackEnd', () => {
 		expect(await DoesMusicExistsTitle(SampleMusic.Title)).toEqual(true);
 	});
 
-	it('Should determin if music exist based on the file path', async () => {
-		SampleMusic.FilePath = 'myfilepath';
+	it('Should determine if music exist based on the file path', async () => {
+		SampleMusic.FilePath = 'MyFilePath';
 
 		expect(await DoesMusicExists(SampleMusic.FilePath)).toEqual(false);
 
@@ -185,5 +189,44 @@ describe('Music Reader BackEnd', () => {
 		expect(newMusic._id).not.toBe(undefined);
 		expect(newAlbum._id).not.toBe(undefined);
 		expect(newArtist._id).not.toBe(undefined);
+	});
+
+	it('Should be able to like a music', async () => {
+		const MyUser = {
+			username: 'Malau',
+		};
+		const MyMusic = {
+			Title: 'MUSIC1',
+		};
+
+		const MyMusic2 = {
+			Title: 'MUSIC2',
+		};
+
+		const m = await Music.create(MyMusic);
+		const m2 = await Music.create(MyMusic2);
+		const u = await User.create(MyUser);
+
+		await LikeMusic(m._id, u._id);
+		await LikeMusic(m2._id, u._id);
+
+		const newUser1 = await User.findById(u._id).lean();
+		const newMusic1 = await Music.findById(m._id);
+		const newMusic2 = await Music.findById(m2._id);
+
+		expect(newUser1.LikedMusics).toEqual([m._id, m2._id]);
+		expect(newMusic1.Likes).toEqual(1);
+		expect(newMusic2.Likes).toEqual(1);
+
+		await LikeMusic(m._id, u._id);
+		await LikeMusic(m2._id, u._id);
+
+		const newMusic3 = await Music.findById(m._id);
+		const newMusic4 = await Music.findById(m2._id);
+		const newUser2 = await User.findById(u._id).lean();
+
+		expect(newUser2.LikedMusics).toEqual([]);
+		expect(newMusic3.Likes).toEqual(0);
+		expect(newMusic4.Likes).toEqual(0);
 	});
 });

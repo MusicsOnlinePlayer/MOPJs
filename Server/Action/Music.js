@@ -10,7 +10,7 @@ const {
 	AddImageOfArtistToDb,
 	AddAlbumOfArtistToDb,
 } = require('../Deezer');
-const { FindAlbumContainingMusic } = require('../Database/MusicReader');
+const { FindAlbumContainingMusic, LikeMusic } = require('../Database/MusicReader');
 
 const HandleMusicRequestById = (id) => new Promise((resolve, reject) => {
 	Music.findById(id, async (err, doc) => {
@@ -117,13 +117,13 @@ const GetMusicFilePath = (id, UserReq) => new Promise((resolve, reject) => {
 		MusicDoc.LastView = Date.now();
 		MusicDoc.save();
 		if (UserReq) {
-			User.findById(UserReq._id, (Usererr, Userdoc) => {
-				if (Usererr) {
-					MopConsole.error('Music - User - History', Usererr);
+			User.findById(UserReq._id, (UserErr, UserDoc) => {
+				if (UserErr) {
+					MopConsole.error('Music - User - History', UserErr);
 					return;
 				}
-				Userdoc.ViewedMusics.push(MusicDoc._id);
-				Userdoc.save();
+				UserDoc.ViewedMusics.push(MusicDoc._id);
+				UserDoc.save();
 				MopConsole.info('Musics', 'Saved to user history');
 			});
 		}
@@ -136,9 +136,17 @@ const GetMusicFilePath = (id, UserReq) => new Promise((resolve, reject) => {
 	});
 });
 
+const HandleLikeMusic = (UserReq, MusicId) => new Promise((resolve, reject) => {
+	if (!UserReq) reject();
+	// TODO validate music id
+	LikeMusic(MusicId, UserReq._id)
+		.then(() => resolve());
+});
+
 module.exports = {
 	HandleMusicRequestById,
 	HandleAlbumRequestById,
 	HandleArtistRequestById,
 	GetMusicFilePath,
+	HandleLikeMusic,
 };

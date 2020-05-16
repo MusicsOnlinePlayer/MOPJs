@@ -1,7 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 const MopConsole = require('../../Tools/MopConsole');
-const { Music, Album, Artist } = require('../Models');
+const {
+	Music, Album, Artist, User,
+} = require('../Models');
 const { ArtistsImageFolder } = require('./Utils');
 
 /** This function performs a save on MongoDB.
@@ -253,6 +255,29 @@ const GetMusicCount = () => new Promise((resolve, reject) => {
 		.catch((err) => reject(err));
 });
 
+/** This function increment like count on music as well as adding it to liked music of the user
+ * if it is already like, then it will dislike the music to undo.
+ * @param {ObjectId} MusicId - Music to like
+ * @param {ObjectId} UserId - User who liked the music
+ */
+const LikeMusic = async (MusicId, UserId) => {
+	const UserLikedMusic = await Music.findById(MusicId);
+
+	const FoundUser = await User.findById(UserId);
+	const index = FoundUser.LikedMusics.indexOf(UserLikedMusic._id);
+	if (index === -1) {
+		FoundUser.LikedMusics.push(UserLikedMusic._id);
+		UserLikedMusic.Likes += 1;
+	} else {
+		FoundUser.LikedMusics.splice(index, 1);
+		UserLikedMusic.Likes -= 1;
+	}
+
+	await UserLikedMusic.save();
+	await FoundUser.save();
+};
+
+
 module.exports = {
 	AddMusicToDatabase,
 	AppendOrUpdateMusicToAlbum,
@@ -265,4 +290,5 @@ module.exports = {
 	RegisterDownloadedFile,
 	FindAlbumContainingMusic,
 	GetMusicCount,
+	LikeMusic,
 };

@@ -8,6 +8,7 @@ const {
 	HandleNewCoverFromDz,
 	HandleNewImageFromDz,
 	FindAlbumContainingMusic,
+	LikeMusic,
 } = require('./MusicHandler');
 const { DoIndexation } = require('./Indexer');
 
@@ -23,4 +24,5 @@ module.exports = {
 	HandleNewCoverFromDz,
 	HandleNewImageFromDz,
 	FindAlbumContainingMusic,
+	LikeMusic,
 };

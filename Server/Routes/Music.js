@@ -10,6 +10,7 @@ const {
 	HandleAlbumRequestById,
 	HandleArtistRequestById,
 	GetMusicFilePath,
+	HandleLikeMusic,
 } = require('../Action/Music');
 
 const {
@@ -45,6 +46,12 @@ app.get('/Music/id/:id', EnsureAuth, (req, res) => {
 	HandleMusicRequestById(req.params.id)
 		.then((Music) => res.send(Music))
 		.catch(() => res.send({}));
+});
+
+app.get('Music/Like/:id', EnsureAuth, (req, res) => {
+	HandleLikeMusic(req.user, req.params.id)
+		.then(() => res.sendStatus(200))
+		.catch(() => res.sendStatus(300));
 });
 
 app.get('/Music/get/:id', EnsureAuth, (req, res) => {

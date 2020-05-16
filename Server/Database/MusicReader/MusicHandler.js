@@ -9,6 +9,7 @@ const {
 	DoesMusicExists,
 	FindAlbumContainingMusic,
 	GetMusicCount,
+	LikeMusic,
 } = require('./MusicHandlerBackEnd');
 
 /** This function add a new music with tags coming from ID3 file.
@@ -106,4 +107,5 @@ module.exports = {
 	DoesMusicExists,
 	FindAlbumContainingMusic,
 	GetMusicCount,
+	LikeMusic,
 };
