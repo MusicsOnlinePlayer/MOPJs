@@ -12,8 +12,8 @@ const SaveAndIndex = (MyMusicModel) => new Promise((resolve) => {
 	MyMusicModel.save((err, savedModel) => {
 		if (err) throw err;
 
-		MyMusicModel.on('es-indexed', (erres) => {
-			if (erres) throw erres;
+		MyMusicModel.on('es-indexed', (ErrorEs) => {
+			if (ErrorEs) throw ErrorEs;
 
 			resolve(savedModel);
 		});
@@ -22,33 +22,33 @@ const SaveAndIndex = (MyMusicModel) => new Promise((resolve) => {
 
 /** This function performs a save of music in the database while adding
  * new artist if it doesn't already exists and also adding a new album if it doesn't already exists.
- * @param {object} doctags - All tags about the music (see Tags.js for more details)
- * @param {string} doctags.Title - Title of the music
- * @param {number=} doctags.DeezerId - Deezer Id
- * @param {string} doctags.Artist - Artist Name
- * @param {number=} doctags.ArtistDzId - Deezer Id of the music Artist
- * @param {string} doctags.Album - Album Name
- * @param {string=} doctags.Image - Cover of album in base64
- * @param {string=} doctags.ImagePathDeezer - url or path of album cover on deezer
- * @param {string=} doctags.ImageFormat - Format of the base64 image
+ * @param {object} MusicTags - All tags about the music (see Tags.js for more details)
+ * @param {string} MusicTags.Title - Title of the music
+ * @param {number=} MusicTags.DeezerId - Deezer Id
+ * @param {string} MusicTags.Artist - Artist Name
+ * @param {number=} MusicTags.ArtistDzId - Deezer Id of the music Artist
+ * @param {string} MusicTags.Album - Album Name
+ * @param {string=} MusicTags.Image - Cover of album in base64
+ * @param {string=} MusicTags.ImagePathDeezer - url or path of album cover on deezer
+ * @param {string=} MusicTags.ImageFormat - Format of the base64 image
  * @param {string=} ArtistImage - The path of the Artist image
  * @param {boolean} [EnableEsIndexWait=false] - This option indicate if it should wait for
  * ElasticSearch index before moving on
  * */
-async function AddMusicToDatabase(doctags, ArtistImage = undefined, EnableEsIndexWait = false) {
-	let guessedPath = `${doctags.Artist}.jpg`;
+async function AddMusicToDatabase(MusicTags, ArtistImage = undefined, EnableEsIndexWait = false) {
+	let guessedPath = `${MusicTags.Artist}.jpg`;
 
 	if (!fs.existsSync(path.join(ArtistsImageFolder, guessedPath))) { guessedPath = undefined; }
 
 	const NewTagsForAlbum = {
-		Name: doctags.Album,
-		DeezerId: doctags.AlbumDzId,
-		Image: doctags.Image,
-		ImagePathDeezer: doctags.ImagePathDeezer,
-		ImageFormat: doctags.ImageFormat,
+		Name: MusicTags.Album,
+		DeezerId: MusicTags.AlbumDzId,
+		Image: MusicTags.Image,
+		ImagePathDeezer: MusicTags.ImagePathDeezer,
+		ImageFormat: MusicTags.ImageFormat,
 	};
 
-	const NewTagsForMusicDocs = doctags;
+	const NewTagsForMusicDocs = MusicTags;
 
 	NewTagsForMusicDocs.Image = undefined;
 	NewTagsForMusicDocs.ImagePathDeezer = undefined;
@@ -58,8 +58,8 @@ async function AddMusicToDatabase(doctags, ArtistImage = undefined, EnableEsInde
 	const newMusic = new Music(NewTagsForMusicDocs);
 	const newAlbum = new Album(NewTagsForAlbum);
 	const newArtist = new Artist({
-		Name: doctags.Artist,
-		DeezerId: doctags.ArtistDzId,
+		Name: MusicTags.Artist,
+		DeezerId: MusicTags.ArtistDzId,
 		ImagePath: ArtistImage || guessedPath,
 	});
 
@@ -96,7 +96,7 @@ async function AddMusicToDatabase(doctags, ArtistImage = undefined, EnableEsInde
  * @param {number} tags.TrackNumber - The new track number
  */
 const UpdateIfNeededTrackNumber = (tags) => new Promise((resolve) => {
-	MopConsole.info('Music - Handler', `Updated tracknumber of music with dzId ${tags.DeezerId} to ${tags.TrackNumber}`);
+	MopConsole.info('Music - Handler', `Updated Track Number of music with dzId ${tags.DeezerId} to ${tags.TrackNumber}`);
 	Music.findOneAndUpdate({ DeezerId: tags.DeezerId }, { TrackNumber: tags.TrackNumber })
 		.then(() => {
 			// console.log(`[Music Indexer] Update track number of ${tags.Title}`);
@@ -118,7 +118,7 @@ const AppendMusicToAlbum = async (tags, AlbumDzId) => {
 };
 
 /** This function decide if a music should be added to an album or just
- * need it's tracknumber to be modified
+ * need it's track number to be modified
  * @param {object} tags - Tags of the music
  * @param {number} AlbumDzId - Deezer id of the album
 */
@@ -179,7 +179,7 @@ async function UpdateAlbumCompleteStatus(AlbumDzId) {
 }
 
 /** This function perform an update on the database by modifying the ImagePathDeezer attributes.
- * It will add album cover comming from deezer
+ * It will add album cover coming from deezer
  * @param {Number} AlbumDzId - The Deezer id of the album that need a new cover
  * @param {string} ImagePathDeezer - The path or url of the album cover coming from deezer.
 */
@@ -230,7 +230,7 @@ const DoesMusicExistsTitle = async (Title) => {
 	return count > 0;
 };
 
-/** This function updates filepath of a music
+/** This function updates music path of a music
  * @param {number} DeezerId - Deezer Id of the music
  * @param {string} filePath - New music path of the music
  */
