@@ -27,7 +27,8 @@ app.get('/Search/Music/Name/:name', EnsureAuth, (req, res) => {
 			SearchMusic(req.params.name)
 				.then((searchResult) => res.send(searchResult))
 				.catch(() => res.send({}));
-		});
+		})
+		.catch(() => res.send({}));
 });
 
 app.get('/Search/Album/Name/:name', EnsureAuth, (req, res) => {
@@ -43,12 +44,12 @@ app.get('/Search/Artist/Name/:name', EnsureAuth, (req, res) => {
 });
 
 app.get('/Music/id/:id', EnsureAuth, (req, res) => {
-	HandleMusicRequestById(req.params.id)
+	HandleMusicRequestById(req.params.id, req.user)
 		.then((Music) => res.send(Music))
 		.catch(() => res.send({}));
 });
 
-app.get('Music/Like/:id', EnsureAuth, (req, res) => {
+app.get('/Music/Like/:id', EnsureAuth, (req, res) => {
 	HandleLikeMusic(req.user, req.params.id)
 		.then(() => res.sendStatus(200))
 		.catch(() => res.sendStatus(300));

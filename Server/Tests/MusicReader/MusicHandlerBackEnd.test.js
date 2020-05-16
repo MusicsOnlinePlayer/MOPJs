@@ -14,6 +14,7 @@ const {
 	AppendOrUpdateMusicToAlbum,
 	AddMusicToDatabase,
 	LikeMusic,
+	CheckLikeMusic,
 } = require('../../Database/MusicReader/MusicHandlerBackEnd');
 const {
 	Artist,
@@ -228,5 +229,29 @@ describe('Music Reader BackEnd', () => {
 		expect(newUser2.LikedMusics).toEqual([]);
 		expect(newMusic3.Likes).toEqual(0);
 		expect(newMusic4.Likes).toEqual(0);
+	});
+
+	it('Should check if a music is liked or not', async () => {
+		const MyMusic = {
+			Title: 'MUSIC1',
+		};
+
+		const m = await Music.create(MyMusic);
+
+		const MyUser = {
+			username: 'Malau',
+			LikedMusics: [m._id],
+		};
+
+		const u = await User.create(MyUser);
+		const IsLiked = await CheckLikeMusic(m._id, u._id);
+
+		expect(IsLiked).toEqual(true);
+
+		await LikeMusic(m._id, u._id);
+
+		const IsLiked2 = await CheckLikeMusic(m._id, u._id);
+
+		expect(IsLiked2).toEqual(false);
 	});
 });

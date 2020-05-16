@@ -10,9 +10,9 @@ const {
 	AddImageOfArtistToDb,
 	AddAlbumOfArtistToDb,
 } = require('../Deezer');
-const { FindAlbumContainingMusic, LikeMusic } = require('../Database/MusicReader');
+const { FindAlbumContainingMusic, LikeMusic, CheckLikeMusic } = require('../Database/MusicReader');
 
-const HandleMusicRequestById = (id) => new Promise((resolve, reject) => {
+const HandleMusicRequestById = (id, UserReq) => new Promise((resolve, reject) => {
 	Music.findById(id, async (err, doc) => {
 		if (err) {
 			MopConsole.error('Music', err);
@@ -33,6 +33,7 @@ const HandleMusicRequestById = (id) => new Promise((resolve, reject) => {
 			MusicDoc.Image = AlbumOfMusic.Image;
 			MusicDoc.ImagePathDeezer = AlbumOfMusic.ImagePathDeezer;
 			MusicDoc.ImageFormat = AlbumOfMusic.ImageFormat;
+			MusicDoc.IsLiked = await CheckLikeMusic(MusicDoc._id, UserReq._id);
 		}
 		resolve(MusicDoc);
 	});

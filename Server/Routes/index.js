@@ -5,6 +5,10 @@ const MopConsole = require('../Tools/MopConsole');
 module.exports = express();
 const app = module.exports;
 // const compression = require('compression');
+app.use((req, res, next) => {
+	MopConsole.standard('Path - Log', req.url);
+	next();
+});
 app.use('/User', require('./User'));
 app.use('/Music', require('./Music'));
 
@@ -19,9 +23,3 @@ app.use(express.static(staticPath));
 app.use(express.static(MusicsFolder));
 app.use(express.static(ArtistsImageFolder));
 app.use(express.static(path.join(__dirname, '../../Public/Dist')));
-
-
-app.use((req, res, next) => {
-	MopConsole.standard('Path - Log', req.url);
-	next();
-});

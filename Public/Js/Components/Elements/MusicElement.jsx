@@ -54,6 +54,12 @@ class MusicElementConnected extends React.Component {
 		AddMusic(ApiResult);
 	};
 
+	HandleLike = () => {
+		const { id } = this.props;
+
+		Axios.get(`/Music/Music/Like/${id}`).then(() => {});
+	}
+
 	componentWillUnmount = () => {
 		this.setState = () => {
 
@@ -85,12 +91,27 @@ class MusicElementConnected extends React.Component {
 				isAvailable={isAvailable}
 			>
 				<td className="align-middle">
-					<LikeButton onLike={() => {}} />
+					{
+						ApiResult
+							? (
+								<LikeButton
+									onLike={this.HandleLike}
+									defaultLikeState={ApiResult ? ApiResult.IsLiked : undefined}
+								/>
+							)
+							: undefined
+					}
+
 				</td>
 				<td className="align-middle" style={{ width: '24px' }}>
-					<ButtonIcon faIcon={faPlus} onClick={this.HandleAdd} buttonClass="float-right" />
+					{
+						ApiResult
+							? (
+								<ButtonIcon faIcon={faPlus} onClick={this.HandleAdd} buttonClass="float-right" />
+							)
+							: undefined
+					}
 				</td>
-
 			</MusicItemRow>
 		);
 	}

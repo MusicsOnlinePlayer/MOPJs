@@ -277,6 +277,17 @@ const LikeMusic = async (MusicId, UserId) => {
 	await FoundUser.save();
 };
 
+/** This function check if this particular music is like by a specified user
+ * @param {ObjectId} MusicId - Music to like
+ * @param {ObjectId} UserId - User who liked the music
+ * @returns {boolean} Is music liked ?
+ */
+const CheckLikeMusic = async (MusicId, UserId) => {
+	const FoundUser = await User.findById(UserId);
+	const index = FoundUser.LikedMusics.indexOf(MusicId._id);
+	return index !== -1;
+};
+
 
 module.exports = {
 	AddMusicToDatabase,
@@ -291,4 +302,5 @@ module.exports = {
 	FindAlbumContainingMusic,
 	GetMusicCount,
 	LikeMusic,
+	CheckLikeMusic,
 };
