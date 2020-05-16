@@ -5,6 +5,8 @@ const { ReadTags } = require('./Tags');
 const { HandleNewMusicFromDisk, DoesMusicExists, GetMusicCount } = require('./MusicHandler');
 const MopConsole = require('../../Tools/MopConsole');
 
+/** This function perform an indexation on the MusicsFolder
+ */
 const Indexation = async () => {
 	MopConsole.info('Music Indexer', 'Starting indexing');
 	MopConsole.time('Music Indexer', 'Time ');

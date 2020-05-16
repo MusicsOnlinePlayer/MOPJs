@@ -38,7 +38,7 @@ function RegisterConnected({ history, dispatch }) {
 				<Form.Label>Name</Form.Label>
 				<Form.Control name="name" type="text" placeholder="Enter your name" ref={register({ required: true, maxLength: 20, minLength: 3 })} />
 				<Form.Text className="text-muted">
-					{errors.name && 'Name is required with a length beetween 3 and 20 characters.'}
+					{errors.name && 'Name is required with a length between 3 and 20 characters.'}
 				</Form.Text>
 			</Form.Group>
 

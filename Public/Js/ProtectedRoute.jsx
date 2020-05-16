@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Redirect, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Axios from 'axios';
@@ -17,6 +18,16 @@ const mapStateToProps = (state) => ({
 });
 
 class ProtectedRouteConnected extends React.Component {
+	static propTypes = {
+		AddMyAccount: PropTypes.func.isRequired,
+		component: PropTypes.element.isRequired,
+		Account: PropTypes.shape(),
+	}
+
+	static defaultProps = {
+		Account: undefined,
+	}
+
 	constructor(props) {
 		super(props);
 		this.state = {

@@ -2,7 +2,7 @@ const fs = require('fs');
 const mm = require('musicmetadata');
 const MopConsole = require('../../Tools/MopConsole');
 
-/** This function retreives ID3 tags of a music
+/** This function retrieves ID3 tags of a music
  * @param {string} filePath - File path of the music
  */
 const ReadTags = (filePath) => new Promise((resolve, reject) => {
@@ -29,7 +29,7 @@ const ReadTags = (filePath) => new Promise((resolve, reject) => {
  */
 function ConvertTagsFromDisc(tags, MusicFilePath) {
 	const { birthtime } = fs.statSync(MusicFilePath);
-	const doctags = {
+	const MusicTags = {
 		Title: tags.title,
 		Album: tags.album,
 		Artist: tags.artist[0],
@@ -39,9 +39,9 @@ function ConvertTagsFromDisc(tags, MusicFilePath) {
 		Image: tags.picture[0] ? tags.picture[0].data.toString('base64') : '',
 		ImageFormat: tags.picture[0] ? tags.picture[0].format : '',
 	};
-	return doctags;
+	return MusicTags;
 }
-/** This function normalize tags coming from Deeezer
+/** This function normalize tags coming from Deezer
  * @param {object} tags - Tags coming from Deezer
  * @param {string} tags.title - Music title
  * @param {object} tags.album - Album details
@@ -72,7 +72,7 @@ function ConvertTagsFromDz(
 		MopConsole.warn('Tags - Deezer', `Additional args provided - CustomAlbumName: ${CustomAlbumName} CustomAlbumDzId: ${CustomAlbumDzId}`);
 	}
 
-	const doctags = {
+	const MusicTags = {
 		Title: tags.title,
 		Album: CustomAlbumName || tags.album.title,
 		AlbumDzId: CustomAlbumDzId || tags.album.id,
@@ -83,7 +83,7 @@ function ConvertTagsFromDz(
 		ImagePathDeezer: CustomCoverPath || tags.album.cover_big,
 		DeezerId,
 	};
-	return doctags;
+	return MusicTags;
 }
 
 module.exports = {
