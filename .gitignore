@@ -1,6 +1,7 @@
 *png
 *jpg
 *mp3
+*bundle.js
 /node_modules/**
 *properties
 deeezertest.js
@@ -8,4 +9,3 @@ Server/Config/MopConf.json
 /ArtistImages/**
 /MusicsFolderProd/**
 /MusicsFolder/**
-Public/Dist/**

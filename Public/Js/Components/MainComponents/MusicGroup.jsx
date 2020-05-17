@@ -16,7 +16,7 @@ const mapDispatchToProps = (dispatch) => ({
 	},
 });
 
-class UserMusicDetailsConnected extends React.Component {
+class MusicGroupConnected extends React.Component {
 	static propTypes = {
 		ClearPlaylist: PropTypes.func.isRequired,
 		AddMusics: PropTypes.func.isRequired,
@@ -71,6 +71,6 @@ class UserMusicDetailsConnected extends React.Component {
 	}
 }
 
-const UserMusicDetails = connect(null, mapDispatchToProps)(UserMusicDetailsConnected);
+const MusicGroup = connect(null, mapDispatchToProps)(MusicGroupConnected);
 
-export default UserMusicDetails;
+export default MusicGroup;

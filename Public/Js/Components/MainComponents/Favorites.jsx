@@ -1,6 +1,6 @@
 import React from 'react';
 import Axios from 'axios';
-import UserMusicDetails from './UserMusicDetails';
+import MusicGroup from './MusicGroup';
 
 class Favorites extends React.Component {
 	constructor(props) {
@@ -22,7 +22,7 @@ class Favorites extends React.Component {
 		const { MusicIds } = this.state;
 
 		if (MusicIds) {
-			return <UserMusicDetails MusicIds={MusicIds} DetailType="Favorites" />;
+			return <MusicGroup MusicIds={MusicIds} DetailType="Favorites" />;
 		}
 
 		return <></>;
