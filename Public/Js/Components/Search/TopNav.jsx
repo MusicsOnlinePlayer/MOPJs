@@ -35,7 +35,7 @@ export default class TopNav extends React.Component {
 		const { SearchValue } = this.state;
 		return (
 			<Navbar bg="light" expand="lg" className="justify-content-between">
-				<Navbar.Brand href="#home">Mop - Js Edition</Navbar.Brand>
+				<Navbar.Brand href="#">Mop - Js Edition</Navbar.Brand>
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
 					<Form inline onSubmit={this.handleSearch}>

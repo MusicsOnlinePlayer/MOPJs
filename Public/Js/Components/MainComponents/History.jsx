@@ -1,8 +1,19 @@
 import React from 'react';
 import Axios from 'axios';
+import PropTypes from 'prop-types';
 import MusicGroup from './MusicGroup';
 
 class History extends React.Component {
+	static propTypes = {
+		Size: PropTypes.number,
+		RemoveDups: PropTypes.bool,
+	}
+
+	static defaultProps = {
+		Size: undefined,
+		RemoveDups: false,
+	}
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -11,9 +22,12 @@ class History extends React.Component {
 	}
 
 	componentDidMount() {
+		const { Size, RemoveDups } = this.props;
+
 		Axios.get('/User/ViewedMusics').then((res) => {
+			const MusicIds = res.data.MusicsId.slice(0, Size);
 			this.setState({
-				MusicIds: res.data.MusicsId,
+				MusicIds: RemoveDups ? [...new Set(MusicIds)] : MusicIds,
 			});
 		});
 	}

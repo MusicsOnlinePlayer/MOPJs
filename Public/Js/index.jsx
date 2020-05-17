@@ -16,6 +16,7 @@ const App = () => (
 
 				<ScrollToTop />
 				<ProtectedRoute path="/" component={React.lazy(() => import('./Components/Search/TopNav'))} />
+				<ProtectedRoute path="/" component={React.lazy(() => import('./Components/MainComponents/MainPage'))} />
 				<Route path="/" component={React.lazy(() => import('./Components/MusicPlayer/Player'))} />
 				<Route path="/Login" component={React.lazy(() => import('./Components/Authentification/Login'))} />
 				<Route path="/Register" component={React.lazy(() => import('./Components/Authentification/Register'))} />

@@ -1,8 +1,17 @@
 import React from 'react';
 import Axios from 'axios';
+import PropTypes from 'prop-types';
 import MusicGroup from './MusicGroup';
 
 class Favorites extends React.Component {
+	static propTypes = {
+		Size: PropTypes.number,
+	}
+
+	static defaultProps = {
+		Size: undefined,
+	}
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -11,9 +20,11 @@ class Favorites extends React.Component {
 	}
 
 	componentDidMount() {
+		const { Size } = this.props;
+
 		Axios.get('/User/LikedMusics').then((res) => {
 			this.setState({
-				MusicIds: res.data.MusicsId,
+				MusicIds: res.data.MusicsId.slice(0, Size),
 			});
 		});
 	}
