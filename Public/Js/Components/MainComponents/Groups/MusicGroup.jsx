@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Row, Spinner } from 'react-bootstrap';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -22,6 +22,11 @@ class MusicGroupConnected extends React.Component {
 		AddMusics: PropTypes.func.isRequired,
 		MusicIds: PropTypes.arrayOf(PropTypes.string).isRequired,
 		DetailType: PropTypes.string.isRequired,
+		IsFetching: PropTypes.bool,
+	}
+
+	static defaultProps = {
+		IsFetching: false,
 	}
 
 	constructor(props) {
@@ -46,10 +51,25 @@ class MusicGroupConnected extends React.Component {
 	};
 
 	render() {
-		const { MusicIds, DetailType } = this.props;
+		const { MusicIds, DetailType, IsFetching } = this.props;
 
 		const MusicItems = MusicIds
 			.map((id) => <MusicElement key={id} id={id} onDataReceived={this.onDataReceived} />);
+
+		// TODO add empty graphic here
+
+		if (IsFetching) {
+			return (
+				<div className="m-5">
+					<small className="text-muted">
+						<h5>Musics</h5>
+					</small>
+					<Spinner animation="border" role="status" size="lg">
+						<span className="sr-only">Loading...</span>
+					</Spinner>
+				</div>
+			);
+		}
 
 		return (
 			<div className="m-4">

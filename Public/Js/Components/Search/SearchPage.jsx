@@ -67,13 +67,15 @@ class SearchPage extends React.Component {
 	};
 
 	render() {
-		const { MusicIds, AlbumIds, ArtistIds } = this.state;
+		const {
+			MusicIds, AlbumIds, ArtistIds, IsFetching,
+		} = this.state;
 
 		return (
 			<div>
-				<MusicGroup MusicIds={MusicIds} DetailType="Musics" />
-				<AlbumGroup AlbumIds={AlbumIds} DetailType="Albums" />
-				<ArtistGroup ArtistIds={ArtistIds} DetailType="Artists" />
+				<MusicGroup MusicIds={MusicIds} DetailType="Musics" IsFetching={IsFetching} />
+				<AlbumGroup AlbumIds={AlbumIds} DetailType="Albums" IsFetching={IsFetching} />
+				<ArtistGroup ArtistIds={ArtistIds} DetailType="Artists" IsFetching={IsFetching} />
 			</div>
 		);
 	}
