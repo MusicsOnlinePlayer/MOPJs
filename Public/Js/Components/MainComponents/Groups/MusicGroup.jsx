@@ -3,9 +3,9 @@ import { Col, Row } from 'react-bootstrap';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { ClearPlaylist as ClearPlaylistRedux, AddMultipleMusics as AddMultipleMusicsRedux } from '../../Actions/Action';
-import MusicElement from '../Elements/MusicElement';
-import ButtonIcon from '../Helper/ButtonIcon';
+import { ClearPlaylist as ClearPlaylistRedux, AddMultipleMusics as AddMultipleMusicsRedux } from '../../../Actions/Action';
+import MusicElement from '../../Elements/MusicElement';
+import ButtonIcon from '../../Helper/ButtonIcon';
 
 const mapDispatchToProps = (dispatch) => ({
 	ClearPlaylist: () => {

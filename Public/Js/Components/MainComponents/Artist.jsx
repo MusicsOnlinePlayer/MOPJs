@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Axios from 'axios';
-import { Row, Col } from 'react-bootstrap';
-import AlbumElement from '../Elements/AlbumElement';
+import AlbumGroup from './Groups/AlbumGroup';
 
 
 class Artist extends React.Component {
@@ -35,22 +34,8 @@ class Artist extends React.Component {
 
 	render() {
 		const { ArtistName, AlbumsId } = this.state;
-		const Albums = AlbumsId
-			.map((id) => <AlbumElement key={id} id={id} />);
-		return (
-			<div className="m-4">
-				<Row className="p-1">
-					<Col>
-						<small className="text-muted">
-							<h5>{ArtistName}</h5>
-						</small>
-					</Col>
-				</Row>
-				<div className="card-deck">
-					{Albums}
-				</div>
-			</div>
-		);
+
+		return <AlbumGroup AlbumIds={AlbumsId} DetailType={ArtistName} />;
 	}
 }
 

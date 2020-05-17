@@ -1,7 +1,7 @@
 import React from 'react';
 import Axios from 'axios';
 import PropTypes from 'prop-types';
-import MusicGroup from './MusicGroup';
+import MusicGroup from './Groups/MusicGroup';
 
 class Favorites extends React.Component {
 	static propTypes = {

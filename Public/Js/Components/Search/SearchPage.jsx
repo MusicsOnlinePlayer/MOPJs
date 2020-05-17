@@ -1,91 +1,59 @@
 import QueryString from 'query-string';
 import Axios from 'axios';
-import { connect } from 'react-redux';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	RequestSearch as RequestSearchRedux,
-	ReceiveMusics as ReceiveMusicsRedux,
-	ReceiveAlbums as ReceiveAlbumsRedux,
-	ReceiveArtists as ReceiveArtistsRedux,
-	FailSearch as FailSearchRedux,
-} from '../../Actions/Action';
-import MusicsContainer from '../Containers/MusicsContainer';
-import AlbumsContainer from '../Containers/AlbumsContainer';
-import ArtistsContainer from '../Containers/ArtistsContainer';
+import MusicGroup from '../MainComponents/Groups/MusicGroup';
+import AlbumGroup from '../MainComponents/Groups/AlbumGroup';
+import ArtistGroup from '../MainComponents/Groups/ArtistGroup';
 
-const mapStateToProps = (state) => ({
-	IsFetching: state.MusicSearchReducer.IsFetching,
-	SearchQuery: state.MusicSearchReducer.SearchQuery,
-});
 
-function mapDispatchToProps(dispatch) {
-	return {
-		RequestSearch: (Search) => dispatch(RequestSearchRedux(Search)),
-		ReceiveMusics: (SearchResults) => dispatch(ReceiveMusicsRedux(SearchResults)),
-		ReceiveAlbums: (SearchResults) => dispatch(ReceiveAlbumsRedux(SearchResults)),
-		ReceiveArtists: (SearchResults) => dispatch(ReceiveArtistsRedux(SearchResults)),
-		FailSearch: (err) => dispatch(FailSearchRedux(err)),
-	};
-}
-
-class SearchPageConnected extends React.Component {
+class SearchPage extends React.Component {
 	static propTypes = {
 		location: PropTypes.shape({
 			search: PropTypes.string.isRequired,
 		}).isRequired,
-		IsFetching: PropTypes.bool.isRequired,
-		SearchQuery: PropTypes.string.isRequired,
-		ReceiveAlbums: PropTypes.func.isRequired,
-		ReceiveMusics: PropTypes.func.isRequired,
-		ReceiveArtists: PropTypes.func.isRequired,
-		RequestSearch: PropTypes.func.isRequired,
-		FailSearch: PropTypes.func.isRequired,
 	}
 
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			MusicIds: [],
+			AlbumIds: [],
+			ArtistIds: [],
+			IsFetching: false,
+			PrevSearch: undefined,
+		};
 	}
 
 
 	ApiSearch = () => {
 		const {
 			location,
-			IsFetching,
-			SearchQuery,
-			ReceiveAlbums,
-			ReceiveMusics,
-			ReceiveArtists,
-			RequestSearch,
-			FailSearch,
 		} = this.props;
+
+		const { IsFetching, PrevSearch } = this.state;
 
 		const values = QueryString.parse(location.search);
 
-		if (!IsFetching && values.q !== SearchQuery) {
-			RequestSearch(values.q);
-
+		if (values.q !== PrevSearch && !IsFetching) {
+			this.setState({
+				IsFetching: true,
+				PrevSearch: values.q,
+			});
 			Axios.get(`/Music/Search/Music/Name/${values.q}`)
 				.then((res) => {
-					ReceiveMusics(res.data);
+					this.setState({ MusicIds: res.data });
 					Axios.get(`/Music/Search/Album/Name/${values.q}`)
 						.then((res2) => {
-							ReceiveAlbums(res2.data);
+							this.setState({ AlbumIds: res2.data });
 							Axios.get(`/Music/Search/Artist/Name/${values.q}`)
 								.then((res3) => {
-									ReceiveArtists(res3.data);
-								})
-								.catch((err3) => {
-									FailSearch(err3.message);
+									this.setState({
+										ArtistIds: res3.data,
+										IsFetching: false,
+									});
 								});
-						})
-						.catch((err2) => {
-							FailSearch(err2.message);
 						});
-				})
-				.catch((err) => {
-					FailSearch(err.message);
 				});
 		}
 	};
@@ -99,16 +67,15 @@ class SearchPageConnected extends React.Component {
 	};
 
 	render() {
+		const { MusicIds, AlbumIds, ArtistIds } = this.state;
+
 		return (
 			<div>
-				<MusicsContainer />
-				<AlbumsContainer />
-				<ArtistsContainer />
+				<MusicGroup MusicIds={MusicIds} DetailType="Musics" />
+				<AlbumGroup AlbumIds={AlbumIds} DetailType="Albums" />
+				<ArtistGroup ArtistIds={ArtistIds} DetailType="Artists" />
 			</div>
 		);
 	}
 }
-
-const SearchPage = connect(mapStateToProps, mapDispatchToProps)(SearchPageConnected);
-
 export default SearchPage;
