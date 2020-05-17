@@ -19,10 +19,12 @@ const App = () => (
 				<Route path="/" component={React.lazy(() => import('./Components/MusicPlayer/Player'))} />
 				<Route path="/Login" component={React.lazy(() => import('./Components/Authentification/Login'))} />
 				<Route path="/Register" component={React.lazy(() => import('./Components/Authentification/Register'))} />
+				<ProtectedRoute path="/Favorites" component={React.lazy(() => import('./Components/MainComponents/Favorites'))} />
+				<ProtectedRoute path="/History" component={React.lazy(() => import('./Components/MainComponents/History'))} />
 				<ProtectedRoute path="/Search" component={React.lazy(() => import('./Components/Search/SearchPage'))} />
-				<ProtectedRoute path="/Playlist" component={React.lazy(() => import('./Components/Containers/PlaylistContainer'))} />
-				<ProtectedRoute path="/Album/:id" component={React.lazy(() => import('./Components/Albums/Album'))} />
-				<ProtectedRoute path="/Artist/:id" component={React.lazy(() => import('./Components/Albums/Artist'))} />
+				<ProtectedRoute path="/CurrentPlaylist" component={React.lazy(() => import('./Components/Containers/PlaylistContainer'))} />
+				<ProtectedRoute path="/Album/:id" component={React.lazy(() => import('./Components/MainComponents/Album'))} />
+				<ProtectedRoute path="/Artist/:id" component={React.lazy(() => import('./Components/MainComponents/Artist'))} />
 
 			</HashRouter>
 		</Suspense>

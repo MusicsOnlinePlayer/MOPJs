@@ -1,7 +1,8 @@
 const express = require('express');
 const passport = require('passport');
 const MopConsole = require('../Tools/MopConsole');
-const { RegisterUser } = require('../Action/User');
+const { RegisterUser, GetLikedMusicsOfUser, GetViewedMusicsOfUser } = require('../Action/User');
+const { EnsureAuth } = require('../Auth/EnsureAuthentification');
 
 module.exports = express();
 const app = module.exports;
@@ -32,6 +33,17 @@ app.post('/Register', async (req, res) => {
 app.get('/Me', (req, res) => {
 	req.user ? res.send({ Account: req.user }) : res.sendStatus(200);
 });
+
+app.get('/LikedMusics', EnsureAuth, (req, res) => {
+	GetLikedMusicsOfUser(req.user)
+		.then((musics) => res.send({ MusicsId: musics }));
+});
+
+app.get('/ViewedMusics', EnsureAuth, (req, res) => {
+	GetViewedMusicsOfUser(req.user)
+		.then((musics) => res.send({ MusicsId: musics }));
+});
+
 
 app.get('/Logout', (req, res) => {
 	req.logout();

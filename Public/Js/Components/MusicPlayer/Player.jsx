@@ -159,10 +159,10 @@ class PlayerConnected extends React.Component {
 
 	HandleOpenPlaylist = () => {
 		const { history } = this.props;
-		if (history.location.pathname === '/Playlist/Current') {
+		if (history.location.pathname === '/CurrentPlaylist') {
 			history.goBack();
 		} else {
-			history.push('/Playlist/Current');
+			history.push('/CurrentPlaylist');
 		}
 	};
 

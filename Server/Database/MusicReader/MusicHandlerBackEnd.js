@@ -288,6 +288,22 @@ const CheckLikeMusic = async (MusicId, UserId) => {
 	return index !== -1;
 };
 
+/** This function gets liked musics of an user
+ * @param {ObjectId} UserId - User who wants his liked musics
+ */
+const GetLikedMusics = async (UserId) => {
+	const FoundUser = await User.findById(UserId).lean();
+	return FoundUser.LikedMusics;
+};
+
+/** This function gets viewed musics of an user
+ * @param {ObjectId} UserId - User who wants his viewed musics
+ */
+const GetViewedMusics = async (UserId) => {
+	const FoundUser = await User.findById(UserId).lean();
+	return FoundUser.ViewedMusics;
+};
+
 
 module.exports = {
 	AddMusicToDatabase,
@@ -303,4 +319,6 @@ module.exports = {
 	GetMusicCount,
 	LikeMusic,
 	CheckLikeMusic,
+	GetLikedMusics,
+	GetViewedMusics,
 };

@@ -10,6 +10,8 @@ const {
 	FindAlbumContainingMusic,
 	LikeMusic,
 	CheckLikeMusic,
+	GetLikedMusics,
+	GetViewedMusics,
 } = require('./MusicHandler');
 const { DoIndexation } = require('./Indexer');
 
@@ -27,4 +29,6 @@ module.exports = {
 	FindAlbumContainingMusic,
 	LikeMusic,
 	CheckLikeMusic,
+	GetLikedMusics,
+	GetViewedMusics,
 };

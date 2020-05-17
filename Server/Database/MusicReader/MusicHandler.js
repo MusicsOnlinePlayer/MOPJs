@@ -11,6 +11,8 @@ const {
 	GetMusicCount,
 	LikeMusic,
 	CheckLikeMusic,
+	GetLikedMusics,
+	GetViewedMusics,
 } = require('./MusicHandlerBackEnd');
 
 /** This function add a new music with tags coming from ID3 file.
@@ -110,4 +112,6 @@ module.exports = {
 	GetMusicCount,
 	LikeMusic,
 	CheckLikeMusic,
+	GetLikedMusics,
+	GetViewedMusics,
 };

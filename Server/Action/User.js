@@ -1,5 +1,6 @@
 const MopConsole = require('../Tools/MopConsole');
 const { User } = require('../Database/Models');
+const { GetLikedMusics, GetViewedMusics } = require('../Database/MusicReader');
 
 const RegisterUser = (username, password) => new Promise((resolve, reject) => {
 	try {
@@ -24,6 +25,12 @@ const RegisterUser = (username, password) => new Promise((resolve, reject) => {
 	}
 });
 
+const GetLikedMusicsOfUser = async (UserReq) => await GetLikedMusics(UserReq._id);
+
+const GetViewedMusicsOfUser = async (UserReq) => await GetViewedMusics(UserReq._id);
+
 module.exports = {
 	RegisterUser,
+	GetLikedMusicsOfUser,
+	GetViewedMusicsOfUser,
 };

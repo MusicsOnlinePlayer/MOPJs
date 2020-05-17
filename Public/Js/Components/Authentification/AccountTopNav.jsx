@@ -2,9 +2,9 @@ import React from 'react';
 import Axios from 'axios';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
+import { withRouter, Link } from 'react-router-dom';
 import { Button, NavDropdown } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+
 import {
 	AddMyAccount as AddMyAccountRedux,
 } from '../../Actions/Action';
@@ -25,6 +25,9 @@ class AccountTopNavConnected extends React.Component {
 			username: PropTypes.string.isRequired,
 		}),
 		AddMyAccount: PropTypes.func.isRequired,
+		history: PropTypes.shape({
+			push: PropTypes.func.isRequired,
+		}).isRequired,
 	}
 
 	static defaultProps = {
@@ -61,13 +64,26 @@ class AccountTopNavConnected extends React.Component {
 			});
 	}
 
+	OnFavorites = () => {
+		const { history } = this.props;
+
+		history.push('/Favorites');
+	}
+
+	OnHistory = () => {
+		const { history } = this.props;
+
+		history.push('/History');
+	}
+
 	render() {
 		const { Account } = this.props;
 		if (Account) {
 			const { username } = Account;
 			return (
 				<NavDropdown title={username} id="basic-nav-dropdown" alignRight>
-					<NavDropdown.Item href="#action/3.1">My Account</NavDropdown.Item>
+					<NavDropdown.Item onClick={this.OnFavorites}>Favorites</NavDropdown.Item>
+					<NavDropdown.Item onClick={this.OnHistory}>History</NavDropdown.Item>
 					<NavDropdown.Divider />
 					<NavDropdown.Item onClick={this.OnLogout}>Logout</NavDropdown.Item>
 				</NavDropdown>
@@ -84,4 +100,4 @@ class AccountTopNavConnected extends React.Component {
 
 const AccountTopNav = connect(mapStateToProps, mapDispatchToProps)(AccountTopNavConnected);
 
-export default AccountTopNav;
+export default withRouter(AccountTopNav);

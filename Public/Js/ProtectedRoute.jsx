@@ -20,7 +20,7 @@ const mapStateToProps = (state) => ({
 class ProtectedRouteConnected extends React.Component {
 	static propTypes = {
 		AddMyAccount: PropTypes.func.isRequired,
-		component: PropTypes.element.isRequired,
+		component: PropTypes.object.isRequired,
 		Account: PropTypes.shape(),
 	}
 

@@ -15,6 +15,8 @@ const {
 	AddMusicToDatabase,
 	LikeMusic,
 	CheckLikeMusic,
+	GetLikedMusics,
+	GetViewedMusics,
 } = require('../../Database/MusicReader/MusicHandlerBackEnd');
 const {
 	Artist,
@@ -115,7 +117,7 @@ describe('Music Reader BackEnd', () => {
 
 		const m2 = await Music.create({ Album: 'ALBUM' });
 
-		const a1 = await Album.create({ Name: 'ALBUM', MusicsId: [m2._id] });
+		await Album.create({ Name: 'ALBUM', MusicsId: [m2._id] });
 		const a2 = await Album.create({ Name: 'ALBUM', MusicsId: [m2._id] });
 
 		expect((await FindAlbumContainingMusic(m2))._id).toEqual(a2._id);
@@ -148,8 +150,8 @@ describe('Music Reader BackEnd', () => {
 
 	it('Should append or update music to album', async () => {
 		const m1 = await Music.create({ Title: 'MUSIC1', DeezerId: 100 });
-		const m2 = await Music.create({ Title: 'MUSIC2', DeezerId: 90 });
-		const m3 = await Music.create({ Title: 'MUSIC3', DeezerId: 80 });
+		await Music.create({ Title: 'MUSIC2', DeezerId: 90 });
+		await Music.create({ Title: 'MUSIC3', DeezerId: 80 });
 
 		const a1 = await Album.create({ Name: 'ALBUM1', DeezerId: 80 });
 
@@ -253,5 +255,41 @@ describe('Music Reader BackEnd', () => {
 		const IsLiked2 = await CheckLikeMusic(m._id, u._id);
 
 		expect(IsLiked2).toEqual(false);
+	});
+
+	it('Should get all liked musics of an user', async () => {
+		const MyMusic = {
+			Title: 'MUSIC1',
+		};
+		const m = await Music.create(MyMusic);
+
+		const MyUser = {
+			username: 'Malau',
+			LikedMusics: [m._id],
+		};
+
+		const u = await User.create(MyUser);
+
+		const LikedMusics = await GetLikedMusics(u._id);
+
+		expect(LikedMusics).toEqual([m._id]);
+	});
+
+	it('Should get all viewed musics of an user', async () => {
+		const MyMusic = {
+			Title: 'MUSIC1',
+		};
+		const m = await Music.create(MyMusic);
+
+		const MyUser = {
+			username: 'Malau',
+			ViewedMusics: [m._id],
+		};
+
+		const u = await User.create(MyUser);
+
+		const ViewedMusics = await GetViewedMusics(u._id);
+
+		expect(ViewedMusics).toEqual([m._id]);
 	});
 });
