@@ -1,23 +1,13 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import Axios from 'axios';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ChangePlayingMusic, AddMusic } from '../../Actions/Action';
 import AlbumItemCard from '../Items/AlbumItemCard';
 
-const mapDispatchToProps = (dispatch) => ({
-	ChangePlayingMusic: (Music) => {
-		dispatch(ChangePlayingMusic(Music));
-	},
-	AddMusic: (Music) => {
-		dispatch(AddMusic(Music));
-	},
-});
 
-class AlbumElementConnected extends React.Component {
+class AlbumElement extends React.Component {
 	static propTypes = {
 		history: PropTypes.shape({
 			push: PropTypes.func.isRequired,
@@ -74,7 +64,5 @@ class AlbumElementConnected extends React.Component {
 		);
 	}
 }
-
-const AlbumElement = connect(null, mapDispatchToProps)(AlbumElementConnected);
 
 export default withRouter(AlbumElement);
