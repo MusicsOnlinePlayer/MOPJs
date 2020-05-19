@@ -6,10 +6,12 @@ import MusicGroup from './Groups/MusicGroup';
 class Favorites extends React.Component {
 	static propTypes = {
 		Size: PropTypes.number,
+		Reverse: PropTypes.bool,
 	}
 
 	static defaultProps = {
 		Size: undefined,
+		Reverse: true,
 	}
 
 	constructor(props) {
@@ -20,11 +22,13 @@ class Favorites extends React.Component {
 	}
 
 	componentDidMount() {
-		const { Size } = this.props;
+		const { Size, Reverse } = this.props;
 
 		Axios.get('/User/LikedMusics').then((res) => {
+			const MusicArray = Reverse ? res.data.MusicsId.reverse() : res.data.MusicsId;
+
 			this.setState({
-				MusicIds: res.data.MusicsId.slice(0, Size),
+				MusicIds: MusicArray.slice(0, Size),
 			});
 		});
 	}

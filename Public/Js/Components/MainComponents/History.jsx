@@ -7,11 +7,13 @@ class History extends React.Component {
 	static propTypes = {
 		Size: PropTypes.number,
 		RemoveDups: PropTypes.bool,
+		Reverse: PropTypes.bool,
 	}
 
 	static defaultProps = {
 		Size: undefined,
 		RemoveDups: false,
+		Reverse: true,
 	}
 
 	constructor(props) {
@@ -22,10 +24,12 @@ class History extends React.Component {
 	}
 
 	componentDidMount() {
-		const { Size, RemoveDups } = this.props;
+		const { Size, RemoveDups, Reverse } = this.props;
 
 		Axios.get('/User/ViewedMusics').then((res) => {
-			const MusicIds = res.data.MusicsId.slice(0, Size);
+			const MusicArray = Reverse ? res.data.MusicsId.reverse() : res.data.MusicsId;
+
+			const MusicIds = MusicArray.slice(0, Size);
 			this.setState({
 				MusicIds: RemoveDups ? [...new Set(MusicIds)] : MusicIds,
 			});
