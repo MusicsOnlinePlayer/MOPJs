@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import Axios from 'axios';
+import LazyLoad from 'react-lazyload';
 import PropTypes from 'prop-types';
 import ArtistItemCard from '../Items/ArtistItemCard';
 
@@ -42,7 +43,15 @@ class ArtistElement extends React.Component {
 
 	render() {
 		const { ApiResult } = this.state;
-		return <ArtistItemCard Name={ApiResult ? ApiResult.Name : 'Loading...'} ImagePath={ApiResult ? ApiResult.ImagePath : '/Ressources/noMusic.jpg'} onClick={this.onCardClick} />;
+		return (
+			<LazyLoad>
+				<ArtistItemCard
+					Name={ApiResult ? ApiResult.Name : 'Loading...'}
+					ImagePath={ApiResult ? ApiResult.ImagePath : '/Ressources/noMusic.jpg'}
+					onClick={this.onCardClick}
+				/>
+			</LazyLoad>
+		);
 	}
 }
 

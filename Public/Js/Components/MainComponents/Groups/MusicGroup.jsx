@@ -74,7 +74,7 @@ class MusicGroupConnected extends React.Component {
 		return (
 			<div className="m-4">
 				<Row className="p-1">
-					<Col>
+					<Col className="my-auto">
 						<small className="text-muted">
 							<h5>{DetailType}</h5>
 						</small>

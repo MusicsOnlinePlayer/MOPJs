@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Axios from 'axios';
 import PropTypes from 'prop-types';
-
+import LazyLoad from 'react-lazyload';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import MusicItemRow from '../Items/MusicItemRow';
 import { ChangePlayingMusic as ChangePlayingMusicRedux, AddMusic as AddMusicRedux } from '../../Actions/Action';
@@ -82,37 +82,40 @@ class MusicElementConnected extends React.Component {
 		const isAvailable = ApiResult ? ApiResult.FilePath !== undefined : true;
 
 		return (
-			<MusicItemRow
-				Image={ApiResult ? ApiResult.Image : undefined}
-				ImageDz={ApiResult ? ApiResult.ImagePathDeezer : undefined}
-				Title={ApiResult ? ApiResult.Title : 'Loading...'}
-				Artist={ApiResult ? ApiResult.Artist : 'Loading...'}
-				onClick={this.onClick}
-				isAvailable={isAvailable}
-			>
-				<td className="align-middle">
-					{
-						ApiResult
-							? (
-								<LikeButton
-									onLike={this.HandleLike}
-									defaultLikeState={ApiResult ? ApiResult.IsLiked : undefined}
-								/>
-							)
-							: undefined
-					}
+			<LazyLoad>
+				<MusicItemRow
+					Image={ApiResult ? ApiResult.Image : undefined}
+					ImageDz={ApiResult ? ApiResult.ImagePathDeezer : undefined}
+					Title={ApiResult ? ApiResult.Title : 'Loading...'}
+					Artist={ApiResult ? ApiResult.Artist : 'Loading...'}
+					onClick={this.onClick}
+					isAvailable={isAvailable}
+				>
+					<td className="align-middle">
+						{
+							ApiResult
+								? (
+									<LikeButton
+										onLike={this.HandleLike}
+										defaultLikeState={ApiResult ? ApiResult.IsLiked : undefined}
+									/>
+								)
+								: undefined
+						}
 
-				</td>
-				<td className="align-middle" style={{ width: '24px' }}>
-					{
-						ApiResult
-							? (
-								<ButtonIcon faIcon={faPlus} onClick={this.HandleAdd} buttonClass="float-right" />
-							)
-							: undefined
-					}
-				</td>
-			</MusicItemRow>
+					</td>
+					<td className="align-middle" style={{ width: '24px' }}>
+						{
+							ApiResult
+								? (
+									<ButtonIcon faIcon={faPlus} onClick={this.HandleAdd} buttonClass="float-right" />
+								)
+								: undefined
+						}
+					</td>
+				</MusicItemRow>
+
+			</LazyLoad>
 		);
 	}
 }

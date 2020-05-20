@@ -45,7 +45,8 @@
 		"no-return-await": "off",
 		"import/no-extraneous-dependencies": "off",
 		"no-restricted-syntax": "off",
-		"guard-for-in": "warn"
+		"guard-for-in": "warn",
+		"jsx-a11y/control-has-associated-label": "off"
 	},
 	"parser": "babel-eslint"
 }
