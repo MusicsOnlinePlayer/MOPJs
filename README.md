@@ -9,6 +9,8 @@ See [MOPNative](https://github.com/MusicsOnlinePlayer/MOPNative) for the mobile 
  - [Features](#Features)
  - [Feedbacks](#Feedbacks)
  - [Requirements](#Requirements)
+ - [Installation](#Installation)
+ - [Acknowledgments](#Acknowledgments)
 
 ## Features
 A few of the things you can accomplish with MOPJs.
@@ -67,3 +69,6 @@ node index.js
 ```
 And congratulation your mop instance is running ! 
 The web app is accesible at `localhost`, the port is specified in the config file.
+
+## Acknowledgments
+Thanks @An0nimia for providing the python deezer API, see [here](https://github.com/An0nimia/deezloader).
