@@ -1,7 +1,8 @@
 const MopConsole = require('../Tools/MopConsole');
+const { EnsureAuth: EnsureAuthConfig } = require('../Config/MopConf.json');
 
 const EnsureAuth = (req, res, next) => {
-	if (req.isAuthenticated()) {
+	if (req.isAuthenticated() || !EnsureAuthConfig) {
 		return next();
 	}
 

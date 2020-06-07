@@ -33,7 +33,7 @@ const HandleMusicRequestById = (id, UserReq) => new Promise((resolve, reject) =>
 			MusicDoc.Image = AlbumOfMusic.Image;
 			MusicDoc.ImagePathDeezer = AlbumOfMusic.ImagePathDeezer;
 			MusicDoc.ImageFormat = AlbumOfMusic.ImageFormat;
-			MusicDoc.IsLiked = await CheckLikeMusic(MusicDoc._id, UserReq._id);
+			if (UserReq) MusicDoc.IsLiked = await CheckLikeMusic(MusicDoc._id, UserReq._id);
 		}
 		resolve(MusicDoc);
 	});
