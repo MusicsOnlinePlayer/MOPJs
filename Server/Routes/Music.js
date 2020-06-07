@@ -56,7 +56,7 @@ app.get('/Music/Like/:id', EnsureAuth, (req, res) => {
 });
 
 app.get('/Music/get/:id', EnsureAuth, (req, res) => {
-	GetMusicFilePath(req.params.id, req.user)
+	GetMusicFilePath(req.params.id, req.user, !(req.query.noLog === 'true'))
 		.then((FilePath) => res.send(FilePath))
 		.catch(() => res.send({}));
 });

@@ -101,7 +101,7 @@ const HandleArtistRequestById = (id, QueryMode) => new Promise((resolve, reject)
 });
 
 
-const GetMusicFilePath = (id, UserReq) => new Promise((resolve, reject) => {
+const GetMusicFilePath = (id, UserReq, RegisterHistory = true) => new Promise((resolve, reject) => {
 	Music.findById(id, async (err, doc) => {
 		if (err) {
 			MopConsole.error('Music', err);
@@ -114,10 +114,13 @@ const GetMusicFilePath = (id, UserReq) => new Promise((resolve, reject) => {
 			return;
 		}
 		const MusicDoc = doc;
-		MusicDoc.Views += 1;
-		MusicDoc.LastView = Date.now();
-		MusicDoc.save();
-		if (UserReq) {
+		if (RegisterHistory) {
+			MusicDoc.Views += 1;
+			MusicDoc.LastView = Date.now();
+			MusicDoc.save();
+		}
+
+		if (UserReq && RegisterHistory) {
 			User.findById(UserReq._id, (UserErr, UserDoc) => {
 				if (UserErr) {
 					MopConsole.error('Music - User - History', UserErr);
