@@ -12,6 +12,7 @@ const {
 	GetMusicFilePath,
 	HandleLikeMusic,
 } = require('../Action/Music');
+const { MusicsFolder } = require('../Database/MusicReader');
 
 const {
 	EnsureAuth,
@@ -71,4 +72,12 @@ app.get('/Artist/id/:id', EnsureAuth, (req, res) => {
 	HandleArtistRequestById(req.params.id, req.query.mode)
 		.then((Artist) => res.send(Artist))
 		.catch(() => res.send({}));
+});
+
+app.get('/cdn/:id', (req, res) => {
+	GetMusicFilePath(req.params.id, req.user, true)
+		.then(({ FilePath }) => {
+			res.sendFile(FilePath, { root: MusicsFolder }, () => {});
+		})
+		.catch((err) => res.send(err));
 });
