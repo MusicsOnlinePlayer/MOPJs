@@ -13,6 +13,7 @@ const {
 	CheckLikeMusic,
 	GetLikedMusics,
 	GetViewedMusics,
+	DoesMusicExistsTitleDzId,
 } = require('./MusicHandlerBackEnd');
 
 /** This function add a new music with tags coming from ID3 file.
@@ -31,7 +32,7 @@ const HandleNewMusicFromDisk = async (tags, MusicFilePath) => {
  * @param {object} tags - All tags about the music (see Tags.js for more details)
  */
 const HandleNewMusicFromDz = async (tags) => {
-	if (await DoesMusicExistsTitle(tags.title)) return;
+	if (await DoesMusicExistsTitleDzId(tags.title, tags.id)) return;
 
 	await AddMusicToDatabase(ConvertTagsFromDz(tags, tags.id), tags.artist.picture_big, true);
 };

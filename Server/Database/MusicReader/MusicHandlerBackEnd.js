@@ -224,11 +224,22 @@ const DoesMusicExists = async (FilePath) => {
 };
 
 /** This function checks if a music exist in the MongoDB database
- * @param {string} FilePath - Title of the music that need to be checked
+ * @param {string} Title - Title of the music that need to be checked
  * @returns {boolean}
+ * @deprecated
  */
 const DoesMusicExistsTitle = async (Title) => {
 	const count = await Music.countDocuments({ Title });
+	return count > 0;
+};
+
+/** This function checks if a music exist in the MongoDB database
+ * @param {string} Title - Title of the music that need to be checked
+ * @param {number} DeezerId - Deezer Id of the music that need to be checked
+ * @returns {boolean}
+ */
+const DoesMusicExistsTitleDzId = async (Title, DeezerId) => {
+	const count = await Music.countDocuments({ Title, DeezerId });
 	return count > 0;
 };
 
@@ -314,6 +325,7 @@ module.exports = {
 	AppendDzImageToArtist,
 	DoesMusicExists,
 	DoesMusicExistsTitle,
+	DoesMusicExistsTitleDzId,
 	RegisterDownloadedFile,
 	FindAlbumContainingMusic,
 	GetMusicCount,

@@ -17,6 +17,7 @@ const {
 	CheckLikeMusic,
 	GetLikedMusics,
 	GetViewedMusics,
+	DoesMusicExistsTitleDzId,
 } = require('../../Database/MusicReader/MusicHandlerBackEnd');
 const {
 	Artist,
@@ -27,6 +28,7 @@ const {
 const {
 	User,
 } = require('../../Database/Models/User');
+const { ConvertTagsFromDz } = require('../../Database/MusicReader/Tags');
 
 const SampleArtist = {
 	Name: 'U2',
@@ -44,6 +46,45 @@ const SampleMusic = {
 	Artist: 'Kendrick Lamar',
 	TrackNumber: 8,
 	DeezerId: 350171311,
+};
+
+const SampleMusicFromDzAPI = {
+	id: 136336110,
+	readable: true,
+	title: '24K Magic',
+	title_short: '24K Magic',
+	title_version: '',
+	link: 'https://www.deezer.com/track/136336110',
+	duration: 225,
+	rank: 909724,
+	explicit_lyrics: false,
+	explicit_content_lyrics: 6,
+	explicit_content_cover: 0,
+	preview: 'https://cdns-preview-6.dzcdn.net/stream/c-633e75a95d0917b64e51355c4b84937a-4.mp3',
+	artist: {
+		id: 429675,
+		name: 'Bruno Mars',
+		link: 'https://www.deezer.com/artist/429675',
+		picture: 'https://api.deezer.com/artist/429675/image',
+		picture_small: 'https://cdns-images.dzcdn.net/images/artist/25d38ffc3fd6a36ac71a08ff6ed90fa2/56x56-000000-80-0-0.jpg',
+		picture_medium: 'https://cdns-images.dzcdn.net/images/artist/25d38ffc3fd6a36ac71a08ff6ed90fa2/250x250-000000-80-0-0.jpg',
+		picture_big: 'https://cdns-images.dzcdn.net/images/artist/25d38ffc3fd6a36ac71a08ff6ed90fa2/500x500-000000-80-0-0.jpg',
+		picture_xl: 'https://cdns-images.dzcdn.net/images/artist/25d38ffc3fd6a36ac71a08ff6ed90fa2/1000x1000-000000-80-0-0.jpg',
+		tracklist: 'https://api.deezer.com/artist/429675/top?limit=50',
+		type: 'artist',
+	},
+	album: {
+		id: 14581500,
+		title: '24K Magic',
+		cover: 'https://api.deezer.com/album/14581500/image',
+		cover_small: 'https://cdns-images.dzcdn.net/images/cover/012b27906b430a37ec1d8f793d5c4fa6/56x56-000000-80-0-0.jpg',
+		cover_medium: 'https://cdns-images.dzcdn.net/images/cover/012b27906b430a37ec1d8f793d5c4fa6/250x250-000000-80-0-0.jpg',
+		cover_big: 'https://cdns-images.dzcdn.net/images/cover/012b27906b430a37ec1d8f793d5c4fa6/500x500-000000-80-0-0.jpg',
+		cover_xl: 'https://cdns-images.dzcdn.net/images/cover/012b27906b430a37ec1d8f793d5c4fa6/1000x1000-000000-80-0-0.jpg',
+		tracklist: 'https://api.deezer.com/album/14581500/tracks',
+		type: 'album',
+	},
+	type: 'track',
 };
 
 beforeAll(async () => await dbHandler.connect());
@@ -87,6 +128,14 @@ describe('Music Reader BackEnd', () => {
 
 		const foundMusic = await Music.findById(c._id);
 		expect(foundMusic.FilePath).toEqual(path);
+	});
+
+	it('Should determine if music exist based on the title and deezer id', async () => {
+		expect(await DoesMusicExistsTitleDzId(SampleMusic.Title, SampleMusic.DeezerId)).toEqual(false);
+
+		await Music.create(SampleMusic);
+
+		expect(await DoesMusicExistsTitleDzId(SampleMusic.Title, SampleMusic.DeezerId)).toEqual(true);
 	});
 
 	it('Should determine if music exist based on the title', async () => {
@@ -192,6 +241,39 @@ describe('Music Reader BackEnd', () => {
 		expect(newMusic._id).not.toBe(undefined);
 		expect(newAlbum._id).not.toBe(undefined);
 		expect(newArtist._id).not.toBe(undefined);
+	});
+
+	it('Should append music to database from deezer API', async () => {
+		await AddMusicToDatabase(ConvertTagsFromDz(SampleMusicFromDzAPI, SampleMusicFromDzAPI.id));
+
+		const newMusic = await Music.findOne({ Title: '24K Magic' });
+		const newAlbum = await Album.findOne({ Name: '24K Magic' });
+		const newArtist = await Artist.findOne({ Name: 'Bruno Mars' });
+
+		expect(newMusic._id).not.toBe(undefined);
+		expect(newAlbum._id).not.toBe(undefined);
+		expect(newArtist._id).not.toBe(undefined);
+	});
+
+	it('Should append music to database from deezer API even if music title is already taken', async () => {
+		await AddMusicToDatabase(ConvertTagsFromDz(SampleMusicFromDzAPI, SampleMusicFromDzAPI.id));
+
+		const SameMusic = SampleMusicFromDzAPI;
+		SameMusic.id = 20072003;
+
+		await AddMusicToDatabase(ConvertTagsFromDz(SameMusic, SameMusic.id));
+		await AddMusicToDatabase(ConvertTagsFromDz(SameMusic, SameMusic.id));
+
+		const newMusic = await Music.findOne({ Title: '24K Magic', DeezerId: SameMusic.id });
+		const newAlbum = await Album.findOne({ Name: '24K Magic' });
+		const newArtist = await Artist.findOne({ Name: 'Bruno Mars' });
+
+		expect(newMusic._id).not.toBe(undefined);
+		expect(newAlbum._id).not.toBe(undefined);
+		expect(newArtist._id).not.toBe(undefined);
+
+		const musicCount = await GetMusicCount();
+		expect(musicCount).toBe(2);
 	});
 
 	it('Should be able to like a music', async () => {
