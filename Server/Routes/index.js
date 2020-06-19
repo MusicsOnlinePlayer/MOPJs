@@ -6,7 +6,7 @@ module.exports = express();
 const app = module.exports;
 // const compression = require('compression');
 app.use((req, res, next) => {
-	MopConsole.standard('Path - Log', req.url);
+	MopConsole.standard('Request.Path', req.url);
 	next();
 });
 app.use('/User', require('./User'));

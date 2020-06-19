@@ -15,12 +15,12 @@ const { FindAlbumContainingMusic, LikeMusic, CheckLikeMusic } = require('../Data
 const HandleMusicRequestById = (id, UserReq) => new Promise((resolve, reject) => {
 	Music.findById(id, async (err, doc) => {
 		if (err) {
-			MopConsole.error('Music', err);
+			MopConsole.error('Action.Music', err);
 			reject(err);
 			return;
 		}
 		if (!doc) {
-			MopConsole.warn('Music', `Music id not found ${id}`);
+			MopConsole.warn('Action.Music', `Music id not found ${id}`);
 			resolve({});
 			return;
 		}
@@ -44,12 +44,12 @@ const HandleAlbumRequestById = (id, QueryMode) => new Promise((resolve, reject) 
 		.populate({ path: 'MusicsId', options: { sort: { TrackNumber: 1 } }, select: 'TrackNumber _id' })
 		.exec(async (err, doc) => {
 			if (err) {
-				MopConsole.error('Music', err);
+				MopConsole.error('Action.Album', err);
 				reject(err);
 				return;
 			}
 			if (!doc) {
-				MopConsole.warn('Music', `Album id not found ${id}`);
+				MopConsole.warn('Action.Album', `Album id not found ${id}`);
 				resolve({});
 				return;
 			}
@@ -78,12 +78,12 @@ const HandleArtistRequestById = (id, QueryMode) => new Promise((resolve, reject)
 	Artist.findById(id, async (err, doc) => {
 		let ArtistDoc = doc;
 		if (err) {
-			MopConsole.error('Music', err);
+			MopConsole.error('Action.Artist', err);
 			reject(err);
 			return;
 		}
 		if (!ArtistDoc) {
-			MopConsole.warn('Music', `Artist id not found ${id}`);
+			MopConsole.warn('Action.Artist', `Artist id not found ${id}`);
 			resolve({});
 			return;
 		}
@@ -104,12 +104,12 @@ const HandleArtistRequestById = (id, QueryMode) => new Promise((resolve, reject)
 const GetMusicFilePath = (id, UserReq, RegisterHistory = true) => new Promise((resolve, reject) => {
 	Music.findById(id, async (err, doc) => {
 		if (err) {
-			MopConsole.error('Music', err);
+			MopConsole.error('Action.Music', err);
 			reject(err);
 			return;
 		}
 		if (!doc) {
-			MopConsole.warn('Music', `Music id not found ${id}`);
+			MopConsole.warn('Action.Music', `Music id not found ${id}`);
 			resolve({});
 			return;
 		}
@@ -123,12 +123,12 @@ const GetMusicFilePath = (id, UserReq, RegisterHistory = true) => new Promise((r
 		if (UserReq && RegisterHistory) {
 			User.findById(UserReq._id, (UserErr, UserDoc) => {
 				if (UserErr) {
-					MopConsole.error('Music - User - History', UserErr);
+					MopConsole.error('Action.User.History', UserErr);
 					return;
 				}
 				UserDoc.ViewedMusics.push(MusicDoc._id);
 				UserDoc.save();
-				MopConsole.info('Musics', 'Saved to user history');
+				MopConsole.info('Action.User.History', 'Saved to user history');
 			});
 		}
 		if (!MusicDoc.DeezerId || MusicDoc.FilePath) {

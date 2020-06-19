@@ -65,11 +65,11 @@ function ConvertTagsFromDz(
 	DeezerId, CustomAlbumName = undefined, CustomAlbumDzId = undefined, CustomCoverPath = undefined,
 ) {
 	if (!tags.album) {
-		MopConsole.warn('Tags - Deezer', `Found empty album for track ${tags.title} - Deezer id ${DeezerId}`);
+		MopConsole.warn('Music.Handler.Tags.Deezer', `Found empty album for track ${tags.title} - Deezer id ${DeezerId}`);
 		if (!CustomCoverPath) {
-			MopConsole.warn('Tags - Deezer', 'And no custom cover path provided');
+			MopConsole.warn('Music.Handler.Tags.Deezer', 'And no custom cover path provided');
 		}
-		MopConsole.warn('Tags - Deezer', `Additional args provided - CustomAlbumName: ${CustomAlbumName} CustomAlbumDzId: ${CustomAlbumDzId}`);
+		MopConsole.warn('Music.Handler.Tags.Deezer', `Additional args provided - CustomAlbumName: ${CustomAlbumName} CustomAlbumDzId: ${CustomAlbumDzId}`);
 	}
 
 	const MusicTags = {

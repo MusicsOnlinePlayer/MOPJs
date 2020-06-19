@@ -4,5 +4,6 @@
     "MongoUrl" : "mongodb://localhost:27017/MOP",
     "EnableMongoAuth": false,
     "MinLogLevel": 1,
-    "MopPort": 8080
+    "MopPort": 8080,
+     "UseFluentdLogging": true
 }

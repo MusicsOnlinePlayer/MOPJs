@@ -55,9 +55,9 @@ const HandleMusicsFromDz = async (MusicsTags, AlbumName, AlbumDzId, AlbumCoverPa
 		);
 	});
 	await Promise.all(musicTasks);
-	MopConsole.info('Music Handler', 'Musics have been added / updated');
+	MopConsole.info('Music.Handler.Deezer', 'Musics have been added / updated');
 	await UpdateAlbumCompleteStatus(AlbumDzId);
-	MopConsole.info('Music Handler', 'Marked this album as complete');
+	MopConsole.info('Music.Handler.Deezer', 'Marked this album as complete');
 };
 
 /** This function add albums coming from deezer API to an existing artist.
@@ -71,7 +71,7 @@ const HandleAlbumsFromDz = async (ArtistId, DeezerAlbums) => {
 		Albums.push({ Name: album.title, DeezerId: album.id, ImagePathDeezer: album.cover_big });
 	});
 	await AppendAlbumsToArtist(ArtistId, Albums);
-	MopConsole.info('Music Handler', 'Added albums to artist');
+	MopConsole.info('Album.Handler.Deezer', 'Added albums to artist');
 };
 
 /** This function add a cover coming from deezer to an existing album with a deezer id
@@ -82,7 +82,7 @@ const HandleAlbumsFromDz = async (ArtistId, DeezerAlbums) => {
 const HandleNewCoverFromDz = (AlbumDzId, DeezerData) => new Promise((resolve) => {
 	AppendDzCoverToAlbum(AlbumDzId, DeezerData.cover_big)
 		.then(() => {
-			MopConsole.info('Music Handler', 'Added cover to album');
+			MopConsole.info('Album.Handler.Deezer', 'Added cover to album');
 			resolve();
 		});
 });
@@ -95,7 +95,7 @@ const HandleNewCoverFromDz = (AlbumDzId, DeezerData) => new Promise((resolve) =>
 const HandleNewImageFromDz = (ArtistDzId, DeezerData) => new Promise((resolve) => {
 	AppendDzImageToArtist(ArtistDzId, DeezerData.picture_big)
 		.then(() => {
-			MopConsole.info('Music Handler', 'Added image to artist');
+			MopConsole.info('Artist.Handler.Deezer', 'Added image to artist');
 			resolve();
 		});
 });

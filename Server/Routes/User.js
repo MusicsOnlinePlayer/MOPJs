@@ -9,7 +9,7 @@ const app = module.exports;
 
 app.post('/Login', passport.authenticate('local'), (req, res) => {
 	res.send({ success: true });
-	MopConsole.info('User', 'User logged in');
+	MopConsole.info('Route.User', 'User logged in');
 });
 app.post('/Register', async (req, res) => {
 	if (!req.body.name) { res.send({ success: false }); }
@@ -19,7 +19,7 @@ app.post('/Register', async (req, res) => {
 		.then((newUser) => {
 			req.logIn(newUser, (err) => {
 				if (err) {
-					MopConsole.error('User', err);
+					MopConsole.error('Route.User', err);
 					res.send({ success: false });
 				}
 				res.send({ success: true });
@@ -48,5 +48,5 @@ app.get('/ViewedMusics', EnsureAuth, (req, res) => {
 app.get('/Logout', (req, res) => {
 	req.logout();
 	res.sendStatus(200);
-	MopConsole.info('User', 'User logged out');
+	MopConsole.info('Route.User', 'User logged out');
 });

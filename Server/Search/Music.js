@@ -15,13 +15,13 @@ module.exports = {
 			},
 			(err, result) => {
 				if (err) {
-					MopConsole.error('Music - Search', err);
+					MopConsole.error('Music.Search.Elastic', err);
 					return;
 				}
 				const ClientResults = [];
 
 				if (!result) {
-					MopConsole.error('Music - Search', 'Request error !');
+					MopConsole.error('Music.Search.Elastic', 'Request error !');
 					reject(new Error('Request Error'));
 					return;
 				}
@@ -47,12 +47,12 @@ module.exports = {
 			},
 			(err, result) => {
 				if (err) {
-					MopConsole.error('Music - Search', err);
+					MopConsole.error('Album.Search.Elastic', err);
 				}
 				const ClientResults = [];
 
 				if (!result) {
-					MopConsole.error('Music - Search', 'Request error !');
+					MopConsole.error('Album.Search.Elastic', 'Request error !');
 					reject(new Error('Request Error'));
 					return;
 				}
@@ -78,12 +78,12 @@ module.exports = {
 			},
 			(err, result) => {
 				if (err) {
-					MopConsole.error('Music - Search', err);
+					MopConsole.error('Artist.Search.Elastic', err);
 				}
 				const ClientResults = [];
 
 				if (!result) {
-					MopConsole.error('Music - Search', 'Request error !');
+					MopConsole.error('Artist.Search.Elastic', 'Request error !');
 					reject(new Error('Request Error'));
 					return;
 				}

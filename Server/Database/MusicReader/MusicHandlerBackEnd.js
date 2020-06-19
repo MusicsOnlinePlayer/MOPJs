@@ -70,7 +70,7 @@ async function AddMusicToDatabase(MusicTags, ArtistImage = undefined, EnableEsIn
 	try {
 		musicDoc = EnableEsIndexWait ? await SaveAndIndex(newMusic) : await newMusic.save();
 	} catch (err) {
-		MopConsole.error('Music - Indexer', err);
+		MopConsole.error('Music.Handler.BackEnd.Index', err);
 		return;
 	}
 
@@ -86,7 +86,7 @@ async function AddMusicToDatabase(MusicTags, ArtistImage = undefined, EnableEsIn
 	albumDoc.MusicsId.push(musicDoc._id);
 	const savedAlbum = await albumDoc.save();
 	if (artistDoc.AlbumsId.indexOf(savedAlbum._id) === -1) {
-		MopConsole.info('Music - Indexer', `Added ${savedAlbum.Name}`);
+		MopConsole.info('Music.Handler.BackEnd.Index', `Added ${savedAlbum.Name}`);
 		artistDoc.AlbumsId.push(savedAlbum);
 		await artistDoc.save();
 	}
@@ -98,7 +98,7 @@ async function AddMusicToDatabase(MusicTags, ArtistImage = undefined, EnableEsIn
  * @param {number} tags.TrackNumber - The new track number
  */
 const UpdateIfNeededTrackNumber = (tags) => new Promise((resolve) => {
-	MopConsole.info('Music - Handler', `Updated Track Number of music with dzId ${tags.DeezerId} to ${tags.TrackNumber}`);
+	MopConsole.info('Music.Handler.BackEnd', `Updated Track Number of music with dzId ${tags.DeezerId} to ${tags.TrackNumber}`);
 	Music.findOneAndUpdate({ DeezerId: tags.DeezerId }, { TrackNumber: tags.TrackNumber })
 		.then(() => {
 			// console.log(`[Music Indexer] Update track number of ${tags.Title}`);
@@ -116,7 +116,7 @@ const AppendMusicToAlbum = async (tags, AlbumDzId) => {
 	const albumDoc = await Album.findOne({ Name: tags.Album, DeezerId: AlbumDzId });
 	albumDoc.MusicsId.push(savedMusic._id);
 	await albumDoc.save();
-	MopConsole.info('Music - Indexer', `Added new music to ${albumDoc.Name}`);
+	MopConsole.info('Music.Handler.BackEnd.Index', `Added new music to ${albumDoc.Name}`);
 };
 
 /** This function decide if a music should be added to an album or just
@@ -155,11 +155,11 @@ async function AppendAlbumsToArtist(ArtistDzId, Albums) {
 				Album.findOneOrCreate({ Name: AlbumDoc.Name, DeezerId: AlbumDoc.DeezerId }, AlbumDoc)
 					.then((newAlbum) => {
 						artistDoc.AlbumsId.push(newAlbum._id);
-						MopConsole.info('Music Handler', `Added ${AlbumDoc.Name} to artist with dzId ${ArtistDzId}`);
+						MopConsole.info('Album.Handler.BackEnd.Index', `Added ${AlbumDoc.Name} to artist with dzId ${ArtistDzId}`);
 						resolve();
 					})
 					.catch((err) => {
-						MopConsole.error('Music Handler', err);
+						MopConsole.error('Album.Handler.BackEnd.Index', err);
 						resolve();
 					});
 			}));
@@ -170,7 +170,7 @@ async function AppendAlbumsToArtist(ArtistDzId, Albums) {
 	await Promise.all(AlbumTasks);
 
 	await artistDoc.save();
-	MopConsole.info('Music Handler', `Saved ${AlbumTasks.length} albums`);
+	MopConsole.info('Artist.Handler.BackEnd.Index', `Saved ${AlbumTasks.length} albums`);
 }
 
 /** This function modify album states by modifying the IsComplete attribute

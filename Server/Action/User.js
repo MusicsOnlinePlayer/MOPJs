@@ -11,16 +11,16 @@ const RegisterUser = (username, password) => new Promise((resolve, reject) => {
 			.then(async () => {
 				const newUser = await user.save();
 				resolve(newUser);
-				MopConsole.info('User', `Added user ${username}`);
+				MopConsole.info('Action.User.Auth', `Added user ${username}`);
 			})
 			.catch((err) => {
-				MopConsole.warn('User', "Couldn't set password of user");
-				MopConsole.warn('User', err);
+				MopConsole.warn('Action.User.Auth', "Couldn't set password of user");
+				MopConsole.warn('Action.User.Auth', err);
 				reject();
 			});
 	} catch (err) {
-		MopConsole.warn('User', "Couldn't register user");
-		MopConsole.warn('User', err);
+		MopConsole.warn('Action.User.Auth', "Couldn't register user");
+		MopConsole.warn('Action.User.Auth', err);
 		reject();
 	}
 });

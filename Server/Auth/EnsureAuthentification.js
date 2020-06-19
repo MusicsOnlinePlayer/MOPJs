@@ -6,7 +6,7 @@ const EnsureAuth = (req, res, next) => {
 		return next();
 	}
 
-	MopConsole.warn('Auth', 'User not authentificated');
+	MopConsole.warn('Middleware.Auth', 'User not authentificated');
 	return res.sendStatus(401);
 };
 

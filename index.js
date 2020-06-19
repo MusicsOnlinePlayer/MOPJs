@@ -17,8 +17,8 @@ const { ConnectToDB } = require('./Server/Database/Db');
 // app.use(compression);
 
 process.on('uncaughtException', (exception) => {
-	MopConsole.error('Exception Handler', exception);
-	MopConsole.error('Exception Handler', exception.stack);
+	MopConsole.error('ExceptionHandler', exception);
+	MopConsole.error('ExceptionHandler', exception.stack);
 });
 
 ConnectToDB().then(() => {

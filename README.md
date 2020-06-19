@@ -31,8 +31,9 @@ Before installing MOPJs, it is needed to have the following software (which are 
  * Elasticsearch *(v7 at least)* - [Dowload link](https://www.elastic.co/downloads/elasticsearch)
  * MongoDB *(v4 at least)* - [Dowload link](https://www.mongodb.com/try/download/community)
  * Python with pip *(version 3 required)* - [Dowload link](https://www.python.org/downloads/)
- * Nodejs *(8 for general use but 10 at least for testing and dev)* - [Dowload link](https://nodejs.org/en/download/)
+ * Nodejs *(8 at least for general use but 10 at least for testing and dev)* - [Dowload link](https://nodejs.org/en/download/)
  * A deezer arl token *(not mendatory)*
+ * Fluentd *(optional)* - [Dowload link](https://docs.fluentd.org/installation)
 
 Installs of each softwares are pretty much straightforward but if you run into an issue, feel free to open an issue on this repo.
 
@@ -60,7 +61,8 @@ Here is an example for a classical install with elasticsearch and mongodb and ev
     "MongoUrl" : "mongodb://localhost:27017/MOP",
     "EnableMongoAuth": false,
     "MinLogLevel": 0,
-    "MopPort": 80
+    "MopPort": 80,
+    "UseFluentdLogging": false
 }
 ```
 Finally you can run the app (by the way, it is recommended to use pm2 for production use)

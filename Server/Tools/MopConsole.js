@@ -1,20 +1,31 @@
+const logger = require('fluent-logger');
+
+const { EventTime } = logger;
+
 const chalk = require('chalk');
-const { MinLogLevel } = require('../Config/MopConf.json');
+const { MinLogLevel, UseFluentdLogging } = require('../Config/MopConf.json');
+
+
+if (UseFluentdLogging) logger.configure('mop');
 
 module.exports = class MopConsole {
 	static standard(Location, Message) {
+		if (process.env.NODE_ENV !== 'test' && UseFluentdLogging) logger.emit('node', { Message, Location, LogLevel: 'Standard' }, EventTime.now(), () => {});
 		MopConsole.log('STD', Location, chalk.gray(Message), 0);
 	}
 
 	static info(Location, Message) {
+		if (process.env.NODE_ENV !== 'test' && UseFluentdLogging) logger.emit('node', { Message, Location, LogLevel: 'Info' }, EventTime.now(), () => {});
 		MopConsole.log('INFO', Location, chalk.greenBright(Message), 1);
 	}
 
 	static warn(Location, Message) {
+		if (process.env.NODE_ENV !== 'test' && UseFluentdLogging) logger.emit('node', { Message, Location, LogLevel: 'Warning' }, EventTime.now(), () => {});
 		MopConsole.log('WARN', Location, chalk.yellow(Message), 2);
 	}
 
 	static error(Location, Message) {
+		if (process.env.NODE_ENV !== 'test' && UseFluentdLogging) logger.emit('node', { Message, Location, LogLevel: 'Error' }, EventTime.now(), () => {});
 		MopConsole.log('ERROR', Location, chalk.red(Message), 3);
 	}
 

@@ -3,10 +3,10 @@ const { Album } = require('./Server/Database/Models');
 const MopConsole = require('./Server/Tools/MopConsole');
 
 const FlipAllAlbumStatusToNotComplete = async () => {
-	MopConsole.info('Utils', 'Changing all album status to not complete');
+	MopConsole.info('External.Utils', 'Changing all album status to not complete');
 	await ConnectToDB();
 	const res = await Album.updateMany({}, { IsComplete: false });
-	MopConsole.info('Utils', `Done for ${res.nModified} albums`);
+	MopConsole.info('External.Utils', `Done for ${res.nModified} albums`);
 };
 
 FlipAllAlbumStatusToNotComplete();
