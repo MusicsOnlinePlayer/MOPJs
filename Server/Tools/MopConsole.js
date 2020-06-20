@@ -5,27 +5,42 @@ const { EventTime } = logger;
 const chalk = require('chalk');
 const { MinLogLevel, UseFluentdLogging } = require('../Config/MopConf.json');
 
-
 if (UseFluentdLogging) logger.configure('mop');
 
 module.exports = class MopConsole {
-	static standard(Location, Message) {
-		if (process.env.NODE_ENV !== 'test' && UseFluentdLogging) logger.emit('node', { Message, Location, LogLevel: 'Standard' }, EventTime.now(), () => {});
+	static standard(Location, Message, ClientIp = undefined) {
+		if (process.env.NODE_ENV !== 'test' && UseFluentdLogging) {
+			logger.emit('node', {
+				Message, Location, LogLevel: 'Standard', ClientIp,
+			}, EventTime.now(), () => {});
+		}
 		MopConsole.log('STD', Location, chalk.gray(Message), 0);
 	}
 
-	static info(Location, Message) {
-		if (process.env.NODE_ENV !== 'test' && UseFluentdLogging) logger.emit('node', { Message, Location, LogLevel: 'Info' }, EventTime.now(), () => {});
+	static info(Location, Message, ClientIp = undefined) {
+		if (process.env.NODE_ENV !== 'test' && UseFluentdLogging) {
+			logger.emit('node', {
+				Message, Location, LogLevel: 'Info', ClientIp,
+			}, EventTime.now(), () => {});
+		}
 		MopConsole.log('INFO', Location, chalk.greenBright(Message), 1);
 	}
 
-	static warn(Location, Message) {
-		if (process.env.NODE_ENV !== 'test' && UseFluentdLogging) logger.emit('node', { Message, Location, LogLevel: 'Warning' }, EventTime.now(), () => {});
+	static warn(Location, Message, ClientIp = undefined) {
+		if (process.env.NODE_ENV !== 'test' && UseFluentdLogging) {
+			logger.emit('node', {
+				Message, Location, LogLevel: 'Warning', ClientIp,
+			}, EventTime.now(), () => {});
+		}
 		MopConsole.log('WARN', Location, chalk.yellow(Message), 2);
 	}
 
-	static error(Location, Message) {
-		if (process.env.NODE_ENV !== 'test' && UseFluentdLogging) logger.emit('node', { Message, Location, LogLevel: 'Error' }, EventTime.now(), () => {});
+	static error(Location, Message, ClientIp = undefined) {
+		if (process.env.NODE_ENV !== 'test' && UseFluentdLogging) {
+			logger.emit('node', {
+				Message, Location, LogLevel: 'Error', ClientIp,
+			}, EventTime.now(), () => {});
+		}
 		MopConsole.log('ERROR', Location, chalk.red(Message), 3);
 	}
 

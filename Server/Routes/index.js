@@ -6,7 +6,9 @@ module.exports = express();
 const app = module.exports;
 // const compression = require('compression');
 app.use((req, res, next) => {
-	MopConsole.standard('Request.Path', req.url);
+	if (res.statusCode === 404) MopConsole.warn('Request.Path', `${req.url} - ${res.statusCode}`, req.ip);
+	else MopConsole.standard('Request.Path', `${req.url} - ${res.statusCode}`, req.ip);
+
 	next();
 });
 app.use('/User', require('./User'));
