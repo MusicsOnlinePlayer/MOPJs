@@ -12,6 +12,7 @@ const {
 	CheckLikeMusic,
 	GetLikedMusics,
 	GetViewedMusics,
+	RefreshMusicIndex,
 } = require('./MusicHandler');
 const { DoIndexation } = require('./Indexer');
 
@@ -31,4 +32,5 @@ module.exports = {
 	CheckLikeMusic,
 	GetLikedMusics,
 	GetViewedMusics,
+	RefreshMusicIndex,
 };

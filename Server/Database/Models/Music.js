@@ -1,7 +1,11 @@
 const mongoose = require('mongoose');
+const elasticsearch = require('elasticsearch');
 const mongoosastic = require('mongoosastic');
 const { EsHost } = require('../../Config/MopConf.json');
 
+const esClient = elasticsearch.Client({
+	host: EsHost,
+});
 
 const MusicSchema = new mongoose.Schema({
 	Title: { type: String, es_indexed: true, es_boost: 8.0 },
@@ -39,13 +43,13 @@ const ArtistSchema = new mongoose.Schema({
 
 if (process.env.NODE_ENV !== 'test') {
 	MusicSchema.plugin(mongoosastic, {
-		hosts: [EsHost],
+		esClient,
 	});
 	AlbumSchema.plugin(mongoosastic, {
-		hosts: [EsHost],
+		esClient,
 	});
 	ArtistSchema.plugin(mongoosastic, {
-		hosts: [EsHost],
+		esClient,
 	}); //! Can be wrong here
 }
 
@@ -76,4 +80,5 @@ module.exports = {
 	Album: AlbumModel,
 	Artist: ArtistModel,
 	MusicSchema,
+	esClient,
 };

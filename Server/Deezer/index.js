@@ -3,6 +3,7 @@ const MopConsole = require('../Tools/MopConsole');
 const {
 	HandleNewMusicFromDz, HandleMusicsFromDz, HandleAlbumsFromDz, HandleNewCoverFromDz,
 	HandleNewImageFromDz,
+	RefreshMusicIndex,
 } = require('../Database/MusicReader');
 
 async function AddMusicOfAlbum(res, AlbumName, AlbumDzId, AlbumCoverPath) {
@@ -31,6 +32,7 @@ module.exports = {
 						MopConsole.error('Music.Deezer.API', handlerErr);
 					}
 				}
+				await RefreshMusicIndex();
 				resolve();
 			})
 			.catch((err) => {

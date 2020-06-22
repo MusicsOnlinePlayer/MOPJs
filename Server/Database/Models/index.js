@@ -1,4 +1,6 @@
-const { Music, Album, Artist } = require('./Music');
+const {
+	Music, Album, Artist, esClient,
+} = require('./Music');
 const { User } = require('./User');
 
 module.exports = {
@@ -6,4 +8,5 @@ module.exports = {
 	Album,
 	Artist,
 	User,
+	esClient,
 };

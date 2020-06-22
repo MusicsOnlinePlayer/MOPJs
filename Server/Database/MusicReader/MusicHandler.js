@@ -14,6 +14,7 @@ const {
 	GetLikedMusics,
 	GetViewedMusics,
 	DoesMusicExistsTitleDzId,
+	RefreshMusicIndex,
 } = require('./MusicHandlerBackEnd');
 
 /** This function add a new music with tags coming from ID3 file.
@@ -34,7 +35,7 @@ const HandleNewMusicFromDisk = async (tags, MusicFilePath) => {
 const HandleNewMusicFromDz = async (tags) => {
 	if (await DoesMusicExistsTitleDzId(tags.title, tags.id)) return;
 
-	await AddMusicToDatabase(ConvertTagsFromDz(tags, tags.id), tags.artist.picture_big, true);
+	await AddMusicToDatabase(ConvertTagsFromDz(tags, tags.id), tags.artist.picture_big);
 };
 
 /** This function add musics coming from deezer API to an existing Album.
@@ -115,4 +116,5 @@ module.exports = {
 	CheckLikeMusic,
 	GetLikedMusics,
 	GetViewedMusics,
+	RefreshMusicIndex,
 };

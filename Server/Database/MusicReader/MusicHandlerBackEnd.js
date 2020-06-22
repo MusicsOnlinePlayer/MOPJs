@@ -2,12 +2,26 @@ const fs = require('fs');
 const path = require('path');
 const MopConsole = require('../../Tools/MopConsole');
 const {
-	Music, Album, Artist, User,
+	Music, Album, Artist, User, esClient,
 } = require('../Models');
 const { ArtistsImageFolder } = require('./Utils');
 
+/** Use this function to force refresh indices on es
+ * Use it after adding data to es so that search results are up to date.
+ */
+const RefreshMusicIndex = () => new Promise((resolve, reject) => {
+	esClient.indices.refresh({ index: 'musics' }, (err) => {
+		if (err) {
+			reject(err);
+			return;
+		}
+		resolve();
+	});
+});
+
 /** This function performs a save on MongoDB.
  *  The promise is resolved when the document is indexed in elastic search
+ * @deprecated
  * @param {Music} MyMusicModel - The music that need to be saved
  * */
 const SaveAndIndex = (MyMusicModel) => new Promise((resolve) => {
@@ -333,4 +347,5 @@ module.exports = {
 	CheckLikeMusic,
 	GetLikedMusics,
 	GetViewedMusics,
+	RefreshMusicIndex,
 };
