@@ -49,7 +49,7 @@ const SaveAndIndex = (MyMusicModel) => new Promise((resolve) => {
  * @param {string=} MusicTags.ImageFormat - Format of the base64 image
  * @param {string=} ArtistImage - The path of the Artist image
  * @param {boolean} [EnableEsIndexWait=false] - This option indicate if it should wait for
- * ElasticSearch index before moving on
+ * ElasticSearch index before moving on (deprecated)
  * */
 async function AddMusicToDatabase(MusicTags, ArtistImage = undefined, EnableEsIndexWait = false) {
 	let guessedPath = `${MusicTags.Artist}.jpg`;

@@ -5,10 +5,26 @@ module.exports = {
 	SearchMusic: (Query) => new Promise((resolve, reject) => {
 		Music.search(
 			{
-				multi_match: {
-					query: Query,
-					fields: ['Title', 'Artist^2', 'Album^0.5'],
+				function_score: {
+					query: {
+						simple_query_string: {
+							query: `${Query}*`,
+							fields: [
+								'Title^5',
+								'Album^2',
+								'Artist^2',
+							],
+							default_operator: 'and',
+						},
+					},
+					field_value_factor: {
+						field: 'Views',
+						factor: 2,
+						modifier: 'sqrt',
+						missing: 1,
+					},
 				},
+
 			},
 			{
 				size: 8,
@@ -37,9 +53,12 @@ module.exports = {
 	SearchAlbum: (Query) => new Promise((resolve, reject) => {
 		Album.search(
 			{
-				multi_match: {
-					query: Query,
-					fields: ['Name'],
+				simple_query_string: {
+					query: `${Query}*`,
+					fields: [
+						'Name^5',
+					],
+					default_operator: 'and',
 				},
 			},
 			{
@@ -68,9 +87,12 @@ module.exports = {
 	SearchArtist: (Query) => new Promise((resolve, reject) => {
 		Artist.search(
 			{
-				multi_match: {
-					query: Query,
-					fields: ['Name'],
+				simple_query_string: {
+					query: `${Query}*`,
+					fields: [
+						'Name^5',
+					],
+					default_operator: 'and',
 				},
 			},
 			{
