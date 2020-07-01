@@ -8,6 +8,10 @@ const { MinLogLevel, UseFluentdLogging } = require('../Config/MopConf.json');
 if (UseFluentdLogging) logger.configure('mop');
 
 module.exports = class MopConsole {
+	static debug(Location, Message) {
+		MopConsole.log('DEBUG', Location, chalk.whiteBright(Message), -1);
+	}
+
 	static standard(Location, Message, ClientIp = undefined) {
 		if (process.env.NODE_ENV !== 'test' && UseFluentdLogging) {
 			logger.emit('node', {
