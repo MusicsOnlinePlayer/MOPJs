@@ -11,6 +11,10 @@ const CreateFilePathForDb = (Dir, file) => path.join(Dir, path.basename(file));
 const CheckIfFileHasCorrectFormat = (file) => path.extname(file) === '.mp3';
 
 module.exports = {
+	/** Retrieve all musics contained in the 'MusicsFolder' directory.
+	 * It also make sure extensions of these file are actual mp3 files
+	 * @returns {string[]} File paths of all valid musics files
+	 */
 	GetMusicsFiles: async () => {
 		MopConsole.info(Location, `Getting musics in ${MusicsFolder}`);
 		const CorrectMusicFilesPath = [];

@@ -4,6 +4,10 @@ const MopConsole = require('../../../Tools/MopConsole');
 const LogLocation = 'Musics.Proxy.DeezerProxy.Albums';
 
 module.exports = {
+	/** This function gets all albums of a specified Artist (here by a deezer id)
+	 * @param {number} ArtistDzId - The deezer Id of the artist
+	 * @returns {object[]} Data from deezer API, not formatted for a usage in MongoDB
+	 */
 	GetAlbumsOfArtist: (ArtistDzId) => new Promise((resolve, reject) => {
 		MopConsole.debug(LogLocation, `Begin request of albums from artist with Deezer id ${ArtistDzId}`);
 		Axios.get(`https://api.deezer.com/artist/${ArtistDzId}/albums`)
@@ -32,6 +36,11 @@ module.exports = {
 				reject();
 			});
 	}),
+	/** This function gets a file path (from Deezer API) of a specified album cover.
+	 * Correspond to 'cover_big'.
+	 * @param {number} AlbumDzId - The deezer Id of the album
+	 * @returns {string} File path from the Deezer API of the cover
+	 */
 	GetCoverPathOfAlbum: (AlbumDzId) => new Promise((resolve, reject) => {
 		MopConsole.debug(LogLocation, `Begin requesting cover of album with Deezer id ${AlbumDzId}`);
 		Axios.get(`https://api.deezer.com/album/${AlbumDzId}`)

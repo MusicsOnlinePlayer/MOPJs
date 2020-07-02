@@ -4,6 +4,10 @@ const MopConsole = require('../../../Tools/MopConsole');
 const LogLocation = 'Musics.Proxy.DeezerProxy.Musics';
 
 module.exports = {
+	/** This function gets all musics of a specified album (here by a deezer id)
+	 * @param {number} AlbumDzId - The deezer Id of the album
+	 * @returns {object[]} Data from deezer API, not formatted for a usage in MongoDB
+	 */
 	GetMusicOfAlbum: (AlbumDzId) => new Promise((resolve, reject) => {
 		MopConsole.debug(LogLocation, `Begin request of musics from album with Deezer id ${AlbumDzId}`);
 		Axios.get(`https://api.deezer.com/album/${AlbumDzId}/tracks`)
