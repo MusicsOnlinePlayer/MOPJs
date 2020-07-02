@@ -72,6 +72,6 @@ module.exports = {
 			Albums.push({ Name: album.title, DeezerId: album.id, ImagePathDeezer: album.cover_big });
 		});
 		await AppendAlbumsToArtist(ArtistId, Albums);
-		MopConsole.info('Album.Handler.Deezer', 'Added albums to artist');
+		MopConsole.info(LogLocation, 'Added albums to artist');
 	},
 };
