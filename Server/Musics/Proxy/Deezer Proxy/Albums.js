@@ -32,7 +32,7 @@ module.exports = {
 				reject();
 			});
 	}),
-	AddCoverOfAlbumToDb: (AlbumDzId) => new Promise((resolve, reject) => {
+	GetCoverPathOfAlbum: (AlbumDzId) => new Promise((resolve, reject) => {
 		MopConsole.debug(LogLocation, `Begin requesting cover of album with Deezer id ${AlbumDzId}`);
 		Axios.get(`https://api.deezer.com/album/${AlbumDzId}`)
 			.then((res) => {

@@ -55,7 +55,7 @@ async function AppendOrUpdateMusicsToAlbum(MusicsTags, AlbumDzId) {
 		Tasks.push(AppendOrUpdateMusicToAlbum(MusicTags, AlbumDzId));
 	});
 	MopConsole.debug(LogLocation, `Adding or updating ${Tasks.length} musics to album with Deezer id: ${AlbumDzId}`);
-	Promise.all(Tasks);
+	await Promise.all(Tasks);
 	MopConsole.debug(LogLocation, `Added or updated ${Tasks.length} musics to album with Deezer id: ${AlbumDzId}`);
 }
 
