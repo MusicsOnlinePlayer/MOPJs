@@ -1,5 +1,5 @@
 const MopConsole = require('../../../Tools/MopConsole');
-const { Music, Album } = require('../../../Database/Models');
+const { Music, Album } = require('../../Model');
 
 const LogLocation = 'Musics.Proxy.DBProxy.Musics';
 

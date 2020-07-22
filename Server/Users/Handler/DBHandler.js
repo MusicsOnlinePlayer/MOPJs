@@ -1,5 +1,5 @@
 const MopConsole = require('../../Tools/MopConsole');
-const { User } = require('../../Database/Models');
+const { User } = require('../Model');
 const {
 	GetLikedMusicsOfUser,
 	GetViewedMusicsOfUser,

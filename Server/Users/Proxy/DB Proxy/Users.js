@@ -1,4 +1,4 @@
-const { User } = require('../../../Database/Models');
+const { User } = require('../../Model');
 const MopConsole = require('../../../Tools/MopConsole');
 
 const Location = 'Users.Proxy.DBProxy';

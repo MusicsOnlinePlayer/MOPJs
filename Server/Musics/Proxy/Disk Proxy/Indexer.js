@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const MopConsole = require('../../../Tools/MopConsole');
-const { MusicsFolder } = require('../../../Database/MusicReader/Utils');
+const { MusicsFolder } = require('../../Config');
 
 const Location = 'Musics.Proxy.DiskProxy.Indexer';
 
