@@ -9,7 +9,7 @@ const {
 	clearDatabase,
 	closeDatabase,
 } = require('../../../Tests/DbHandler');
-const { Music, Album } = require('../../../Database/Models');
+const { Music, Album } = require('../../Model');
 
 beforeAll(async () => await connect());
 

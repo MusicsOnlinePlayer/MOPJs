@@ -10,18 +10,13 @@ const {
 	clearDatabase,
 	closeDatabase,
 } = require('../../../Tests/DbHandler');
-const { Music, Album, Artist } = require('../../../Database/Models');
+const { Music, Album, Artist } = require('../../Model');
 
 beforeAll(async () => await connect());
 
 afterEach(async () => await clearDatabase());
 
 afterAll(async () => await closeDatabase());
-
-const SampleArtist = {
-	Name: 'U2',
-	DeezerId: 1000,
-};
 
 const SampleAlbum = {
 	Name: 'DAMN.',

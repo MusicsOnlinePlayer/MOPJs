@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const passportLocalMongoose = require('passport-local-mongoose');
 const mongoosastic = require('mongoosastic');
 const { EsHost } = require('../../Config/MopConf.json');
-const { MusicSchema } = require('./Music');
+const { MusicSchema } = require('../../Musics/Model');
 
 const User = new mongoose.Schema({
 	username: { type: String, es_indexed: 'true' },

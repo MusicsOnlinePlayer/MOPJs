@@ -1,64 +1,41 @@
 const express = require('express');
-const { AddSearchToDb } = require('../Deezer');
-const {
-	SearchMusic,
-	SearchAlbum,
-	SearchArtist,
-} = require('../Search/Music');
-const {
-	HandleMusicRequestById,
-	HandleAlbumRequestById,
-	HandleArtistRequestById,
-	GetMusicFilePath,
-	HandleLikeMusic,
-} = require('../Action/Music');
-const { MusicsFolder } = require('../Database/MusicReader');
 
 const {
 	EnsureAuth,
 } = require('../Auth/EnsureAuthentification');
+
+const { EsMusicSearch, EsAlbumSearch, EsArtistSearch } = require('../Musics/Proxy/ES Proxy');
+const {
+	HandleMusicRequestById, HandleAlbumRequestById, HandleArtistRequestById, GetMusicFilePath,
+} = require('../Musics/Handler');
+const { MusicsFolder } = require('../Musics/Config');
 
 module.exports = express();
 const app = module.exports;
 
 
 app.get('/Search/Music/Name/:name', EnsureAuth, (req, res) => {
-	AddSearchToDb(req.params.name)
-		.then(() => {
-			SearchMusic(req.params.name)
-				.then((searchResult) => res.send(searchResult))
-				.catch(() => res.send({}));
-		})
+	EsMusicSearch(req.params.name)
+		.then((searchResult) => res.send(searchResult))
 		.catch(() => res.send({}));
 });
 
 app.get('/Search/Album/Name/:name', EnsureAuth, (req, res) => {
-	SearchAlbum(req.params.name)
+	EsAlbumSearch(req.params.name)
 		.then((searchResult) => res.send(searchResult))
 		.catch(() => res.send({}));
 });
 
 app.get('/Search/Artist/Name/:name', EnsureAuth, (req, res) => {
-	SearchArtist(req.params.name)
+	EsArtistSearch(req.params.name)
 		.then((searchResult) => res.send(searchResult))
 		.catch(() => res.send({}));
 });
 
+
 app.get('/Music/id/:id', EnsureAuth, (req, res) => {
 	HandleMusicRequestById(req.params.id, req.user)
 		.then((Music) => res.send(Music))
-		.catch(() => res.send({}));
-});
-
-app.get('/Music/Like/:id', EnsureAuth, (req, res) => {
-	HandleLikeMusic(req.user, req.params.id)
-		.then(() => res.sendStatus(200))
-		.catch(() => res.sendStatus(300));
-});
-
-app.get('/Music/get/:id', EnsureAuth, (req, res) => {
-	GetMusicFilePath(req.params.id, req.user, !(req.query.noLog === 'true'))
-		.then((FilePath) => res.send(FilePath))
 		.catch(() => res.send({}));
 });
 
@@ -74,10 +51,24 @@ app.get('/Artist/id/:id', EnsureAuth, (req, res) => {
 		.catch(() => res.send({}));
 });
 
+
+app.get('/Music/get/:id', EnsureAuth, (req, res) => {
+	GetMusicFilePath(req.params.id, req.user, !(req.query.noLog === 'true'))
+		.then((FilePath) => res.send(FilePath))
+		.catch(() => res.send({}));
+});
+
 app.get('/cdn/:id', (req, res) => {
 	GetMusicFilePath(req.params.id, req.user, true)
 		.then(({ FilePath }) => {
 			res.sendFile(FilePath, { root: MusicsFolder }, () => {});
 		})
 		.catch((err) => res.send(err));
+});
+
+
+app.get('/Music/Like/:id', EnsureAuth, (req, res) => {
+	HandleLikeMusic(req.user, req.params.id)
+		.then(() => res.sendStatus(200))
+		.catch(() => res.sendStatus(300));
 });

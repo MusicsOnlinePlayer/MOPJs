@@ -1,5 +1,5 @@
 const path = require('path');
-const { Music, Album, Artist } = require('../../Database/Models');
+const { Music, Album, Artist } = require('../Model');
 const MopConsole = require('../../Tools/MopConsole');
 const { FindAlbumContainingMusic } = require('../Proxy/DB Proxy');
 const { CompleteAlbum, CompleteArtist, GetMusicFilePath } = require('./DeezerHandler');

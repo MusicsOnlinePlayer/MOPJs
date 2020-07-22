@@ -3,7 +3,7 @@ const queue = require('queue');
 const fs = require('fs');
 const path = require('path');
 const { DeezerArlToken } = require('../../../Config/MopConf.json');
-const { MusicsFolder } = require('../../../Database/MusicReader');
+const { MusicsFolder } = require('../../Config');
 const MopConsole = require('../../../Tools/MopConsole');
 
 const LogLocation = 'Musics.Proxy.DeezerProxy.Albums';
