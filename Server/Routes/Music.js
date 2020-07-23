@@ -6,7 +6,11 @@ const {
 
 const { EsMusicSearch, EsAlbumSearch, EsArtistSearch } = require('../Musics/Proxy/ES Proxy');
 const {
-	HandleMusicRequestById, HandleAlbumRequestById, HandleArtistRequestById, GetMusicFilePath,
+	HandleMusicRequestById,
+	HandleAlbumRequestById,
+	HandleArtistRequestById,
+	GetMusicFilePath,
+	IncrementLikeCount,
 } = require('../Musics/Handler');
 const { MusicsFolder } = require('../Musics/Config');
 const { LikeMusicOnUserReq } = require('../Users/Handler');
@@ -70,6 +74,9 @@ app.get('/cdn/:id', (req, res) => {
 
 app.get('/Music/Like/:id', EnsureAuth, (req, res) => {
 	LikeMusicOnUserReq(req.user, req.params.id)
-		.then(() => res.sendStatus(200))
+		.then((IsNowLiked) => {
+			IncrementLikeCount(req.params.id, IsNowLiked ? 1 : -1);
+			res.sendStatus(200);
+		})
 		.catch(() => res.sendStatus(300));
 });

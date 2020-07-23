@@ -1,5 +1,9 @@
 const {
-	HandleMusicRequestById, HandleAlbumRequestById, HandleArtistRequestById, GetMusicFilePath,
+	HandleMusicRequestById,
+	HandleAlbumRequestById,
+	HandleArtistRequestById,
+	GetMusicFilePath,
+	IncrementLikeCount,
 } = require('./DBHandler');
 
 module.exports = {
@@ -7,4 +11,5 @@ module.exports = {
 	HandleAlbumRequestById,
 	HandleArtistRequestById,
 	GetMusicFilePath,
+	IncrementLikeCount,
 };
