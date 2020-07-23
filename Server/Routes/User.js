@@ -1,8 +1,8 @@
 const express = require('express');
 const passport = require('passport');
 const MopConsole = require('../Tools/MopConsole');
-const { RegisterUser, GetLikedMusicsOfUser, GetViewedMusicsOfUser } = require('../Action/User');
 const { EnsureAuth } = require('../Auth/EnsureAuthentification');
+const { RegisterUser, GetLikedMusicsOfUserReq, GetViewedMusicsOfUserReq } = require('../Users/Handler');
 
 module.exports = express();
 const app = module.exports;
@@ -35,12 +35,12 @@ app.get('/Me', (req, res) => {
 });
 
 app.get('/LikedMusics', EnsureAuth, (req, res) => {
-	GetLikedMusicsOfUser(req.user)
+	GetLikedMusicsOfUserReq(req.user)
 		.then((musics) => res.send({ MusicsId: musics }));
 });
 
 app.get('/ViewedMusics', EnsureAuth, (req, res) => {
-	GetViewedMusicsOfUser(req.user)
+	GetViewedMusicsOfUserReq(req.user)
 		.then((musics) => res.send({ MusicsId: musics }));
 });
 

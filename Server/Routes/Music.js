@@ -9,6 +9,7 @@ const {
 	HandleMusicRequestById, HandleAlbumRequestById, HandleArtistRequestById, GetMusicFilePath,
 } = require('../Musics/Handler');
 const { MusicsFolder } = require('../Musics/Config');
+const { LikeMusicOnUserReq } = require('../Users/Handler');
 
 module.exports = express();
 const app = module.exports;
@@ -68,7 +69,7 @@ app.get('/cdn/:id', (req, res) => {
 
 
 app.get('/Music/Like/:id', EnsureAuth, (req, res) => {
-	HandleLikeMusic(req.user, req.params.id)
+	LikeMusicOnUserReq(req.user, req.params.id)
 		.then(() => res.sendStatus(200))
 		.catch(() => res.sendStatus(300));
 });
