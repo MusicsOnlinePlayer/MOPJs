@@ -38,17 +38,19 @@ const CheckLikeMusic = async (MusicId, UserId) => {
  * if it is already like, then it will dislike the music to undo.
  * @param {ObjectId} MusicId - Music to like
  * @param {ObjectId} UserId - User who liked the music
+ * @returns return true if the music is now liked by the user
  */
 const LikeMusicOnUser = async (MusicId, UserId) => {
 	const FoundUser = await User.findById(UserId);
 	const index = FoundUser.LikedMusics.indexOf(MusicId);
 	if (index === -1) {
 		FoundUser.LikedMusics.push(MusicId);
-	} else {
-		FoundUser.LikedMusics.splice(index, 1);
+		await FoundUser.save();
+		return true;
 	}
-
+	FoundUser.LikedMusics.splice(index, 1);
 	await FoundUser.save();
+	return false;
 };
 
 /** This function add a music to a specified user history (async)

@@ -134,4 +134,9 @@ module.exports = {
 			resolve({ FilePath: await GetMusicFilePath(MusicDoc.DeezerId) });
 		});
 	}),
+	IncrementLikeCount: async (id, increment = 1) => {
+		const music = await Music.findById(id);
+		music.Likes += increment;
+		music.save();
+	},
 };
