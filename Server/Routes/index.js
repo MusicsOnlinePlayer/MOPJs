@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
 });
 
 const staticPath = path.join(__dirname, '../../Public/');
-const { MusicsFolder, ArtistsImageFolder } = require('../Database/MusicReader');
+const { MusicsFolder, ArtistsImageFolder } = require('../Musics/Config');
 
 app.use(express.static(staticPath));
 app.use(express.static(MusicsFolder));

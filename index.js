@@ -10,10 +10,10 @@ const bodyParser = require('body-parser');
 const compression = require('compression');
 const mongoose = require('mongoose');
 const MopConsole = require('./Server/Tools/MopConsole');
-const { User } = require('./Server/Database/Models');
+const { User } = require('./Server/Users/Model');
 const { MopPort } = require('./Server/Config/MopConf.json');
-const { DoIndexation } = require('./Server/Database/MusicReader');
-const { ConnectToDB } = require('./Server/Database/Db');
+const { MakeIndexation } = require('./Server/Musics/Handler');
+const { ConnectToDB } = require('./Server/Database');
 // app.use(compression);
 
 process.on('uncaughtException', (exception) => {
@@ -22,7 +22,7 @@ process.on('uncaughtException', (exception) => {
 });
 
 ConnectToDB().then(() => {
-	DoIndexation();
+	MakeIndexation();
 
 
 	app.use(cookieParser());

@@ -5,6 +5,7 @@ const path = require('path');
 const { DeezerArlToken } = require('../../../Config/MopConf.json');
 const { MusicsFolder } = require('../../Config');
 const MopConsole = require('../../../Tools/MopConsole');
+const { Music } = require('../../Model');
 
 const LogLocation = 'Musics.Proxy.DeezerProxy.Albums';
 
@@ -68,8 +69,10 @@ class DzDownloader {
 				.then(async () => {
 					MopConsole.info(LogLocation, ' Done.');
 					MopConsole.timeEnd(LogLocation, 'Time ');
-					MopConsole.info('DzDownloader.DataBase', 'Adding to database');
 					const MusicPath = DzDownloader.GetPathFromMusicId(musicId);
+					MopConsole.debug(LogLocation, `Saving path ${MusicPath} to db (dz id: ${musicId} )`);
+					await Music.findOneAndUpdate({ DeezerId: musicId }, { FilePath: MusicPath });
+					MopConsole.debug(LogLocation, `Saved path ${MusicPath} to db (dz id: ${musicId} )`);
 					resolve({ MusicPath, MusicDzId: musicId });
 				}).catch((err) => {
 					MopConsole.error(LogLocation, ' Fail.');

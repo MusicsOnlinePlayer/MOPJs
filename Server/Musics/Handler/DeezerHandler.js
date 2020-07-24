@@ -1,6 +1,6 @@
 const { AppendOrUpdateMusicsToAlbum, HandleAlbumsFromDz } = require('../Proxy/DB Proxy');
 const { GetMusicOfAlbum: GetMusicsOfAlbum } = require('../Proxy/Deezer Proxy/Musics');
-const { GetAlbumsOfArtist } = require('../Proxy/Deezer Proxy');
+const { GetAlbumsOfArtist, SearchMusics } = require('../Proxy/Deezer Proxy');
 const { ConvertTagsFromDz } = require('../Tags');
 const { Downloader } = require('../Proxy/Downloader Proxy');
 
@@ -8,8 +8,9 @@ async function CompleteAlbum(AlbumDoc) {
 	const DzMusics = await GetMusicsOfAlbum(AlbumDoc.DeezerId);
 
 	const DzMusicsFormatted = DzMusics.map(
-		(DzMusic) => ConvertTagsFromDz(DzMusic, AlbumDoc.DeezerId),
+		(DzMusic) => ConvertTagsFromDz(DzMusic, DzMusic.id, AlbumDoc.Name, AlbumDoc.DeezerId, AlbumDoc.ImagePathDeezer),
 	);
+
 	await AppendOrUpdateMusicsToAlbum(DzMusicsFormatted, AlbumDoc.DeezerId);
 }
 
@@ -26,4 +27,5 @@ module.exports = {
 	CompleteAlbum,
 	CompleteArtist,
 	GetMusicFilePath,
+	SearchMusics,
 };

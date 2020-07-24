@@ -13,7 +13,7 @@ module.exports = {
 		Axios.get(`https://api.deezer.com/album/${AlbumDzId}/tracks`)
 			.then(async (res) => {
 				const MusicsOfAlbums = [];
-				MusicsOfAlbums.push(res.data.data);
+				MusicsOfAlbums.push(...res.data.data);
 				MopConsole.debug(LogLocation, `Received ${MusicsOfAlbums.length} musics for album with Deezer id ${AlbumDzId}`);
 
 				let nextUrl = res.data.next;
@@ -22,7 +22,7 @@ module.exports = {
 					let nextRes;
 					try {
 						nextRes = await Axios.get(nextUrl);
-						MusicsOfAlbums.push(nextRes.data.data);
+						MusicsOfAlbums.push(...nextRes.data.data);
 					} catch (handlerErr) {
 						MopConsole.error(LogLocation, handlerErr);
 					}
