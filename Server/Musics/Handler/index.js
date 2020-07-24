@@ -4,7 +4,18 @@ const {
 	HandleArtistRequestById,
 	GetMusicFilePath,
 	IncrementLikeCount,
+	MakeIndexation,
+	AddMusicsFromDeezer,
 } = require('./DBHandler');
+
+const {
+	SearchMusics,
+} = require('./DeezerHandler');
+
+const SearchAndAddMusicsDeezer = async (Query) => {
+	const searchRes = await SearchMusics(Query);
+	await AddMusicsFromDeezer(searchRes);
+};
 
 module.exports = {
 	HandleMusicRequestById,
@@ -12,4 +23,6 @@ module.exports = {
 	HandleArtistRequestById,
 	GetMusicFilePath,
 	IncrementLikeCount,
+	MakeIndexation,
+	SearchAndAddMusicsDeezer,
 };

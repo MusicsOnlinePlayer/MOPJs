@@ -1,5 +1,9 @@
 const {
-	CheckLikeMusic, GetLikedMusicsOfUser, GetViewedMusicsOfUser, LikeMusicOnUser,
+	CheckLikeMusic,
+	GetLikedMusicsOfUser,
+	GetViewedMusicsOfUser,
+	LikeMusicOnUser,
+	RegisterToUserHistory,
 } = require('./Users');
 
 module.exports = {
@@ -7,4 +11,5 @@ module.exports = {
 	GetLikedMusicsOfUser,
 	GetViewedMusicsOfUser,
 	LikeMusicOnUser,
+	RegisterToUserHistory,
 };

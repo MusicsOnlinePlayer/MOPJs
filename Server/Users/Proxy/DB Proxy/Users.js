@@ -60,14 +60,14 @@ const LikeMusicOnUser = async (MusicId, UserId) => {
 function RegisterToUserHistory(MusicId, UserId) {
 	return new Promise((resolve, reject) => {
 		MopConsole.debug(Location, `Adding to music with id ${MusicId} to history of user with id ${UserId}`);
-		User.findById(UserId, (UserErr, UserDoc) => {
+		User.findById(UserId, async (UserErr, UserDoc) => {
 			if (UserErr) {
 				MopConsole.error(Location, UserErr);
 				reject();
 				return;
 			}
 			UserDoc.ViewedMusics.push(MusicId);
-			UserDoc.save();
+			await UserDoc.save();
 			MopConsole.info(Location, 'Saved to user history');
 			resolve();
 		});

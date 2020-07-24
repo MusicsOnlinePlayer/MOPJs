@@ -11,6 +11,7 @@ const {
 	HandleArtistRequestById,
 	GetMusicFilePath,
 	IncrementLikeCount,
+	SearchAndAddMusicsDeezer,
 } = require('../Musics/Handler');
 const { MusicsFolder } = require('../Musics/Config');
 const { LikeMusicOnUserReq } = require('../Users/Handler');
@@ -19,7 +20,8 @@ module.exports = express();
 const app = module.exports;
 
 
-app.get('/Search/Music/Name/:name', EnsureAuth, (req, res) => {
+app.get('/Search/Music/Name/:name', EnsureAuth, async (req, res) => {
+	await SearchAndAddMusicsDeezer(req.params.name);
 	EsMusicSearch(req.params.name)
 		.then((searchResult) => res.send(searchResult))
 		.catch(() => res.send({}));

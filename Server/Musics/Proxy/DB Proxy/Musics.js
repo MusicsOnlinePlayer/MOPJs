@@ -1,5 +1,8 @@
+const fs = require('fs');
+const path = require('path');
 const MopConsole = require('../../../Tools/MopConsole');
-const { Music, Album } = require('../../Model');
+const { Music, Album, Artist } = require('../../Model');
+const { ArtistsImageFolder } = require('../../Config');
 
 const LogLocation = 'Musics.Proxy.DBProxy.Musics';
 
@@ -22,8 +25,8 @@ const UpdateIfNeededTrackNumber = (tags) => new Promise((resolve) => {
  * @param {number} AlbumDzId - Deezer id of the album
  */
 const AppendMusicToAlbum = async (tags, AlbumDzId) => {
-	const newMusic = new Music(tags);
-	const savedMusic = await newMusic.save();
+	const savedMusic = await Music.create(tags);
+
 	const albumDoc = await Album.findOne({ Name: tags.Album, DeezerId: AlbumDzId });
 	albumDoc.MusicsId.push(savedMusic._id);
 	await albumDoc.save();
@@ -55,10 +58,105 @@ async function AppendOrUpdateMusicsToAlbum(MusicsTags, AlbumDzId) {
 		Tasks.push(AppendOrUpdateMusicToAlbum(MusicTags, AlbumDzId));
 	});
 	MopConsole.debug(LogLocation, `Adding or updating ${Tasks.length} musics to album with Deezer id: ${AlbumDzId}`);
-	await Promise.all(Tasks);
+	try {
+		await Promise.all(Tasks);
+	} catch (err) {
+		MopConsole.error(LogLocation, err);
+	}
 	MopConsole.debug(LogLocation, `Added or updated ${Tasks.length} musics to album with Deezer id: ${AlbumDzId}`);
+}
+
+/** This function checks if a music exist in the MongoDB database
+ * @param {string} Title - Title of the music that need to be checked
+ * @returns {boolean}
+ * @deprecated
+ */
+const DoesMusicExistsTitle = async (Title) => {
+	const count = await Music.countDocuments({ Title });
+	return count > 0;
+};
+
+/** This function checks if a music exist in the MongoDB database
+ * @param {string} Title - Title of the music that need to be checked
+ * @param {number} DeezerId - Deezer Id of the music that need to be checked
+ * @returns {boolean}
+ */
+const DoesMusicExistsTitleDzId = async (Title, DeezerId) => {
+	const count = await Music.countDocuments({ Title, DeezerId });
+	return count > 0;
+};
+
+/** This function performs a save of music in the database while adding
+ * new artist if it doesn't already exists and also adding a new album if it doesn't already exists.
+ * @param {object} MusicTags - All tags about the music (see Tags.js for more details)
+ * @param {string} MusicTags.Title - Title of the music
+ * @param {number=} MusicTags.DeezerId - Deezer Id
+ * @param {string} MusicTags.Artist - Artist Name
+ * @param {number=} MusicTags.ArtistDzId - Deezer Id of the music Artist
+ * @param {string} MusicTags.Album - Album Name
+ * @param {string=} MusicTags.Image - Cover of album in base64
+ * @param {string=} MusicTags.ImagePathDeezer - url or path of album cover on deezer
+ * @param {string=} MusicTags.ImageFormat - Format of the base64 image
+ * @param {string=} ArtistImage - The path of the Artist image
+ * */
+async function AddMusicToDatabase(MusicTags, ArtistImage = undefined) {
+	let guessedPath = `${MusicTags.Artist}.jpg`;
+
+	if (!fs.existsSync(path.join(ArtistsImageFolder, guessedPath))) { guessedPath = undefined; }
+
+	const NewTagsForAlbum = {
+		Name: MusicTags.Album,
+		DeezerId: MusicTags.AlbumDzId,
+		Image: MusicTags.Image,
+		ImagePathDeezer: MusicTags.ImagePathDeezer,
+		ImageFormat: MusicTags.ImageFormat,
+	};
+
+	const NewTagsForMusicDocs = MusicTags;
+
+	NewTagsForMusicDocs.Image = undefined;
+	NewTagsForMusicDocs.ImagePathDeezer = undefined;
+	NewTagsForMusicDocs.ImageFormat = undefined;
+
+
+	const newMusic = new Music(NewTagsForMusicDocs);
+	const newAlbum = new Album(NewTagsForAlbum);
+	const newArtist = new Artist({
+		Name: MusicTags.Artist,
+		DeezerId: MusicTags.ArtistDzId,
+		ImagePath: ArtistImage || guessedPath,
+	});
+
+	let musicDoc;
+
+	try {
+		musicDoc = await newMusic.save();
+	} catch (err) {
+		MopConsole.error('Music.Handler.BackEnd.Index', err);
+		return;
+	}
+
+	const albumDoc = await Album.findOneOrCreate({
+		Name: newAlbum.Name, $or: [{ DeezerId: newAlbum.DeezerId }, { DeezerId: undefined }],
+	}, newAlbum);
+	const artistDoc = await Artist.findOneOrCreate({ Name: newArtist.Name }, newArtist);
+
+
+	albumDoc.DeezerId = newAlbum.DeezerId;
+	artistDoc.DeezerId = newArtist.DeezerId;
+
+	albumDoc.MusicsId.push(musicDoc._id);
+	const savedAlbum = await albumDoc.save();
+	if (artistDoc.AlbumsId.indexOf(savedAlbum._id) === -1) {
+		MopConsole.info('Music.Handler.BackEnd.Index', `Added ${savedAlbum.Name}`);
+		artistDoc.AlbumsId.push(savedAlbum);
+		await artistDoc.save();
+	}
 }
 
 module.exports = {
 	AppendOrUpdateMusicsToAlbum,
+	DoesMusicExistsTitle,
+	AddMusicToDatabase,
+	DoesMusicExistsTitleDzId,
 };

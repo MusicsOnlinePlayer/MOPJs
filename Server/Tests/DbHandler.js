@@ -14,6 +14,7 @@ module.exports.connect = async () => {
 		autoReconnect: true,
 		reconnectTries: Number.MAX_VALUE,
 		reconnectInterval: 1000,
+		poolSize: 10,
 	};
 
 	await mongoose.connect(uri, mongooseOpts);

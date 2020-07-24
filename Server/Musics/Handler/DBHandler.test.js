@@ -1,9 +1,12 @@
 require('regenerator-runtime/runtime');
 
+const path = require('path');
+
 const {
 	HandleMusicRequestById,
 	HandleAlbumRequestById,
 	HandleArtistRequestById,
+	GetMusicFilePath,
 } = require('./DBHandler');
 
 const {
@@ -12,6 +15,7 @@ const {
 	closeDatabase,
 } = require('../../Tests/DbHandler');
 const { Music, Album, Artist } = require('../Model');
+const { User } = require('../../Users/Model');
 
 beforeAll(async () => await connect());
 
@@ -88,5 +92,33 @@ describe('Musics.Handler.DBHandler should work properly', () => {
 		const FoundArtist = await HandleArtistRequestById(ar1._id);
 		expect(FoundArtist).toMatchObject({ Name: SampleArtist.Name });
 		expect(FoundArtist.AlbumsId).toContainEqual(a1._id);
+	});
+
+	it('should handle a filepath request without a user specified', async () => {
+		const m1 = await Music.create(SampleMusic);
+
+		const { FilePath } = await GetMusicFilePath(m1._id, undefined, false);
+
+		expect(FilePath).toBe(path.basename(SampleMusic.FilePath));
+		const FoundMusic = await Music.findById(m1._id);
+		expect(FoundMusic.Views).toBe(0);
+	});
+
+	it('should handle a filepath request with a user specified', async () => {
+		const m1 = await Music.create(SampleMusic);
+
+		const u1 = await User.create({ username: 'Malau' });
+
+		const { FilePath } = await GetMusicFilePath(m1._id, u1, true);
+
+		expect(FilePath).toBe(path.basename(SampleMusic.FilePath));
+
+		const FoundMusic = await Music.findById(m1._id);
+
+		expect(FoundMusic.Views).toBe(1);
+
+		const FoundUser = await User.findById(u1._id);
+
+		expect(FoundUser.ViewedMusics).toContainEqual(m1._id);
 	});
 });

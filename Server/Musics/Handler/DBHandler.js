@@ -1,15 +1,42 @@
 const path = require('path');
 const { Music, Album, Artist } = require('../Model');
 const MopConsole = require('../../Tools/MopConsole');
-const { FindAlbumContainingMusic } = require('../Proxy/DB Proxy');
+const { FindAlbumContainingMusic, HandleNewMusicFromDisk, HandleNewMusicFromDz } = require('../Proxy/DB Proxy');
 const { CompleteAlbum, CompleteArtist, GetMusicFilePath } = require('./DeezerHandler');
 const { GetImageOfArtist } = require('../Proxy/Deezer Proxy');
 const { RegisterToUserHistory, CheckIfMusicIsLikedByUserReq } = require('../../Users/Handler');
+const { ReadTagsFromDisk, GetMusicsFiles } = require('../Proxy/Disk Proxy');
 
 const Location = 'Musics.Handler.DBHandler';
 
 
 module.exports = {
+	MakeIndexation: async () => {
+		MopConsole.info(Location, 'Starting indexing');
+		MopConsole.time(Location, 'Time ');
+		const files = GetMusicsFiles();
+		/* eslint no-restricted-syntax: "off" */
+		for (const file of files) {
+			let tags;
+			try {
+				tags = await ReadTagsFromDisk(file);
+			} catch (err) {
+				MopConsole.warn(Location, `Cannot read tags of music file ${file}`);
+			}
+			// console.log(tags);
+			if (tags.title && tags.album && tags.artist[0] && tags.track.no) {
+				await HandleNewMusicFromDisk(tags, file);
+			} else {
+				MopConsole.warn(Location, `Skipped ${file} (Missing tags)`);
+			}
+		}
+
+
+		MopConsole.info(Location, `Done - ${files.length} musics on the disk`);
+		MopConsole.timeEnd(Location, 'Time ');
+	},
+
+
 	HandleMusicRequestById: (id, UserReq) => new Promise((resolve, reject) => {
 		MopConsole.debug(Location, `Searching for music with db id ${id}`);
 		Music.findById(id, async (err, doc) => {
@@ -118,11 +145,11 @@ module.exports = {
 			if (RegisterHistory) {
 				MusicDoc.Views += 1;
 				MusicDoc.LastView = Date.now();
-				MusicDoc.save();
+				await MusicDoc.save();
 			}
 
 			if (UserReq && RegisterHistory) {
-				RegisterToUserHistory(MusicDoc._id, UserReq._id);
+				await RegisterToUserHistory(MusicDoc._id, UserReq._id);
 			}
 			if (!MusicDoc.DeezerId || MusicDoc.FilePath) {
 				MopConsole.debug(Location, `Music file path for db id ${id} is ${MusicDoc.FilePath}`);
@@ -131,12 +158,18 @@ module.exports = {
 			}
 
 			MopConsole.debug(Location, `Music file path for db id ${id} is not present, downloading using DzDownloader`);
-			resolve({ FilePath: await GetMusicFilePath(MusicDoc.DeezerId) });
+			await GetMusicFilePath(MusicDoc.DeezerId);
+			Music.findById(id, (_err, newMusic) => resolve({ FilePath: newMusic.FilePath ? path.basename(newMusic.FilePath) : '' }));
 		});
 	}),
 	IncrementLikeCount: async (id, increment = 1) => {
 		const music = await Music.findById(id);
 		music.Likes += increment;
 		music.save();
+	},
+	AddMusicsFromDeezer: async (tags) => {
+		for (const musicTags of tags) {
+			await HandleNewMusicFromDz(musicTags);
+		}
 	},
 };
