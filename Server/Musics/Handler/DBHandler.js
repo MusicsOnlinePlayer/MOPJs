@@ -23,7 +23,7 @@ module.exports = {
 			} catch (err) {
 				MopConsole.warn(Location, `Cannot read tags of music file ${file}`);
 			}
-			// console.log(tags);
+
 			if (tags.title && tags.album && tags.artist[0] && tags.track.no) {
 				await HandleNewMusicFromDisk(tags, file);
 			} else {

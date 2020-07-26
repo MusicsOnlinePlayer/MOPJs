@@ -15,7 +15,7 @@ module.exports = {
 	 * It also make sure extensions of these file are actual mp3 files
 	 * @returns {string[]} File paths of all valid musics files
 	 */
-	GetMusicsFiles: async () => {
+	GetMusicsFiles: () => {
 		MopConsole.info(Location, `Getting musics in ${MusicsFolder}`);
 		const CorrectMusicFilesPath = [];
 
