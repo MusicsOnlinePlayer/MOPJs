@@ -74,4 +74,12 @@ module.exports = {
 		await AppendAlbumsToArtist(ArtistId, Albums);
 		MopConsole.info(LogLocation, 'Added albums to artist');
 	},
+
+	/** This function modify album states by modifying the IsComplete attribute
+	 * @param {number} AlbumDzId - Deezer id of the completed album
+	 */
+	UpdateAlbumCompleteStatus: async (AlbumDzId) => {
+		await Album.findOneAndUpdate({ DeezerId: AlbumDzId }, { IsComplete: true });
+		MopConsole.debug(LogLocation, `Set album with dz id ${AlbumDzId} as complete`);
+	},
 };
