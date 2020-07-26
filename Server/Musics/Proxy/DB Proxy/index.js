@@ -1,4 +1,4 @@
-const { FindAlbumContainingMusic, HandleAlbumsFromDz } = require('./Albums');
+const { FindAlbumContainingMusic, HandleAlbumsFromDz, UpdateAlbumCompleteStatus } = require('./Albums');
 const {
 	AppendOrUpdateMusicsToAlbum, DoesMusicExistsTitle, DoesMusicExistsTitleDzId, AddMusicToDatabase,
 } = require('./Musics');
@@ -31,4 +31,5 @@ module.exports = {
 	AppendOrUpdateMusicsToAlbum,
 	HandleNewMusicFromDisk,
 	HandleNewMusicFromDz,
+	UpdateAlbumCompleteStatus,
 };
