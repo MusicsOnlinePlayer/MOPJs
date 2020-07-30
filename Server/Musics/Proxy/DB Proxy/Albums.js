@@ -62,7 +62,7 @@ module.exports = {
 		return finalAlbum;
 	},
 	/** This function add albums coming from deezer API to an existing artist.
-	 * This function run sequentially
+	 * This function runs sequentially
 	 * @param {number} ArtistId - Deezer Id of the artist (unique)
 	 * @param {[object]} DeezerAlbums - List of albums details
 	 */
