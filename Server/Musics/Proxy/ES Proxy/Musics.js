@@ -1,5 +1,6 @@
 const { Music } = require('../../Model');
 const MopConsole = require('../../../Tools/MopConsole');
+const { esClient } = require('../../Model');
 
 const LogLocation = 'Musics.Proxy.ESProxy.Musics';
 
@@ -52,7 +53,22 @@ const EsMusicSearch = (Query) => new Promise((resolve, reject) => {
 	);
 });
 
+/** Use this function to force refresh indices on es
+ * Use it after adding data to es so that search results are up to date.
+ */
+const RefreshEsMusicIndex = () => new Promise((resolve, reject) => {
+	MopConsole.debug(LogLocation, 'Refreshing es music index');
+	esClient.indices.refresh({ index: 'musics' }, (err) => {
+		if (err) {
+			reject(err);
+			return;
+		}
+		resolve();
+	});
+	MopConsole.debug(LogLocation, 'music index refreshed');
+});
 
 module.exports = {
 	EsMusicSearch,
+	RefreshEsMusicIndex,
 };
