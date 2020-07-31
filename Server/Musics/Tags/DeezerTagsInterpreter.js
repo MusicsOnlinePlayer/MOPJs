@@ -28,7 +28,7 @@ function ConvertTags(
 		if (!CustomCoverPath) {
 			MopConsole.warn('Music.Handler.Tags.Deezer', 'And no custom cover path provided');
 		}
-		MopConsole.warn('Music.Handler.Tags.Deezer', `Additional args provided - CustomAlbumName: ${CustomAlbumName} CustomAlbumDzId: ${CustomAlbumDzId}`);
+		MopConsole.warn('Music.Handler.Tags.Deezer', `Additional args provided - CustomAlbumName: ${CustomAlbumName} CustomAlbumDzId: ${CustomAlbumDzId} CustomCoverPath: ${CustomCoverPath}`);
 	}
 
 	const MusicTags = {
@@ -42,9 +42,26 @@ function ConvertTags(
 		ImagePathDeezer: CustomCoverPath || tags.album.cover_big,
 		DeezerId,
 	};
+
+	return MusicTags;
+}
+
+function ConvertTagsFromDzAlbum(tags, AlbumName, AlbumDzId) {
+	const MusicTags = {
+		Title: tags.title,
+		Album: AlbumName,
+		AlbumDzId,
+		Artist: tags.artist.name,
+		ArtistDzId: tags.artist.id,
+		PublishedDate: Date.now(),
+		TrackNumber: tags.track_position || 0,
+		DeezerId: tags.id,
+	};
+
 	return MusicTags;
 }
 
 module.exports = {
 	ConvertTags,
+	ConvertTagsFromDzAlbum,
 };
