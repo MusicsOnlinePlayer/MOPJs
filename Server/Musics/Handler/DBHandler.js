@@ -56,7 +56,7 @@ module.exports = {
 				MusicDoc.FilePath = MusicDoc.FilePath
 					? path.basename(MusicDoc.FilePath) : undefined;
 				const AlbumOfMusic = await FindAlbumContainingMusic(MusicDoc);
-				//! Should search by dz id
+
 				MusicDoc.Image = AlbumOfMusic.Image;
 				MusicDoc.ImagePathDeezer = AlbumOfMusic.ImagePathDeezer;
 				MusicDoc.ImageFormat = AlbumOfMusic.ImageFormat;
