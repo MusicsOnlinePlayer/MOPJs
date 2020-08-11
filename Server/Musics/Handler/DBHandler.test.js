@@ -7,6 +7,7 @@ const {
 	HandleAlbumRequestById,
 	HandleArtistRequestById,
 	GetMusicFilePath,
+	IncrementLikeCount,
 } = require('./DBHandler');
 
 const {
@@ -42,6 +43,7 @@ const SampleMusic = {
 	TrackNumber: 8,
 	DeezerId: 350171311,
 	FilePath: 'C:\\MusicsFakeFolder\\humble.mp3',
+	Likes: 0,
 };
 
 
@@ -120,5 +122,15 @@ describe('Musics.Handler.DBHandler should work properly', () => {
 		const FoundUser = await User.findById(u1._id);
 
 		expect(FoundUser.ViewedMusics).toContainEqual(m1._id);
+	});
+
+	it('Should increment like count', async () => {
+		const m1 = await Music.create(SampleMusic);
+
+		await IncrementLikeCount(m1._id, 1);
+
+		const IncrementedMusic = await Music.findById(m1._id);
+
+		expect(IncrementedMusic.Likes).toBe(1);
 	});
 });

@@ -165,7 +165,7 @@ module.exports = {
 	IncrementLikeCount: async (id, increment = 1) => {
 		const music = await Music.findById(id);
 		music.Likes += increment;
-		music.save();
+		await music.save();
 		MopConsole.debug(Location, `Increased like count of music ${id} by ${increment}`);
 	},
 	AddMusicsFromDeezer: async (tags) => {
