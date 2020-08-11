@@ -50,7 +50,7 @@ if (process.env.NODE_ENV !== 'test') {
 	});
 	ArtistSchema.plugin(mongoosastic, {
 		esClient,
-	}); //! Can be wrong here
+	});
 }
 
 
