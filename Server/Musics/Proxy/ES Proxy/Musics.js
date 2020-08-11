@@ -9,14 +9,15 @@ const EsMusicSearch = (Query) => new Promise((resolve, reject) => {
 		{
 			function_score: {
 				query: {
-					simple_query_string: {
-						query: `${Query}*`,
+					multi_match: {
+						query: `${Query}`,
 						fields: [
 							'Title^5',
 							'Album^2',
 							'Artist^2',
 						],
-						default_operator: 'and',
+						operator: 'and',
+						type: 'cross_field',
 					},
 				},
 				field_value_factor: {
