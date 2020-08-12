@@ -6,6 +6,7 @@ const { DeezerArlToken } = require('../../../Config/MopConf.json');
 const { MusicsFolder } = require('../../Config');
 const MopConsole = require('../../../Tools/MopConsole');
 const { Music } = require('../../Model');
+const { CheckIfDeezerReqAreAllowed } = require('../Deezer Proxy');
 
 const LogLocation = 'Musics.Proxy.DeezerProxy.Albums';
 
@@ -102,7 +103,7 @@ class DzDownloader {
 	}
 }
 
-const Downloader = new DzDownloader(DeezerArlToken);
+const Downloader = CheckIfDeezerReqAreAllowed() ? () => {} : new DzDownloader(DeezerArlToken);
 
 module.exports = {
 	Downloader,
