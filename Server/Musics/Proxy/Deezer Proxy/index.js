@@ -2,6 +2,7 @@ const { SearchMusics } = require('./Search');
 const { GetMusicOfAlbum } = require('./Musics');
 const { GetAlbumsOfArtist, GetCoverPathOfAlbum } = require('./Albums');
 const { GetImageOfArtist } = require('./Artists');
+const { CheckIfDeezerReqAreAllowed } = require('./Misc');
 
 module.exports = {
 	SearchMusics,
@@ -9,4 +10,5 @@ module.exports = {
 	GetAlbumsOfArtist,
 	GetImageOfArtist,
 	GetCoverPathOfAlbum,
+	CheckIfDeezerReqAreAllowed,
 };

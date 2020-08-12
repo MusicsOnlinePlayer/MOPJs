@@ -1,5 +1,6 @@
 const { default: Axios } = require('axios');
 const MopConsole = require('../../../Tools/MopConsole');
+const { CheckIfDeezerReqAreAllowed } = require('./Misc');
 
 const LogLocation = 'Musics.Proxy.DeezerProxy.Search';
 
@@ -10,6 +11,7 @@ module.exports = {
 	 */
 	SearchMusics: (Query) => new Promise((resolve, reject) => {
 		MopConsole.debug(LogLocation, `Begin search for query ${Query}`);
+		if (CheckIfDeezerReqAreAllowed()) resolve([]);
 		Axios.get(`https://api.deezer.com/search?q=${Query}`)
 			.then(async (res) => {
 				MopConsole.debug(LogLocation, `Found ${res.data.data.length} musics`);

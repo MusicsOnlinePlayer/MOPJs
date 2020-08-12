@@ -1,5 +1,6 @@
 const { default: Axios } = require('axios');
 const MopConsole = require('../../../Tools/MopConsole');
+const { CheckIfDeezerReqAreAllowed } = require('./Misc');
 
 const LogLocation = 'Musics.Proxy.DeezerProxy.Artist';
 
@@ -11,6 +12,7 @@ module.exports = {
 	 */
 	GetImageOfArtist: (ArtistDzId) => new Promise((resolve, reject) => {
 		MopConsole.debug(LogLocation, `Begin requesting image of artist with Deezer id ${ArtistDzId}`);
+		if (CheckIfDeezerReqAreAllowed()) resolve([]);
 		Axios.get(`https://api.deezer.com/artist/${ArtistDzId}/`)
 			.then(async (res) => {
 				const dzRes = res.data;
