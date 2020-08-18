@@ -1,5 +1,5 @@
-const { ConnectToDB } = require('./Server/Database/Db');
-const { Album } = require('./Server/Database/Models');
+const { ConnectToDB } = require('./Server/Database/index');
+const { Album } = require('./Server/Musics/Model/index');
 const MopConsole = require('./Server/Tools/MopConsole');
 
 const FlipAllAlbumStatusToNotComplete = async () => {
