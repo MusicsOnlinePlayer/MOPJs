@@ -49,7 +49,15 @@ const SampleMusic = {
 
 describe('Musics.Handler.DBHandler should work properly', () => {
 	it('Should get a music by a db id, and gather additional important info about the music requested', async () => {
-		const m1 = await Music.create(SampleMusic);
+		const m1 = await Music.create({
+			Title: 'HUMBLE.',
+			Album: 'DAMN.',
+			Artist: 'Kendrick Lamar',
+			TrackNumber: 8,
+			DeezerId: 350171311,
+			FilePath: 'humble.mp3',
+			Likes: 0,
+		});
 		await Album.create({ ...SampleAlbum, MusicsId: [m1._id] });
 
 		const NotFoundMusic = await HandleMusicRequestById('5ec5a5e79e29336824be64a5');
