@@ -20,9 +20,13 @@ const SearchAndAddMusicsDeezer = async (Query) => {
 	await RefreshEsMusicIndex();
 };
 
+/** Retrieve musics of a specified deezer playlist and add musics to db id
+ * @param {number} PlaylistDzId deezer id of a deezer playlist
+ * @returns {Promise<string[]>} return a promise resolving by an array of music db ids
+ */
 const GetAndAddMusicOfDeezerPlaylist = async (PlaylistDzId) => {
 	const dzMusics = await GetMusicsOfPlaylist(PlaylistDzId);
-	await AddMusicsFromDeezer(dzMusics);
+	return await AddMusicsFromDeezer(dzMusics);
 };
 
 module.exports = {
@@ -33,5 +37,5 @@ module.exports = {
 	IncrementLikeCount,
 	MakeIndexation,
 	SearchAndAddMusicsDeezer,
-	GetAndAddMusicOfDeezerPlaylist
+	GetAndAddMusicOfDeezerPlaylist,
 };
