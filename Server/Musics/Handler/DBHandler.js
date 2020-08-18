@@ -168,9 +168,16 @@ module.exports = {
 		await music.save();
 		MopConsole.debug(Location, `Increased like count of music ${id} by ${increment}`);
 	},
+	/** Add multiple deezer formatted music to mongodb
+	 * @param {Object[]} tags Array of musics from deezer api
+	 * @returns {Promise<string[]>} return a promise resolving by an array of music db ids
+	 */
 	AddMusicsFromDeezer: async (tags) => {
+		const MusicDbIds = [];
 		for (const musicTags of tags) {
-			await HandleNewMusicFromDz(musicTags);
+			const DbId = await HandleNewMusicFromDz(musicTags);
+			MusicDbIds.push(DbId);
 		}
+		return MusicDbIds;
 	},
 };

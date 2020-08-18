@@ -98,6 +98,7 @@ const DoesMusicExistsTitleDzId = async (Title, DeezerId) => {
  * @param {string=} MusicTags.ImagePathDeezer - url or path of album cover on deezer
  * @param {string=} MusicTags.ImageFormat - Format of the base64 image
  * @param {string=} ArtistImage - The path of the Artist image
+ * @returns {Promise<string>} Music db id of the music saved
  * */
 async function AddMusicToDatabase(MusicTags, ArtistImage = undefined) {
 	let guessedPath = `${MusicTags.Artist}.jpg`;
@@ -152,6 +153,8 @@ async function AddMusicToDatabase(MusicTags, ArtistImage = undefined) {
 		artistDoc.AlbumsId.push(savedAlbum);
 		await artistDoc.save();
 	}
+	/* eslint consistent-return: "off" */
+	return musicDoc._id;
 }
 
 module.exports = {

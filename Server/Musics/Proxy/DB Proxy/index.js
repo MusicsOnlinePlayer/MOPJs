@@ -18,11 +18,12 @@ const HandleNewMusicFromDisk = async (tags, MusicFilePath) => {
 /** This function add a new music with tags coming from deezer API.
  * It will also check if the music exist already.
  * @param {object} tags - All tags about the music (see Tags.js for more details)
+ * @returns {Promise<string>} Promise resolve by Music db id
  */
 const HandleNewMusicFromDz = async (tags) => {
-	if (await DoesMusicExistsTitleDzId(tags.title, tags.id)) return;
-
-	await AddMusicToDatabase(ConvertTagsFromDz(tags, tags.id), tags.artist.picture_big);
+	if (await DoesMusicExistsTitleDzId(tags.title, tags.id)) { return; }
+	/* eslint consistent-return: "off" */
+	return await AddMusicToDatabase(ConvertTagsFromDz(tags, tags.id), tags.artist.picture_big);
 };
 
 module.exports = {

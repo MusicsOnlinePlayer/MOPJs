@@ -33,5 +33,5 @@ module.exports = {
 	IncrementLikeCount,
 	MakeIndexation,
 	SearchAndAddMusicsDeezer,
-	GetAndAddMusicOfDeezerPlaylist,
+	GetAndAddMusicOfDeezerPlaylist
 };
