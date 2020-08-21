@@ -103,7 +103,7 @@ app.post('/Playlist/Create/Deezer', EnsureAuth, (req, res) => {
 });
 
 app.post('/Playlist/Create/', EnsureAuth, (req, res) => {
-	if (req.body.Name && req.body.MusicsId && req.body.DeezerId && req.body.IsPublic) {
+	if (req.body.Name && req.body.MusicsId && req.body.IsPublic) {
 		CreatePlaylist(req.body.Name, req.body.MusicsId, req.user._id, req.body.IsPublic)
 			.then((pId) => res.send({ CreatedPlaylistId: pId }))
 			.catch(() => res.sendStatus(300));
