@@ -1,5 +1,7 @@
 const path = require('path');
-const { Music, Album, Artist } = require('../Model');
+const {
+	Music, Album, Artist, Playlist,
+} = require('../Model');
 const MopConsole = require('../../Tools/MopConsole');
 const { FindAlbumContainingMusic, HandleNewMusicFromDisk, HandleNewMusicFromDz } = require('../Proxy/DB Proxy');
 const { CompleteAlbum, CompleteArtist, GetMusicFilePath } = require('./DeezerHandler');
@@ -128,6 +130,27 @@ module.exports = {
 			resolve(ArtistDoc);
 		});
 	}),
+
+	HandlePlaylistRequestById: (id) => new Promise((resolve, reject) => {
+		MopConsole.debug(Location, `Searching for playlist with db id ${id}`);
+		Playlist.findById(id)
+			.populate('Creator MusicsId')
+			.exec(
+				async (err, doc) => {
+					if (err) {
+						MopConsole.error(Location, err);
+						reject(err);
+						return;
+					}
+					if (!doc) {
+						MopConsole.warn(Location, `Playlist id not found ${id}`);
+						resolve({});
+					}
+					resolve(doc);
+				},
+			);
+	}),
+
 	GetMusicFilePath: (id, UserReq, RegisterHistory = true) => new Promise((resolve, reject) => {
 		MopConsole.debug(Location, `Getting music file path, db id: ${id} RegisterHistory is set to ${RegisterHistory}`);
 		Music.findById(id, async (err, doc) => {

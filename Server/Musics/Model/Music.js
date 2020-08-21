@@ -41,6 +41,15 @@ const ArtistSchema = new mongoose.Schema({
 	ImagePath: String,
 });
 
+const PlaylistSchema = new mongoose.Schema({
+	Name: { type: String, es_indexed: true },
+	IsPublic: { type: Boolean, es_indexed: true },
+	Creator: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+	MusicsId: [{
+		type: mongoose.Schema.Types.ObjectId, ref: 'Music',
+	}],
+});
+
 if (process.env.NODE_ENV !== 'test') {
 	MusicSchema.plugin(mongoosastic, {
 		esClient,
@@ -49,6 +58,9 @@ if (process.env.NODE_ENV !== 'test') {
 		esClient,
 	});
 	ArtistSchema.plugin(mongoosastic, {
+		esClient,
+	});
+	PlaylistSchema.plugin(mongoosastic, {
 		esClient,
 	});
 }
@@ -69,16 +81,19 @@ AlbumSchema.static('findOneOrCreate', async function findOneOrCreate(condition, 
 const MusicModel = mongoose.model('Music', MusicSchema, 'Music');
 const AlbumModel = mongoose.model('Album', AlbumSchema, 'Album');
 const ArtistModel = mongoose.model('Artist', ArtistSchema, 'Artist');
+const PlaylistModel = mongoose.model('Playlist', PlaylistSchema, 'Playlist');
 
 if (process.env.NODE_ENV !== 'test') {
 	MusicModel.synchronize();
 	AlbumModel.synchronize();
 	ArtistModel.synchronize();
+	PlaylistModel.synchronize();
 }
 module.exports = {
 	Music: MusicModel,
 	Album: AlbumModel,
 	Artist: ArtistModel,
+	Playlist: PlaylistModel,
 	MusicSchema,
 	esClient,
 };

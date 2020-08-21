@@ -9,9 +9,12 @@ const {
 	HandleMusicRequestById,
 	HandleAlbumRequestById,
 	HandleArtistRequestById,
+	HandlePlaylistRequestById,
 	GetMusicFilePath,
 	IncrementLikeCount,
 	SearchAndAddMusicsDeezer,
+	ConstructPlaylistFromDz,
+	CreatePlaylist,
 } = require('../Musics/Handler');
 const { MusicsFolder } = require('../Musics/Config');
 const { LikeMusicOnUserReq } = require('../Users/Handler');
@@ -81,4 +84,30 @@ app.get('/Music/Like/:id', EnsureAuth, (req, res) => {
 			res.sendStatus(200);
 		})
 		.catch(() => res.sendStatus(300));
+});
+
+app.get('/Playlist/id/:id', EnsureAuth, (req, res) => {
+	HandlePlaylistRequestById(req.params.id)
+		.then((doc) => res.send(doc))
+		.catch(() => res.sendStatus(300));
+});
+
+app.post('/Playlist/Create/Deezer', EnsureAuth, (req, res) => {
+	if (req.body.Name && req.body.DeezerId && req.body.IsPublic) {
+		ConstructPlaylistFromDz(req.body.DeezerId, req.body.Name, req.user._id, req.body.IsPublic)
+			.then((pId) => res.send({ CreatedPlaylistId: pId }))
+			.catch(() => res.sendStatus(300));
+	} else {
+		res.sendStatus(422);
+	}
+});
+
+app.post('/Playlist/Create/', EnsureAuth, (req, res) => {
+	if (req.body.Name && req.body.MusicsId && req.body.DeezerId && req.body.IsPublic) {
+		CreatePlaylist(req.body.Name, req.body.MusicsId, req.user._id, req.body.IsPublic)
+			.then((pId) => res.send({ CreatedPlaylistId: pId }))
+			.catch(() => res.sendStatus(300));
+	} else {
+		res.sendStatus(422);
+	}
 });
