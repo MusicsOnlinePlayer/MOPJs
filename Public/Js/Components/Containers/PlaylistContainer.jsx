@@ -1,8 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import {
+	Row,
+	Col,
+} from 'react-bootstrap';
 import PlaylistElement from '../Elements/PlaylistElement';
 import { ChangePlayingId as ChangePlayingIdRedux } from '../../Actions/Action';
+import PlaylistSaverButton from '../Helper/PlaylistSaverButton';
 
 const mapStateToProps = (state) => ({
 	Musics: state.MusicPlayerReducer.Playlist.Musics,
@@ -33,6 +38,8 @@ class PlaylistContainerConnected extends React.Component {
 	render() {
 		const { Musics, CurrentPlaying } = this.props;
 
+		const MusicsId = Musics.map((music) => music._id);
+
 		const PlaylistItems = Musics.map((Music) => (
 			<PlaylistElement
 				key={Musics.indexOf(Music)}
@@ -46,7 +53,16 @@ class PlaylistContainerConnected extends React.Component {
 		return (
 			<div className="m-4">
 				<small className="text-muted">
-					<h5>Current Playlist</h5>
+					<Row className="p-1">
+						<Col>
+							<small className="text-muted">
+								<h5>Current Playlist</h5>
+							</small>
+						</Col>
+						<Col>
+							<PlaylistSaverButton MusicsId={MusicsId} />
+						</Col>
+					</Row>
 				</small>
 				<table className="table table-hover">
 					<tbody>{PlaylistItems}</tbody>

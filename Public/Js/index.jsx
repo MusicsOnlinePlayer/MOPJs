@@ -26,7 +26,7 @@ const App = () => (
 				<ProtectedRoute path="/CurrentPlaylist" component={React.lazy(() => import('./Components/Containers/PlaylistContainer'))} />
 				<ProtectedRoute path="/Album/:id" component={React.lazy(() => import('./Components/MainComponents/Album'))} />
 				<ProtectedRoute path="/Artist/:id" component={React.lazy(() => import('./Components/MainComponents/Artist'))} />
-
+				<ProtectedRoute path="/Playlist/:id" component={React.lazy(() => import('./Components/MainComponents/UserPlaylist'))} />
 			</HashRouter>
 		</Suspense>
 	</Provider>
