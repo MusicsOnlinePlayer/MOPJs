@@ -163,6 +163,7 @@ describe('DB Proxy for user should work properly', () => {
 		const p1 = await Playlist.create({
 			Name: 'P1',
 			Creator: u._id,
+			IsPublic: true,
 		});
 		const p2 = await Playlist.create({
 			Name: 'P2',

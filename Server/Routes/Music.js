@@ -15,6 +15,7 @@ const {
 	SearchAndAddMusicsDeezer,
 	ConstructPlaylistFromDz,
 	CreatePlaylist,
+	RemovePlaylistById,
 } = require('../Musics/Handler');
 const { MusicsFolder } = require('../Musics/Config');
 const { LikeMusicOnUserReq } = require('../Users/Handler');
@@ -91,6 +92,19 @@ app.get('/Playlist/id/:id', EnsureAuth, (req, res) => {
 		.then((doc) => {
 			if (doc.IsPublic || doc.Creator._id.toString() === req.user._id.toString()) {
 				res.send(doc);
+			}
+			res.sendStatus(401);
+		})
+		.catch(() => res.sendStatus(300));
+});
+
+app.delete('/Playlist/id/:id', EnsureAuth, (req, res) => {
+	HandlePlaylistRequestById(req.params.id)
+		.then((doc) => {
+			if (doc.Creator._id.toString() === req.user._id.toString()) {
+				RemovePlaylistById(doc._id)
+					.then(() => res.sendStatus(200))
+					.catch(() => res.sendStatus(300));
 			}
 			res.sendStatus(401);
 		})

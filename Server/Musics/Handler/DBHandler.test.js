@@ -15,8 +15,11 @@ const {
 	clearDatabase,
 	closeDatabase,
 } = require('../../Tests/DbHandler');
-const { Music, Album, Artist } = require('../Model');
+const {
+	Music, Album, Artist, Playlist,
+} = require('../Model');
 const { User } = require('../../Users/Model');
+const { RemovePlaylistById } = require('.');
 
 beforeAll(async () => await connect());
 
@@ -140,5 +143,19 @@ describe('Musics.Handler.DBHandler should work properly', () => {
 		const IncrementedMusic = await Music.findById(m1._id);
 
 		expect(IncrementedMusic.Likes).toBe(1);
+	});
+
+	it('Should remove a playlist', async () => {
+		const p1 = await Playlist.create({
+			Name: 'PLAYLIST',
+		});
+
+		const pCountBefore = await Playlist.count({});
+		expect(pCountBefore).toBe(1);
+
+		await RemovePlaylistById(p1._id);
+
+		const pCountAfter = await Playlist.count({});
+		expect(pCountAfter).toBe(0);
 	});
 });

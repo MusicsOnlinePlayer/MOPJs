@@ -160,6 +160,18 @@ module.exports = {
 			);
 	}),
 
+	RemovePlaylistById: (PlaylistId) => new Promise((resolve, reject) => {
+		MopConsole.debug(Location, `Deleting playlist (db id: ${PlaylistId})`);
+		Playlist.deleteOne({ _id: PlaylistId }, (err) => {
+			if (err) {
+				MopConsole.error(Location, err);
+				reject(err);
+				return;
+			}
+			resolve();
+		});
+	}),
+
 	GetMusicFilePath: (id, UserReq, RegisterHistory = true) => new Promise((resolve, reject) => {
 		MopConsole.debug(Location, `Getting music file path, db id: ${id} RegisterHistory is set to ${RegisterHistory}`);
 		Music.findById(id, async (err, doc) => {
