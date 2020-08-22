@@ -4,6 +4,7 @@ const {
 	GetViewedMusicsOfUser,
 	LikeMusicOnUser,
 	RegisterToUserHistory,
+	GetPlaylistsIdOfUser,
 } = require('./Users');
 
 module.exports = {
@@ -12,4 +13,5 @@ module.exports = {
 	GetViewedMusicsOfUser,
 	LikeMusicOnUser,
 	RegisterToUserHistory,
+	GetPlaylistsIdOfUser,
 };

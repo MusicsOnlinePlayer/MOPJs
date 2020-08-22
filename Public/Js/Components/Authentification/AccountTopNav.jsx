@@ -23,6 +23,7 @@ class AccountTopNavConnected extends React.Component {
 	static propTypes = {
 		Account: PropTypes.shape({
 			username: PropTypes.string.isRequired,
+			_id: PropTypes.string.isRequired,
 		}),
 		AddMyAccount: PropTypes.func.isRequired,
 		history: PropTypes.shape({
@@ -76,6 +77,12 @@ class AccountTopNavConnected extends React.Component {
 		history.push('/History');
 	}
 
+	OnPlaylists = () => {
+		const { history, Account } = this.props;
+
+		history.push(`/User/${Account._id}/Playlists`);
+	}
+
 	render() {
 		const { Account } = this.props;
 		if (Account) {
@@ -84,6 +91,7 @@ class AccountTopNavConnected extends React.Component {
 				<NavDropdown title={username} id="basic-nav-dropdown" alignRight>
 					<NavDropdown.Item onClick={this.OnFavorites}>Favorites</NavDropdown.Item>
 					<NavDropdown.Item onClick={this.OnHistory}>History</NavDropdown.Item>
+					<NavDropdown.Item onClick={this.OnPlaylists}>Playlists</NavDropdown.Item>
 					<NavDropdown.Divider />
 					<NavDropdown.Item onClick={this.OnLogout}>Logout</NavDropdown.Item>
 				</NavDropdown>

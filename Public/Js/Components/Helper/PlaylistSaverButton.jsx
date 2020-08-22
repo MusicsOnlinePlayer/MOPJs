@@ -46,8 +46,8 @@ class PlaylistSaverButton extends React.Component {
 		this.setState({ Name: event.target.value });
 	}
 
-	handleIsPublicChange = (event) => {
-		this.setState({ IsPublic: event.target.checked });
+	handleIsPublicChange = () => {
+		this.setState((prevState) => ({ IsPublic: !prevState.IsPublic }));
 	}
 
 	render() {
@@ -68,7 +68,7 @@ class PlaylistSaverButton extends React.Component {
 								<Form.Control value={Name} onChange={this.onNameChange} placeholder="Enter a playlist name" />
 							</Form.Group>
 							<Form.Group controlId="IsPublic">
-								<Form.Check type="checkbox" label="Public" checked={IsPublic} handleChange={this.handleIsPublicChange} />
+								<Form.Check type="checkbox" label="Public" checked={IsPublic} onClick={this.handleIsPublicChange} />
 							</Form.Group>
 						</Form>
 					</Modal.Body>

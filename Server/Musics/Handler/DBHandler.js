@@ -146,7 +146,16 @@ module.exports = {
 						MopConsole.warn(Location, `Playlist id not found ${id}`);
 						resolve({});
 					}
-					resolve(doc);
+
+					const PlaylistDoc = doc.toObject();
+
+					const AlbumOfMusic = await FindAlbumContainingMusic(PlaylistDoc.MusicsId[0]);
+
+					PlaylistDoc.Image = AlbumOfMusic.Image;
+					PlaylistDoc.ImagePathDeezer = AlbumOfMusic.ImagePathDeezer;
+					PlaylistDoc.ImageFormat = AlbumOfMusic.ImageFormat;
+
+					resolve(PlaylistDoc);
 				},
 			);
 	}),

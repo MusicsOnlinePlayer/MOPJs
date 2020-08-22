@@ -6,6 +6,7 @@ const {
 	CheckLikeMusic,
 	LikeMusicOnUser,
 	RegisterToUserHistory,
+	GetPlaylistsIdOfUser,
 } = require('../Proxy/DB Proxy');
 
 const Location = 'Users.Handler.DBHandler';
@@ -48,6 +49,20 @@ const LikeMusicOnUserReq = async (
 	MusicId,
 ) => await LikeMusicOnUser(MusicId, UserReq._id);
 
+/** Get playlists of a specified user
+ * @param {string} UserId Id of the user
+ * @param {boolean} IncludePrivate should it include private playlist in response
+ * @returns {Promise<object>} an object containing a creator object and an array of playlist ids
+ */
+const GetPlaylistsOfUser = async (UserId, IncludePrivate) => {
+	const PlaylistsId = await GetPlaylistsIdOfUser(UserId, IncludePrivate);
+	const Creator = await User.findById(UserId);
+	return {
+		PlaylistsId,
+		Creator,
+	};
+};
+
 module.exports = {
 	RegisterUser,
 	GetLikedMusicsOfUserReq,
@@ -55,4 +70,5 @@ module.exports = {
 	CheckIfMusicIsLikedByUserReq,
 	LikeMusicOnUserReq,
 	RegisterToUserHistory,
+	GetPlaylistsOfUser,
 };

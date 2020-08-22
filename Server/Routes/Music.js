@@ -88,12 +88,17 @@ app.get('/Music/Like/:id', EnsureAuth, (req, res) => {
 
 app.get('/Playlist/id/:id', EnsureAuth, (req, res) => {
 	HandlePlaylistRequestById(req.params.id)
-		.then((doc) => res.send(doc))
+		.then((doc) => {
+			if (doc.IsPublic || doc.Creator._id.toString() === req.user._id.toString()) {
+				res.send(doc);
+			}
+			res.sendStatus(401);
+		})
 		.catch(() => res.sendStatus(300));
 });
 
 app.post('/Playlist/Create/Deezer', EnsureAuth, (req, res) => {
-	if (req.body.Name && req.body.DeezerId && req.body.IsPublic) {
+	if (req.body.Name && req.body.DeezerId && req.body.IsPublic !== undefined) {
 		ConstructPlaylistFromDz(req.body.DeezerId, req.body.Name, req.user._id, req.body.IsPublic)
 			.then((pId) => res.send({ CreatedPlaylistId: pId }))
 			.catch(() => res.sendStatus(300));
@@ -103,7 +108,7 @@ app.post('/Playlist/Create/Deezer', EnsureAuth, (req, res) => {
 });
 
 app.post('/Playlist/Create/', EnsureAuth, (req, res) => {
-	if (req.body.Name && req.body.MusicsId && req.body.IsPublic) {
+	if (req.body.Name && req.body.MusicsId && req.body.IsPublic !== undefined) {
 		CreatePlaylist(req.body.Name, req.body.MusicsId, req.user._id, req.body.IsPublic)
 			.then((pId) => res.send({ CreatedPlaylistId: pId }))
 			.catch(() => res.sendStatus(300));
