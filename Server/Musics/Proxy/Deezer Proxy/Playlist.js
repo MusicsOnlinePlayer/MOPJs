@@ -14,8 +14,26 @@ module.exports = {
 		if (CheckIfDeezerReqAreAllowed()) resolve([]);
 		Axios.get(`https://api.deezer.com/playlist/${PlaylistId}/tracks`)
 			.then(async (res) => {
-				MopConsole.debug(LogLocation, `Found ${res.data.data.length} musics`);
-				resolve(res.data.data);
+				const MusicsOfPlaylist = [];
+				let ReqCount = 1;
+				MusicsOfPlaylist.push(...res.data.data);
+				MopConsole.debug(LogLocation, `Found ${res.data.data.length} musics ${ReqCount}`);
+
+				let NextUrl = res.data.next;
+				while (NextUrl) {
+					let nextRes;
+					try {
+						nextRes = await Axios.get(NextUrl);
+						ReqCount += 1;
+						MusicsOfPlaylist.push(...nextRes.data.data);
+						MopConsole.debug(LogLocation, `Found ${nextRes.data.data.length} musics ${ReqCount}`);
+					} catch (handlerErr) {
+						MopConsole.error(LogLocation, handlerErr);
+					}
+					NextUrl = nextRes.data ? nextRes.data.next : undefined;
+				}
+
+				resolve(MusicsOfPlaylist);
 			})
 			.catch((err) => {
 				MopConsole.error(LogLocation, err);
