@@ -3,8 +3,6 @@ import Axios from 'axios';
 import PropTypes from 'prop-types';
 import LazyLoad from 'react-lazyload';
 import { withRouter } from 'react-router-dom';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AlbumItemCard from '../Items/AlbumItemCard';
 
 
@@ -58,11 +56,7 @@ class AlbumElement extends React.Component {
 					ImageDz={ImagePathDeezer}
 					Name={Name}
 					onClick={this.onClick}
-				>
-					<td className="align-middle" onClick={this.HandleAdd}>
-						<FontAwesomeIcon style={{ color: '#bebebe' }} icon={faPlus} size="lg" pull="right" />
-					</td>
-				</AlbumItemCard>
+				/>
 
 			</LazyLoad>
 

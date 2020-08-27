@@ -90,8 +90,9 @@ app.get('/Music/Like/:id', EnsureAuth, (req, res) => {
 app.get('/Playlist/id/:id', EnsureAuth, (req, res) => {
 	HandlePlaylistRequestById(req.params.id)
 		.then((doc) => {
-			if (doc.IsPublic || doc.Creator._id.toString() === req.user._id.toString()) {
-				res.send(doc);
+			const IsCreator = doc.Creator._id.toString() === req.user._id.toString();
+			if (doc.IsPublic || IsCreator) {
+				res.send({ ...doc, HasControl: IsCreator });
 			}
 			res.sendStatus(401);
 		})
@@ -105,6 +106,7 @@ app.delete('/Playlist/id/:id', EnsureAuth, (req, res) => {
 				RemovePlaylistById(doc._id)
 					.then(() => res.sendStatus(200))
 					.catch(() => res.sendStatus(300));
+				return;
 			}
 			res.sendStatus(401);
 		})

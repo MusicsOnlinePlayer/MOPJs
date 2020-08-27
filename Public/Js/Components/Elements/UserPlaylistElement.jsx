@@ -3,8 +3,7 @@ import Axios from 'axios';
 import PropTypes from 'prop-types';
 import LazyLoad from 'react-lazyload';
 import { withRouter } from 'react-router-dom';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Dropdown } from 'react-bootstrap';
 import AlbumItemCard from '../Items/AlbumItemCard';
 
 
@@ -45,10 +44,17 @@ class UserPlaylistElement extends React.Component {
 		};
 	}
 
+	OnDelete = () => {
+		const { id } = this.props;
+		Axios.delete(`/Music/Playlist/id/${id}`).then(() => {
+			window.location.reload(false);
+		});
+	}
+
 	render() {
 		const { ApiResult } = this.state;
 		const {
-			Image, Name, ImageFormat, ImagePathDeezer,
+			Image, Name, ImageFormat, ImagePathDeezer, HasControl,
 		} = ApiResult;
 		return (
 			<LazyLoad>
@@ -58,10 +64,16 @@ class UserPlaylistElement extends React.Component {
 					ImageDz={ImagePathDeezer}
 					Name={Name}
 					onClick={this.onClick}
+					MoreOptions
 				>
-					<td className="align-middle" onClick={this.HandleAdd}>
-						<FontAwesomeIcon style={{ color: '#bebebe' }} icon={faPlus} size="lg" pull="right" />
-					</td>
+					<Dropdown.Item>Play</Dropdown.Item>
+					<Dropdown.Item>Add to current playlist</Dropdown.Item>
+					{HasControl && (
+						<>
+							<Dropdown.Divider />
+							<Dropdown.Item onClick={this.OnDelete}>Delete</Dropdown.Item>
+						</>
+					) }
 				</AlbumItemCard>
 
 			</LazyLoad>
