@@ -31,6 +31,7 @@ class PlaylistImporterModal extends React.Component {
 		Axios.post('/Music/Playlist/Create/Deezer', { Name, IsPublic, DeezerId: ParsedDeezerUrl })
 			.then((res) => {
 				this.setState({ IsLoading: false });
+				this.closeModal();
 				history.push(`/Playlist/${res.data.CreatedPlaylistId}`);
 			})
 			.catch((err) => {
