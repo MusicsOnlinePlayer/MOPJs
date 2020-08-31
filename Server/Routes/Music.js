@@ -132,3 +132,20 @@ app.post('/Playlist/Create/', EnsureAuth, (req, res) => {
 		res.sendStatus(422);
 	}
 });
+
+app.post('/Playlist/id/:id/Add/', EnsureAuth, (req, res) => {
+	if (Array.isArray(req.body.MusicsId)) {
+		HandlePlaylistRequestById(req.params.id)
+			.then(async (doc) => {
+				const IsCreator = doc.Creator._id.toString() === req.user._id.toString();
+				if (IsCreator) {
+					doc.MusicsId.push(...req.body.MusicsId);
+					await doc.save();
+					res.sendStatus(200);
+					return;
+				}
+				res.sendStatus(401);
+			})
+			.catch(() => res.sendStatus(300));
+	}
+});

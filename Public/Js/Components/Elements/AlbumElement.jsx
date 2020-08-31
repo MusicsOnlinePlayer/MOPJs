@@ -3,6 +3,7 @@ import Axios from 'axios';
 import PropTypes from 'prop-types';
 import LazyLoad from 'react-lazyload';
 import { withRouter } from 'react-router-dom';
+import { Dropdown } from 'react-bootstrap';
 import AlbumItemCard from '../Items/AlbumItemCard';
 
 
@@ -56,8 +57,13 @@ class AlbumElement extends React.Component {
 					ImageDz={ImagePathDeezer}
 					Name={Name}
 					onClick={this.onClick}
-				/>
-
+					MoreOptions
+				>
+					<Dropdown.Item>Play</Dropdown.Item>
+					{/* //TODO Implement this */ }
+					<Dropdown.Item>Add to current playlist</Dropdown.Item>
+					{/* //TODO Implement this */ }
+				</AlbumItemCard>
 			</LazyLoad>
 
 		);

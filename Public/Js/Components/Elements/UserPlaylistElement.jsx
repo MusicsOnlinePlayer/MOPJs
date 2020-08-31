@@ -67,7 +67,9 @@ class UserPlaylistElement extends React.Component {
 					MoreOptions
 				>
 					<Dropdown.Item>Play</Dropdown.Item>
+					{/* //TODO Implement this */ }
 					<Dropdown.Item>Add to current playlist</Dropdown.Item>
+					{/* //TODO Implement this */ }
 					{HasControl && (
 						<>
 							<Dropdown.Divider />
