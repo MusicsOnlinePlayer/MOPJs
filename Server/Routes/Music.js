@@ -10,6 +10,7 @@ const {
 	HandleAlbumRequestById,
 	HandleArtistRequestById,
 	HandlePlaylistRequestById,
+	AddMusicsToPlaylist,
 	GetMusicFilePath,
 	IncrementLikeCount,
 	SearchAndAddMusicsDeezer,
@@ -19,6 +20,7 @@ const {
 } = require('../Musics/Handler');
 const { MusicsFolder } = require('../Musics/Config');
 const { LikeMusicOnUserReq } = require('../Users/Handler');
+const MopConsole = require('../Tools/MopConsole');
 
 module.exports = express();
 const app = module.exports;
@@ -139,13 +141,16 @@ app.post('/Playlist/id/:id/Add/', EnsureAuth, (req, res) => {
 			.then(async (doc) => {
 				const IsCreator = doc.Creator._id.toString() === req.user._id.toString();
 				if (IsCreator) {
-					doc.MusicsId.push(...req.body.MusicsId);
-					await doc.save();
-					res.sendStatus(200);
-					return;
+					AddMusicsToPlaylist(doc._id, req.body.MusicsId)
+						.then(() => res.sendStatus(200))
+						.catch(() => res.sendStatus(300));
+				} else {
+					res.sendStatus(401);
 				}
-				res.sendStatus(401);
 			})
-			.catch(() => res.sendStatus(300));
+			.catch((err) => {
+				MopConsole.warn('Routes.Music', err);
+				res.sendStatus(300);
+			});
 	}
 });

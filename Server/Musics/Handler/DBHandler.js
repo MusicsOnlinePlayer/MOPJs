@@ -160,6 +160,20 @@ module.exports = {
 			);
 	}),
 
+	AddMusicsToPlaylist: (PlaylistId, MusicsId) => new Promise((resolve, reject) => {
+		MopConsole.debug(Location, `Adding ${MusicsId} to playlist ${PlaylistId})`);
+		Playlist.update({ _id: PlaylistId },
+			{ $push: { MusicsId: { $each: MusicsId } } },
+			{ upsert: true }, (err) => {
+				if (err) {
+					MopConsole.error(Location, err);
+					reject(err);
+					return;
+				}
+				resolve();
+			});
+	}),
+
 	RemovePlaylistById: (PlaylistId) => new Promise((resolve, reject) => {
 		MopConsole.debug(Location, `Deleting playlist (db id: ${PlaylistId})`);
 		Playlist.deleteOne({ _id: PlaylistId }, (err) => {

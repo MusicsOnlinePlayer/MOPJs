@@ -13,6 +13,7 @@
 	"debug.node.autoAttach": "off",
 	"debug.javascript.usePreview": true,
 	"cSpell.words": [
-		"fluentd"
+		"fluentd",
+		"upsert"
 	]
 }

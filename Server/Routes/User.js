@@ -52,6 +52,12 @@ app.get('/:id/Playlists', EnsureAuth, (req, res) => {
 		.catch(() => res.sendStatus(300));
 });
 
+app.get('/Playlists', EnsureAuth, (req, res) => {
+	GetPlaylistsOfUser(req.user._id, true)
+		.then((Playlists) => res.send(Playlists))
+		.catch(() => res.sendStatus(300));
+});
+
 app.get('/Logout', (req, res) => {
 	req.logout();
 	res.sendStatus(200);

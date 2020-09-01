@@ -2,13 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Axios from 'axios';
 import PropTypes from 'prop-types';
-import LazyLoad from 'react-lazyload';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Dropdown } from 'react-bootstrap';
 import MusicItemRow from '../Items/MusicItemRow';
 import { ChangePlayingMusic as ChangePlayingMusicRedux, AddMusic as AddMusicRedux } from '../../Actions/Action';
-import ButtonIcon from '../Helper/ButtonIcon';
 import LikeButton from '../Helper/LikeButton';
+import AddToPlaylistModal from '../Helper/AddToPlaylistModal';
 
 const mapDispatchToProps = (dispatch) => ({
 	ChangePlayingMusic: (Music) => {
@@ -36,6 +34,7 @@ class MusicElementConnected extends React.Component {
 		super(props);
 		this.state = {
 			ApiResult: '',
+			ShowAddToPlaylistModal: false,
 		};
 	}
 
@@ -77,8 +76,20 @@ class MusicElementConnected extends React.Component {
 		});
 	};
 
+	ShowAddToPlaylistModal = () => {
+		this.setState({
+			ShowAddToPlaylistModal: true,
+		});
+	}
+
+	CloseAddToPlaylistModal = () => {
+		this.setState({
+			ShowAddToPlaylistModal: false,
+		});
+	}
+
 	render() {
-		const { ApiResult } = this.state;
+		const { ApiResult, ShowAddToPlaylistModal } = this.state;
 		const isAvailable = ApiResult ? ApiResult.FilePath !== undefined : true;
 
 		const LikeButtonAccessory = (
@@ -97,8 +108,11 @@ class MusicElementConnected extends React.Component {
 			</td>
 		);
 
+
 		return (
-			<LazyLoad>
+			<>
+				{ShowAddToPlaylistModal
+					&& <AddToPlaylistModal Music={ApiResult} OnClose={this.CloseAddToPlaylistModal} />}
 				<MusicItemRow
 					Image={ApiResult ? ApiResult.Image : undefined}
 					ImageDz={ApiResult ? ApiResult.ImagePathDeezer : undefined}
@@ -110,11 +124,12 @@ class MusicElementConnected extends React.Component {
 				>
 					<Dropdown.Item onClick={this.onClick}>Play</Dropdown.Item>
 					<Dropdown.Item onClick={this.HandleAdd}>Add to current playlist</Dropdown.Item>
+					<Dropdown.Item onClick={this.ShowAddToPlaylistModal}>Add to playlist</Dropdown.Item>
 					<Dropdown.Divider />
 					<Dropdown.Item onClick={this.HandleLike}>Like</Dropdown.Item>
 				</MusicItemRow>
 
-			</LazyLoad>
+			</>
 		);
 	}
 }
