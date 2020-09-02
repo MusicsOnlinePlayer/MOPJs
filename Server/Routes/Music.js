@@ -11,6 +11,7 @@ const {
 	HandleArtistRequestById,
 	HandlePlaylistRequestById,
 	AddMusicsToPlaylist,
+	RemoveMusicOfPlaylist,
 	GetMusicFilePath,
 	IncrementLikeCount,
 	SearchAndAddMusicsDeezer,
@@ -152,5 +153,30 @@ app.post('/Playlist/id/:id/Add/', EnsureAuth, (req, res) => {
 				MopConsole.warn('Routes.Music', err);
 				res.sendStatus(300);
 			});
+	} else {
+		res.sendStatus(422);
+	}
+});
+
+// TODO Delete music by playlist index rather than by id
+app.delete('/Playlist/id/:id/Remove/', EnsureAuth, (req, res) => {
+	if (req.body.MusicId) {
+		HandlePlaylistRequestById(req.params.id)
+			.then(async (doc) => {
+				const IsCreator = doc.Creator._id.toString() === req.user._id.toString();
+				if (IsCreator) {
+					RemoveMusicOfPlaylist(doc._id, req.body.MusicId)
+						.then(() => res.sendStatus(200))
+						.catch(() => res.sendStatus(300));
+				} else {
+					res.sendStatus(401);
+				}
+			})
+			.catch((err) => {
+				MopConsole.warn('Routes.Music', err);
+				res.sendStatus(300);
+			});
+	} else {
+		res.sendStatus(422);
 	}
 });

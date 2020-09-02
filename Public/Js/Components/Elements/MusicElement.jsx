@@ -3,10 +3,12 @@ import { connect } from 'react-redux';
 import Axios from 'axios';
 import PropTypes from 'prop-types';
 import { Dropdown } from 'react-bootstrap';
+import { withRouter } from 'react-router-dom';
 import MusicItemRow from '../Items/MusicItemRow';
 import { ChangePlayingMusic as ChangePlayingMusicRedux, AddMusic as AddMusicRedux } from '../../Actions/Action';
 import LikeButton from '../Helper/LikeButton';
 import AddToPlaylistModal from '../Helper/AddToPlaylistModal';
+import { OWN_PLAYLIST_CONTEXT } from '../../Constants/MusicsConstants';
 
 const mapDispatchToProps = (dispatch) => ({
 	ChangePlayingMusic: (Music) => {
@@ -20,10 +22,17 @@ const mapDispatchToProps = (dispatch) => ({
 class MusicElementConnected extends React.Component {
 	// TODO Add react viz for progressive loading
 	static propTypes = {
+		history: PropTypes.shape({ go: PropTypes.func }).isRequired,
 		ChangePlayingMusic: PropTypes.func.isRequired,
 		AddMusic: PropTypes.func.isRequired,
 		id: PropTypes.string.isRequired,
 		onDataReceived: PropTypes.func,
+		ContextType: PropTypes.string.isRequired,
+		ContextPlaylistId: PropTypes.string,
+	}
+
+	static defaultProps = {
+		ContextPlaylistId: undefined,
 	}
 
 	static defaultProps = {
@@ -88,8 +97,16 @@ class MusicElementConnected extends React.Component {
 		});
 	}
 
+	HandleDeletePlaylistMusic = () => {
+		const { ContextPlaylistId, id, history } = this.props;
+		Axios.delete(`/Music/Playlist/id/${ContextPlaylistId}/Remove/`, {
+			data: { MusicId: id },
+		}).then(() => history.go(0));
+	}
+
 	render() {
 		const { ApiResult, ShowAddToPlaylistModal } = this.state;
+		const { ContextType } = this.props;
 		const isAvailable = ApiResult ? ApiResult.FilePath !== undefined : true;
 
 		const LikeButtonAccessory = (
@@ -127,6 +144,12 @@ class MusicElementConnected extends React.Component {
 					<Dropdown.Item onClick={this.ShowAddToPlaylistModal}>Add to playlist</Dropdown.Item>
 					<Dropdown.Divider />
 					<Dropdown.Item onClick={this.HandleLike}>Like</Dropdown.Item>
+					{ContextType === OWN_PLAYLIST_CONTEXT && (
+						<>
+							<Dropdown.Divider />
+							<Dropdown.Item onClick={this.HandleDeletePlaylistMusic}>Delete</Dropdown.Item>
+						</>
+					)}
 				</MusicItemRow>
 
 			</>
@@ -136,4 +159,4 @@ class MusicElementConnected extends React.Component {
 
 const MusicElement = connect(null, mapDispatchToProps)(MusicElementConnected);
 
-export default MusicElement;
+export default withRouter(MusicElement);

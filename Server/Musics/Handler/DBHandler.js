@@ -162,7 +162,7 @@ module.exports = {
 
 	AddMusicsToPlaylist: (PlaylistId, MusicsId) => new Promise((resolve, reject) => {
 		MopConsole.debug(Location, `Adding ${MusicsId} to playlist ${PlaylistId})`);
-		Playlist.update({ _id: PlaylistId },
+		Playlist.updateOne({ _id: PlaylistId },
 			{ $push: { MusicsId: { $each: MusicsId } } },
 			{ upsert: true }, (err) => {
 				if (err) {
@@ -172,6 +172,18 @@ module.exports = {
 				}
 				resolve();
 			});
+	}),
+
+	RemoveMusicOfPlaylist: (PlaylistId, MusicId) => new Promise((resolve, reject) => {
+		MopConsole.debug(Location, `Removing ${MusicId} of playlist ${PlaylistId})`);
+		Playlist.updateOne({ _id: PlaylistId }, { $pullAll: { MusicsId: [MusicId] } }, (err) => {
+			if (err) {
+				MopConsole.error(Location, err);
+				reject(err);
+				return;
+			}
+			resolve();
+		});
 	}),
 
 	RemovePlaylistById: (PlaylistId) => new Promise((resolve, reject) => {

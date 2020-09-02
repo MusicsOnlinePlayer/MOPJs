@@ -95,8 +95,8 @@ class AddToPlaylistModal extends React.Component {
 				<Modal.Body>{!IsLoading && <ListGroup>{PlaylistsSmallItem}</ListGroup>}</Modal.Body>
 				<Modal.Footer>
 					<Button variant="primary" onClick={this.handleSubmit}>
-						Add
 						{IsLoading && <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />}
+						Add
 					</Button>
 					<Button variant="outline-primary" onClick={this.closeModal}>
 						Cancel

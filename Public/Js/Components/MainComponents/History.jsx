@@ -2,6 +2,7 @@ import React from 'react';
 import Axios from 'axios';
 import PropTypes from 'prop-types';
 import MusicGroup from './Groups/MusicGroup';
+import { HIST_CONTEXT } from '../../Constants/MusicsConstants';
 
 class History extends React.Component {
 	static propTypes = {
@@ -40,7 +41,7 @@ class History extends React.Component {
 		const { MusicIds } = this.state;
 
 		if (MusicIds) {
-			return <MusicGroup MusicIds={MusicIds} DetailType="History" />;
+			return <MusicGroup MusicIds={MusicIds} DetailType="History" ContextType={HIST_CONTEXT} />;
 		}
 
 		return <></>;
