@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
-	Modal, Button, Form, FormControl,
+	Modal, Button, Form,
 } from 'react-bootstrap';
 import { faSave } from '@fortawesome/free-solid-svg-icons';
 import Axios from 'axios';

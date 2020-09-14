@@ -9,6 +9,7 @@ import { ChangePlayingMusic as ChangePlayingMusicRedux, AddMusic as AddMusicRedu
 import LikeButton from '../Helper/LikeButton';
 import AddToPlaylistModal from '../Helper/AddToPlaylistModal';
 import { OWN_PLAYLIST_CONTEXT } from '../../Constants/MusicsConstants';
+import PlaylistCreateModal from '../Helper/PlaylistCreateModal';
 
 const mapDispatchToProps = (dispatch) => ({
 	ChangePlayingMusic: (Music) => {
@@ -44,6 +45,7 @@ class MusicElementConnected extends React.Component {
 		this.state = {
 			ApiResult: '',
 			ShowAddToPlaylistModal: false,
+			ShowAddToNewPlaylistModal: false,
 		};
 	}
 
@@ -91,9 +93,21 @@ class MusicElementConnected extends React.Component {
 		});
 	}
 
+	ShowAddToNewPlaylistModal = () => {
+		this.setState({
+			ShowAddToNewPlaylistModal: true,
+		});
+	}
+
 	CloseAddToPlaylistModal = () => {
 		this.setState({
 			ShowAddToPlaylistModal: false,
+		});
+	}
+
+	CloseAddToNewPlaylistModal = () => {
+		this.setState({
+			ShowAddToNewPlaylistModal: false,
 		});
 	}
 
@@ -105,8 +119,8 @@ class MusicElementConnected extends React.Component {
 	}
 
 	render() {
-		const { ApiResult, ShowAddToPlaylistModal } = this.state;
-		const { ContextType } = this.props;
+		const { ApiResult, ShowAddToPlaylistModal, ShowAddToNewPlaylistModal } = this.state;
+		const { ContextType, id } = this.props;
 		const isAvailable = ApiResult ? ApiResult.FilePath !== undefined : true;
 
 		const LikeButtonAccessory = (
@@ -130,6 +144,9 @@ class MusicElementConnected extends React.Component {
 			<>
 				{ShowAddToPlaylistModal
 					&& <AddToPlaylistModal Music={ApiResult} OnClose={this.CloseAddToPlaylistModal} />}
+				{ShowAddToNewPlaylistModal
+					&& <PlaylistCreateModal MusicsId={[id]} OnClose={this.CloseAddToNewPlaylistModal} />}
+
 				<MusicItemRow
 					Image={ApiResult ? ApiResult.Image : undefined}
 					ImageDz={ApiResult ? ApiResult.ImagePathDeezer : undefined}
@@ -142,6 +159,7 @@ class MusicElementConnected extends React.Component {
 					<Dropdown.Item onClick={this.onClick}>Play</Dropdown.Item>
 					<Dropdown.Item onClick={this.HandleAdd}>Add to current playlist</Dropdown.Item>
 					<Dropdown.Item onClick={this.ShowAddToPlaylistModal}>Add to playlist</Dropdown.Item>
+					<Dropdown.Item onClick={this.ShowAddToNewPlaylistModal}>Add to a new playlist</Dropdown.Item>
 					<Dropdown.Divider />
 					<Dropdown.Item onClick={this.HandleLike}>Like</Dropdown.Item>
 					{ContextType === OWN_PLAYLIST_CONTEXT && (
