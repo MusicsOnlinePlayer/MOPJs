@@ -14,6 +14,7 @@ const EsPlaylistSearch = (Query) => new Promise((resolve, reject) => {
 							fields: [
 								'Name^5',
 							],
+							default_operator: 'and',
 						},
 					},
 				],
