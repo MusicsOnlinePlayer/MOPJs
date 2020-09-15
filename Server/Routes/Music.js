@@ -4,7 +4,9 @@ const {
 	EnsureAuth,
 } = require('../Auth/EnsureAuthentification');
 
-const { EsMusicSearch, EsAlbumSearch, EsArtistSearch } = require('../Musics/Proxy/ES Proxy');
+const {
+	EsMusicSearch, EsAlbumSearch, EsArtistSearch, EsPlaylistSearch,
+} = require('../Musics/Proxy/ES Proxy');
 const {
 	HandleMusicRequestById,
 	HandleAlbumRequestById,
@@ -42,6 +44,12 @@ app.get('/Search/Album/Name/:name', EnsureAuth, (req, res) => {
 
 app.get('/Search/Artist/Name/:name', EnsureAuth, (req, res) => {
 	EsArtistSearch(req.params.name)
+		.then((searchResult) => res.send(searchResult))
+		.catch(() => res.send({}));
+});
+
+app.get('/Search/Playlist/Name/:name', EnsureAuth, (req, res) => {
+	EsPlaylistSearch(req.params.name)
 		.then((searchResult) => res.send(searchResult))
 		.catch(() => res.send({}));
 });
