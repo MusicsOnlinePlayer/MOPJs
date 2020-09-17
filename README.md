@@ -67,6 +67,7 @@ Here is an example for a classical install with elasticsearch and mongodb and ev
 ```
 Finally you can run the app (by the way, it is recommended to use pm2 for production use)
 ``` bash
+npm run-script BuildClientProd
 node index.js
 ```
 And congratulation your mop instance is running ! 
