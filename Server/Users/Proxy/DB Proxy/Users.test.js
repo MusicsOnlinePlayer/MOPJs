@@ -9,8 +9,9 @@ const { User } = require('../../Model');
 const {
 	GetLikedMusicsOfUser, GetViewedMusicsOfUser, CheckLikeMusic, LikeMusicOnUser,
 	RegisterToUserHistory,
+	GetPlaylistsIdOfUser,
 } = require('./Users');
-const { Music } = require('../../../Musics/Model');
+const { Music, Playlist } = require('../../../Musics/Model');
 
 beforeAll(async () => await connect());
 
@@ -131,5 +132,47 @@ describe('DB Proxy for user should work properly', () => {
 		const ViewedMusics = await GetViewedMusicsOfUser(u._id);
 
 		expect(ViewedMusics).toEqual([m._id]);
+	});
+
+	it('Should get all playlists id of an user', async () => {
+		const MyUser = {
+			username: 'Malau',
+		};
+		const u = await User.create(MyUser);
+
+		const p1 = await Playlist.create({
+			Name: 'P1',
+			Creator: u._id,
+		});
+		const p2 = await Playlist.create({
+			Name: 'P2',
+			Creator: u._id,
+		});
+
+		const PlaylistIds = await GetPlaylistsIdOfUser(u._id, true);
+
+		expect(PlaylistIds).toStrictEqual([p1._id, p2._id]);
+	});
+
+	it('Should get all playlists id of an user and remove private playlists', async () => {
+		const MyUser = {
+			username: 'Malau',
+		};
+		const u = await User.create(MyUser);
+
+		const p1 = await Playlist.create({
+			Name: 'P1',
+			Creator: u._id,
+			IsPublic: true,
+		});
+		const p2 = await Playlist.create({
+			Name: 'P2',
+			Creator: u._id,
+			IsPublic: false,
+		});
+
+		const PlaylistIds = await GetPlaylistsIdOfUser(u._id, false);
+
+		expect(PlaylistIds).toStrictEqual([p1._id]);
 	});
 });

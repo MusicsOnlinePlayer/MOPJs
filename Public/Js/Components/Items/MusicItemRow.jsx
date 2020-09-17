@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Image as ImgBootstrap } from 'react-bootstrap';
+import MoreButtonMusic from './Helper/MoreButtonMusic';
 
 const MusicItemRow = ({
 	onClick,
@@ -10,6 +11,7 @@ const MusicItemRow = ({
 	Artist,
 	children,
 	isAvailable,
+	AccessoryRight,
 }) => (
 	<tr className="w-100 mx-0 p-1 PointerCursor">
 		<td className="align-middle py-2" onClick={onClick} style={{ width: '50px' }}>
@@ -27,7 +29,13 @@ const MusicItemRow = ({
 			<p className="text-middle">{Artist}</p>
 		</td>
 
-		{children}
+		{AccessoryRight}
+
+		<td className="align-middle pr-4">
+			<MoreButtonMusic>
+				{children}
+			</MoreButtonMusic>
+		</td>
 	</tr>
 );
 
@@ -37,7 +45,11 @@ MusicItemRow.propTypes = {
 	ImageDz: PropTypes.string,
 	Title: PropTypes.string.isRequired,
 	Artist: PropTypes.string.isRequired,
-	children: PropTypes.arrayOf(PropTypes.element),
+	children: PropTypes.oneOfType([
+		PropTypes.arrayOf(PropTypes.node),
+		PropTypes.node,
+	]),
+	AccessoryRight: PropTypes.node,
 	isAvailable: PropTypes.bool.isRequired,
 };
 
@@ -45,6 +57,7 @@ MusicItemRow.defaultProps = {
 	Image: undefined,
 	ImageDz: undefined,
 	children: <></>,
+	AccessoryRight: <></>,
 };
 
 export default MusicItemRow;

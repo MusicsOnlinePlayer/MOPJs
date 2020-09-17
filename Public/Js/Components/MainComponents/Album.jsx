@@ -2,6 +2,7 @@ import React from 'react';
 import Axios from 'axios';
 import PropTypes from 'prop-types';
 import MusicGroup from './Groups/MusicGroup';
+import { ALBUM_CONTEXT } from '../../Constants/MusicsConstants';
 
 class Album extends React.Component {
 	static propTypes = {
@@ -35,7 +36,7 @@ class Album extends React.Component {
 		const { MusicIds, AlbumName } = this.state;
 
 		if (MusicIds) {
-			return <MusicGroup MusicIds={MusicIds} DetailType={AlbumName} />;
+			return <MusicGroup MusicIds={MusicIds} DetailType={AlbumName} ContextType={ALBUM_CONTEXT} />;
 		}
 
 		return <></>;

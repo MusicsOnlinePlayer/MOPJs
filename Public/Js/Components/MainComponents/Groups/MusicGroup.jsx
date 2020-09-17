@@ -23,10 +23,13 @@ class MusicGroupConnected extends React.Component {
 		MusicIds: PropTypes.arrayOf(PropTypes.string).isRequired,
 		DetailType: PropTypes.string.isRequired,
 		IsFetching: PropTypes.bool,
+		ContextType: PropTypes.string.isRequired,
+		ContextPlaylistId: PropTypes.string,
 	}
 
 	static defaultProps = {
 		IsFetching: false,
+		ContextPlaylistId: undefined,
 	}
 
 	constructor(props) {
@@ -51,10 +54,20 @@ class MusicGroupConnected extends React.Component {
 	};
 
 	render() {
-		const { MusicIds, DetailType, IsFetching } = this.props;
+		const {
+			MusicIds, DetailType, IsFetching, ContextType, ContextPlaylistId,
+		} = this.props;
 
 		const MusicItems = MusicIds
-			.map((id) => <MusicElement key={id} id={id} onDataReceived={this.onDataReceived} />);
+			.map((id) => (
+				<MusicElement
+					key={id}
+					id={id}
+					onDataReceived={this.onDataReceived}
+					ContextType={ContextType}
+					ContextPlaylistId={ContextPlaylistId}
+				/>
+			));
 
 		// TODO add empty graphic here
 

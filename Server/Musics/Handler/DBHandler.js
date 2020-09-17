@@ -1,5 +1,7 @@
 const path = require('path');
-const { Music, Album, Artist } = require('../Model');
+const {
+	Music, Album, Artist, Playlist,
+} = require('../Model');
 const MopConsole = require('../../Tools/MopConsole');
 const { FindAlbumContainingMusic, HandleNewMusicFromDisk, HandleNewMusicFromDz } = require('../Proxy/DB Proxy');
 const { CompleteAlbum, CompleteArtist, GetMusicFilePath } = require('./DeezerHandler');
@@ -128,6 +130,74 @@ module.exports = {
 			resolve(ArtistDoc);
 		});
 	}),
+
+	HandlePlaylistRequestById: (id) => new Promise((resolve, reject) => {
+		MopConsole.debug(Location, `Searching for playlist with db id ${id}`);
+		Playlist.findById(id)
+			.populate('Creator MusicsId')
+			.exec(
+				async (err, doc) => {
+					if (err) {
+						MopConsole.error(Location, err);
+						reject(err);
+						return;
+					}
+					if (!doc) {
+						MopConsole.warn(Location, `Playlist id not found ${id}`);
+						resolve({});
+					}
+
+					const PlaylistDoc = doc.toObject();
+
+					const AlbumOfMusic = await FindAlbumContainingMusic(PlaylistDoc.MusicsId[0]);
+
+					PlaylistDoc.Image = AlbumOfMusic.Image;
+					PlaylistDoc.ImagePathDeezer = AlbumOfMusic.ImagePathDeezer;
+					PlaylistDoc.ImageFormat = AlbumOfMusic.ImageFormat;
+
+					resolve(PlaylistDoc);
+				},
+			);
+	}),
+
+	AddMusicsToPlaylist: (PlaylistId, MusicsId) => new Promise((resolve, reject) => {
+		MopConsole.debug(Location, `Adding ${MusicsId} to playlist ${PlaylistId})`);
+		Playlist.updateOne({ _id: PlaylistId },
+			{ $push: { MusicsId: { $each: MusicsId } } },
+			{ upsert: true }, (err) => {
+				if (err) {
+					MopConsole.error(Location, err);
+					reject(err);
+					return;
+				}
+				resolve();
+			});
+	}),
+
+	RemoveMusicOfPlaylist: (PlaylistId, MusicId) => new Promise((resolve, reject) => {
+		MopConsole.debug(Location, `Removing ${MusicId} of playlist ${PlaylistId})`);
+		Playlist.updateOne({ _id: PlaylistId }, { $pullAll: { MusicsId: [MusicId] } }, (err) => {
+			if (err) {
+				MopConsole.error(Location, err);
+				reject(err);
+				return;
+			}
+			resolve();
+		});
+	}),
+
+	RemovePlaylistById: (PlaylistId) => new Promise((resolve, reject) => {
+		MopConsole.debug(Location, `Deleting playlist (db id: ${PlaylistId})`);
+		Playlist.deleteOne({ _id: PlaylistId }, (err) => {
+			if (err) {
+				MopConsole.error(Location, err);
+				reject(err);
+				return;
+			}
+			resolve();
+		});
+	}),
+
 	GetMusicFilePath: (id, UserReq, RegisterHistory = true) => new Promise((resolve, reject) => {
 		MopConsole.debug(Location, `Getting music file path, db id: ${id} RegisterHistory is set to ${RegisterHistory}`);
 		Music.findById(id, async (err, doc) => {
@@ -168,9 +238,16 @@ module.exports = {
 		await music.save();
 		MopConsole.debug(Location, `Increased like count of music ${id} by ${increment}`);
 	},
+	/** Add multiple deezer formatted music to mongodb
+	 * @param {Object[]} tags Array of musics from deezer api
+	 * @returns {Promise<string[]>} return a promise resolving by an array of music db ids
+	 */
 	AddMusicsFromDeezer: async (tags) => {
+		const MusicDbIds = [];
 		for (const musicTags of tags) {
-			await HandleNewMusicFromDz(musicTags);
+			const DbId = await HandleNewMusicFromDz(musicTags);
+			MusicDbIds.push(DbId);
 		}
+		return MusicDbIds;
 	},
 };

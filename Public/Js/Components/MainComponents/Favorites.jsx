@@ -2,6 +2,7 @@ import React from 'react';
 import Axios from 'axios';
 import PropTypes from 'prop-types';
 import MusicGroup from './Groups/MusicGroup';
+import { FAV_CONTEXT } from '../../Constants/MusicsConstants';
 
 class Favorites extends React.Component {
 	static propTypes = {
@@ -37,7 +38,7 @@ class Favorites extends React.Component {
 		const { MusicIds } = this.state;
 
 		if (MusicIds) {
-			return <MusicGroup MusicIds={MusicIds} DetailType="Favorites" />;
+			return <MusicGroup MusicIds={MusicIds} DetailType="Favorites" ContextType={FAV_CONTEXT} />;
 		}
 
 		return <></>;

@@ -5,6 +5,7 @@ const {
 	CheckIfMusicIsLikedByUserReq,
 	LikeMusicOnUserReq,
 	RegisterToUserHistory,
+	GetPlaylistsOfUser,
 } = require('./DBHandler');
 
 module.exports = {
@@ -14,4 +15,5 @@ module.exports = {
 	CheckIfMusicIsLikedByUserReq,
 	LikeMusicOnUserReq,
 	RegisterToUserHistory,
+	GetPlaylistsOfUser,
 };

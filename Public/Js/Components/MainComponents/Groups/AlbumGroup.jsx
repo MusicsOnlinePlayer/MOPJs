@@ -33,7 +33,7 @@ class AlbumGroup extends React.Component {
 			return (
 				<div className="m-5">
 					<small className="text-muted">
-						<h5>Musics</h5>
+						<h5>Albums</h5>
 					</small>
 					<Spinner animation="border" role="status" size="lg">
 						<span className="sr-only">Loading...</span>

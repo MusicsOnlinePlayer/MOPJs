@@ -7,7 +7,7 @@ import { Dropdown } from 'react-bootstrap';
 import AlbumItemCard from '../Items/AlbumItemCard';
 
 
-class AlbumElement extends React.Component {
+class UserPlaylistElement extends React.Component {
 	static propTypes = {
 		history: PropTypes.shape({
 			push: PropTypes.func.isRequired,
@@ -26,12 +26,12 @@ class AlbumElement extends React.Component {
 	onClick = () => {
 		const { ApiResult } = this.state;
 		const { history } = this.props;
-		if (ApiResult) history.push(`/Album/${ApiResult._id}`);
+		if (ApiResult) history.push(`/Playlist/${ApiResult._id}`);
 	};
 
 	componentDidMount = () => {
 		const { id } = this.props;
-		Axios.get(`/Music/Album/id/${id}`).then((res) => {
+		Axios.get(`/Music/Playlist/id/${id}`).then((res) => {
 			this.setState({
 				ApiResult: res.data,
 			});
@@ -44,10 +44,17 @@ class AlbumElement extends React.Component {
 		};
 	}
 
+	OnDelete = () => {
+		const { id } = this.props;
+		Axios.delete(`/Music/Playlist/id/${id}`).then(() => {
+			window.location.reload(false);
+		});
+	}
+
 	render() {
 		const { ApiResult } = this.state;
 		const {
-			Image, Name, ImageFormat, ImagePathDeezer,
+			Image, Name, ImageFormat, ImagePathDeezer, HasControl,
 		} = ApiResult;
 		return (
 			<LazyLoad>
@@ -63,11 +70,18 @@ class AlbumElement extends React.Component {
 					{/* //TODO Implement this */ }
 					<Dropdown.Item>Add to current playlist</Dropdown.Item>
 					{/* //TODO Implement this */ }
+					{HasControl && (
+						<>
+							<Dropdown.Divider />
+							<Dropdown.Item onClick={this.OnDelete}>Delete</Dropdown.Item>
+						</>
+					) }
 				</AlbumItemCard>
+
 			</LazyLoad>
 
 		);
 	}
 }
 
-export default withRouter(AlbumElement);
+export default withRouter(UserPlaylistElement);

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Col, Row, Spinner } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import ArtistElement from '../../Elements/ArtistElement';
+import UserPlaylistElement from '../../Elements/UserPlaylistElement';
 
-class ArtistGroup extends React.Component {
+class UserPlaylistGroup extends React.Component {
 	static propTypes = {
-		ArtistIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+		PlaylistsId: PropTypes.arrayOf(PropTypes.string).isRequired,
 		DetailType: PropTypes.string.isRequired,
 		IsFetching: PropTypes.bool,
 	}
@@ -22,10 +22,10 @@ class ArtistGroup extends React.Component {
 	}
 
 	render() {
-		const { ArtistIds, DetailType, IsFetching } = this.props;
+		const { PlaylistsId, DetailType, IsFetching } = this.props;
 
-		const ArtistItems = ArtistIds
-			.map((id) => <ArtistElement key={id} id={id} />);
+		const PlaylistItems = PlaylistsId
+			.map((id) => <UserPlaylistElement key={id} id={id} />);
 
 		// TODO add empty graphic here
 
@@ -33,7 +33,7 @@ class ArtistGroup extends React.Component {
 			return (
 				<div className="m-5">
 					<small className="text-muted">
-						<h5>Artist</h5>
+						<h5>Playlists</h5>
 					</small>
 					<Spinner animation="border" role="status" size="lg">
 						<span className="sr-only">Loading...</span>
@@ -52,11 +52,11 @@ class ArtistGroup extends React.Component {
 					</Col>
 				</Row>
 				<div className="card-deck">
-					{ArtistItems}
+					{PlaylistItems}
 				</div>
 			</div>
 		);
 	}
 }
 
-export default ArtistGroup;
+export default UserPlaylistGroup;

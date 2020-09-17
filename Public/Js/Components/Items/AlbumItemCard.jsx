@@ -1,18 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card } from 'react-bootstrap';
+import MoreButton from './Helper/MoreButton';
 
 const AlbumItemCard = ({
-	onClick, Image, Name, Artist, ImageDz,
+	onClick, Image, Name, Artist, ImageDz, children, MoreOptions,
 }) => (
-	<Card style={{ width: '18rem', cursor: 'pointer' }} className="m-2" onClick={onClick}>
-		{ImageDz ? <Card.Img variant="top" src={ImageDz} />
+	<Card style={{ width: '18rem', cursor: 'pointer' }} className="m-2">
+		{MoreOptions && (
+			<div style={{ position: 'absolute', top: '13px', right: '13px' }}>
+				<MoreButton>{children}</MoreButton>
+			</div>
+		)}
+		{ImageDz ? <Card.Img variant="top" src={ImageDz} onClick={onClick} />
 			: <Card.Img variant="top" src={Image ? `data:image/jpeg;base64,${Image.toString('base64')}` : '/Ressources/noMusic.jpg'} />}
 
-		<Card.Body>
+		<Card.Body onClick={onClick}>
 			<Card.Title>{Name}</Card.Title>
 			<Card.Text>{Artist}</Card.Text>
 		</Card.Body>
+
 	</Card>
 );
 
@@ -22,6 +29,11 @@ AlbumItemCard.propTypes = {
 	ImageDz: PropTypes.string,
 	Name: PropTypes.string,
 	Artist: PropTypes.string,
+	children: PropTypes.oneOfType([
+		PropTypes.arrayOf(PropTypes.node),
+		PropTypes.node,
+	]),
+	MoreOptions: PropTypes.bool,
 };
 
 AlbumItemCard.defaultProps = {
@@ -29,6 +41,8 @@ AlbumItemCard.defaultProps = {
 	ImageDz: '',
 	Name: 'Loading...',
 	Artist: '', // TODO Pass artist
+	children: <></>,
+	MoreOptions: false,
 };
 
 export default AlbumItemCard;

@@ -1,5 +1,6 @@
 const { User } = require('../../Model');
 const MopConsole = require('../../../Tools/MopConsole');
+const { Playlist } = require('../../../Musics/Model');
 
 const Location = 'Users.Proxy.DBProxy';
 
@@ -74,10 +75,32 @@ function RegisterToUserHistory(MusicId, UserId) {
 	});
 }
 
+/** Get playlists of a specified user
+ * @param {string} UserId Id of the user
+ * @param {boolean} IncludePrivate should it include private playlist in response
+ * @returns {Promise<string[]>} Array of playlist ids
+ */
+function GetPlaylistsIdOfUser(UserId, IncludePrivate) {
+	return new Promise((resolve, reject) => {
+		MopConsole.debug(Location, `Getting playlists created by ${UserId} - include privates : ${IncludePrivate}`);
+		const req = IncludePrivate ? { Creator: UserId } : { Creator: UserId, IsPublic: true };
+		Playlist.find(req, (err, docs) => {
+			if (err) {
+				MopConsole.error(Location, err);
+				reject();
+				return;
+			}
+
+			resolve(docs.map((music) => music._id));
+		});
+	});
+}
+
 module.exports = {
 	GetLikedMusicsOfUser,
 	GetViewedMusicsOfUser,
 	CheckLikeMusic,
 	LikeMusicOnUser,
 	RegisterToUserHistory,
+	GetPlaylistsIdOfUser,
 };
