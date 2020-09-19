@@ -3,6 +3,7 @@ const path = require('path');
 
 module.exports = {
 	entry: './Public/Js/index.jsx',
+	mode: 'production',
 	output: {
 		path: path.join(__dirname, './Public/Dist'),
 		filename: 'mopjs.bundle.js',
