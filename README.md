@@ -28,7 +28,7 @@ I'm glad you want to support my project. Before you commit a pull request, just 
 
 ## Requirements
 Before installing MOPJs, it is needed to have the following software (which are completely free & open source)
- * Elasticsearch *(v7 at least)* - [Dowload link](https://www.elastic.co/downloads/elasticsearch)
+ * Elasticsearch *(v7 at least, optional)* - [Dowload link](https://www.elastic.co/downloads/elasticsearch)
  * MongoDB *(v4 at least)* - [Dowload link](https://www.mongodb.com/try/download/community)
  * Python with pip *(version 3 required)* - [Dowload link](https://www.python.org/downloads/)
  * Nodejs *(8 at least for general use but 10 at least for testing and dev)* - [Dowload link](https://nodejs.org/en/download/)
@@ -62,7 +62,9 @@ Here is an example for a classical install with elasticsearch and mongodb and ev
     "EnableMongoAuth": false,
     "MinLogLevel": 0,
     "MopPort": 80,
-    "UseFluentdLogging": false
+    "UseFluentdLogging": false,
+    "DisableDeezerClient": false,
+    "UseMongoSearchIndex": false
 }
 ```
 Finally you can run the app (by the way, it is recommended to use pm2 for production use)
