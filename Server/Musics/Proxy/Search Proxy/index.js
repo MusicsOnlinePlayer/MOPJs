@@ -19,5 +19,5 @@ module.exports = {
 	SearchAlbums: (q) => (UseMongoSearchIndex ? DBAlbumSearch(q) : EsAlbumSearch(q)),
 	SearchArtists: (q) => (UseMongoSearchIndex ? DBArtistSearch(q) : EsArtistSearch(q)),
 	SearchPlaylists: (q) => (UseMongoSearchIndex ? DBPlaylistSearch(q) : EsPlaylistSearch(q)),
-	RefreshEsMusicIndex,
+	RefreshEsMusicIndex: () => (UseMongoSearchIndex ? () => {} : RefreshEsMusicIndex()),
 };
