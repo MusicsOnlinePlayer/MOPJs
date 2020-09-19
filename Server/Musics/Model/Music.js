@@ -5,7 +5,7 @@ const { EsHost, UseMongoSearchIndex } = require('../../Config/MopConf.json');
 
 
 let esClient;
-if (process.env.NODE_ENV !== 'test' || UseMongoSearchIndex) {
+if (process.env.NODE_ENV !== 'test' && !UseMongoSearchIndex) {
 	esClient = elasticsearch.Client({
 		host: EsHost,
 	});
@@ -74,7 +74,7 @@ const PlaylistSchema = new mongoose.Schema({
 
 PlaylistSchema.index({ Name: 'text' });
 
-if (process.env.NODE_ENV !== 'test' || UseMongoSearchIndex) {
+if (process.env.NODE_ENV !== 'test' && !UseMongoSearchIndex) {
 	MusicSchema.plugin(mongoosastic, {
 		esClient,
 	});
@@ -107,7 +107,7 @@ const AlbumModel = mongoose.model('Album', AlbumSchema, 'Album');
 const ArtistModel = mongoose.model('Artist', ArtistSchema, 'Artist');
 const PlaylistModel = mongoose.model('Playlist', PlaylistSchema, 'Playlist');
 
-if (process.env.NODE_ENV !== 'test' || UseMongoSearchIndex) {
+if (process.env.NODE_ENV !== 'test' && !UseMongoSearchIndex) {
 	MusicModel.synchronize();
 	AlbumModel.synchronize();
 	ArtistModel.synchronize();
