@@ -1,3 +1,10 @@
+
+process.on('uncaughtException', (exception) => {
+	console.error(exception);
+});
+process.on('unhandledRejection', (reason) => {
+	console.error(reason);
+});
 const express = require('express');
 
 const app = express();
@@ -10,16 +17,13 @@ const bodyParser = require('body-parser');
 const compression = require('compression');
 const mongoose = require('mongoose');
 const MopConsole = require('./Server/Tools/MopConsole');
+
 const { User } = require('./Server/Users/Model');
 const { MopPort } = require('./Server/Config/MopConf.json');
 const { MakeIndexation } = require('./Server/Musics/Handler');
 const { ConnectToDB } = require('./Server/Database');
 // app.use(compression);
 
-process.on('uncaughtException', (exception) => {
-	MopConsole.error('ExceptionHandler', exception);
-	MopConsole.error('ExceptionHandler', exception.stack);
-});
 
 ConnectToDB().then(() => {
 	MakeIndexation();

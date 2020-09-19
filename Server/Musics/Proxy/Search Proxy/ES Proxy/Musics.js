@@ -1,8 +1,8 @@
-const { Music } = require('../../Model');
-const MopConsole = require('../../../Tools/MopConsole');
-const { esClient } = require('../../Model');
+const { Music } = require('../../../Model');
+const MopConsole = require('../../../../Tools/MopConsole');
+const { esClient } = require('../../../Model');
 
-const LogLocation = 'Musics.Proxy.ESProxy.Musics';
+const LogLocation = 'Musics.Proxy.Search.ESProxy.Musics';
 
 const EsMusicSearch = (Query) => new Promise((resolve, reject) => {
 	Music.search(

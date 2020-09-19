@@ -1,7 +1,7 @@
-const { Album } = require('../../Model');
-const MopConsole = require('../../../Tools/MopConsole');
+const { Album } = require('../../../Model');
+const MopConsole = require('../../../../Tools/MopConsole');
 
-const LogLocation = 'Musics.Proxy.ESProxy.Musics';
+const LogLocation = 'Musics.Proxy.Search.ESProxy.Albums';
 
 const EsAlbumSearch = (Query) => new Promise((resolve, reject) => {
 	Album.search(

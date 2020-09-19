@@ -5,8 +5,8 @@ const {
 } = require('../Auth/EnsureAuthentification');
 
 const {
-	EsMusicSearch, EsAlbumSearch, EsArtistSearch, EsPlaylistSearch,
-} = require('../Musics/Proxy/ES Proxy');
+	SearchMusics, SearchAlbums, SearchArtists, SearchPlaylists,
+} = require('../Musics/Proxy/Search Proxy');
 const {
 	HandleMusicRequestById,
 	HandleAlbumRequestById,
@@ -31,25 +31,25 @@ const app = module.exports;
 
 app.get('/Search/Music/Name/:name', EnsureAuth, async (req, res) => {
 	await SearchAndAddMusicsDeezer(req.params.name);
-	EsMusicSearch(req.params.name)
+	SearchMusics(req.params.name)
 		.then((searchResult) => res.send(searchResult))
 		.catch(() => res.send({}));
 });
 
 app.get('/Search/Album/Name/:name', EnsureAuth, (req, res) => {
-	EsAlbumSearch(req.params.name)
+	SearchAlbums(req.params.name)
 		.then((searchResult) => res.send(searchResult))
 		.catch(() => res.send({}));
 });
 
 app.get('/Search/Artist/Name/:name', EnsureAuth, (req, res) => {
-	EsArtistSearch(req.params.name)
+	SearchArtists(req.params.name)
 		.then((searchResult) => res.send(searchResult))
 		.catch(() => res.send({}));
 });
 
 app.get('/Search/Playlist/Name/:name', EnsureAuth, (req, res) => {
-	EsPlaylistSearch(req.params.name)
+	SearchPlaylists(req.params.name)
 		.then((searchResult) => res.send(searchResult))
 		.catch(() => res.send({}));
 });

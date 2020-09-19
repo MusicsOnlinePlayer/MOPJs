@@ -1,6 +1,6 @@
-const { EsArtistSearch } = require('./Artist');
+const { EsArtistSearch } = require('./Artists');
 const { EsAlbumSearch } = require('./Albums');
-const { EsPlaylistSearch } = require('./Playlist');
+const { EsPlaylistSearch } = require('./Playlists');
 const { EsMusicSearch, RefreshEsMusicIndex } = require('./Musics');
 
 module.exports = {

@@ -15,7 +15,7 @@ const {
 const {
 	SearchMusics,
 } = require('./DeezerHandler');
-const { RefreshEsMusicIndex } = require('../Proxy/ES Proxy');
+const { RefreshEsMusicIndex } = require('../Proxy/Search Proxy');
 const { GetMusicsOfPlaylist } = require('../Proxy/Deezer Proxy/Playlist');
 const { CreatePlaylist } = require('../Proxy/DB Proxy/Playlist');
 

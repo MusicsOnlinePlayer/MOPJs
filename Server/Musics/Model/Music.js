@@ -20,6 +20,18 @@ const MusicSchema = new mongoose.Schema({
 	LastView: { type: Date, es_type: 'date', es_indexed: true },
 });
 
+MusicSchema.index({
+	Title: 'text',
+	Artist: 'text',
+	Album: 'text',
+}, {
+	weights: {
+		Title: 4,
+		Artist: 2,
+		Album: 1,
+	},
+});
+
 const AlbumSchema = new mongoose.Schema({
 	Name: { type: String, es_indexed: true },
 	DeezerId: { type: Number, index: { unique: true, dropDups: true, sparse: true } },
@@ -32,6 +44,8 @@ const AlbumSchema = new mongoose.Schema({
 	}],
 });
 
+AlbumSchema.index({ Name: 'text' });
+
 const ArtistSchema = new mongoose.Schema({
 	Name: { type: String, es_indexed: true },
 	DeezerId: { type: Number, index: { unique: true, dropDups: true, sparse: true } },
@@ -41,6 +55,9 @@ const ArtistSchema = new mongoose.Schema({
 	ImagePath: String,
 });
 
+ArtistSchema.index({ Name: 'text' });
+
+
 const PlaylistSchema = new mongoose.Schema({
 	Name: { type: String, es_indexed: true },
 	IsPublic: { type: Boolean, es_indexed: true },
@@ -49,6 +66,8 @@ const PlaylistSchema = new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId, ref: 'Music',
 	}],
 });
+
+PlaylistSchema.index({ Name: 'text' });
 
 if (process.env.NODE_ENV !== 'test') {
 	MusicSchema.plugin(mongoosastic, {
