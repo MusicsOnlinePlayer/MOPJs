@@ -12,7 +12,7 @@ const MoreIconButton = React.forwardRef(({ onClick }, ref) => (
 			e.preventDefault();
 			onClick(e);
 		}}
-		className="float-right d-none d-lg-block"
+		className="float-right"
 	>
 		<FontAwesomeIcon
 			icon={faPlus}

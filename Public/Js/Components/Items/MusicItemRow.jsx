@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Image as ImgBootstrap } from 'react-bootstrap';
+import {
+	Col, Image as ImgBootstrap, Row,
+} from 'react-bootstrap';
 import MoreButtonMusic from './Helper/MoreButtonMusic';
 
 const MusicItemRow = ({
@@ -13,20 +15,21 @@ const MusicItemRow = ({
 	isAvailable,
 	AccessoryRight,
 }) => (
-	<tr className="w-100 mx-0 p-1 PointerCursor">
-		<td className="align-middle py-2" onClick={onClick} style={{ width: '50px' }}>
+	<tr className="w-100 m-0 p-0 PointerCursor">
+		<td className="p-0 py-3 pl-2" onClick={onClick} style={{ width: '50px' }}>
 			{ImageDz ? <ImgBootstrap className="PlayerImage my-auto" rounded height="50em" src={ImageDz} />
 				: <ImgBootstrap className="PlayerImage my-auto" rounded height="50em" src={Image ? `data:image/jpeg;base64,${Image.toString('base64')}` : '/Ressources/noMusic.jpg'} />}
 
 		</td>
-		<td className="align-middle text px-1 py-1" style={{ maxHeight: '50em' }} onClick={onClick}>
-			<span>
-				<p className={isAvailable ? '' : 'font-italic'}>{Title}</p>
-			</span>
-
-		</td>
-		<td className="align-middle py-1" onClick={onClick}>
-			<p className="text-middle">{Artist}</p>
+		<td className="p-0 py-3 pl-3" onClick={onClick}>
+			<Col className="pl-0">
+				<Row className="p-0 m-0 pt-1">
+					<h6 className={isAvailable ? 'p-0 m-0' : 'p-0 m-0 font-italic'}>{Title}</h6>
+				</Row>
+				<Row className="p-0 m-0">
+					<p className="text-middle p-0 m-0">{Artist}</p>
+				</Row>
+			</Col>
 		</td>
 
 		{AccessoryRight}

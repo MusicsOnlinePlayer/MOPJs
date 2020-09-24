@@ -160,7 +160,9 @@ class MusicElementConnected extends React.Component {
 					<Dropdown.Item onClick={this.HandleAdd}>Add to current playlist</Dropdown.Item>
 					<Dropdown.Divider />
 					<Dropdown.Item onClick={this.ShowAddToPlaylistModal}>Add to playlist</Dropdown.Item>
-					<Dropdown.Item onClick={this.ShowAddToNewPlaylistModal}>Add to a new playlist</Dropdown.Item>
+					<Dropdown.Item onClick={this.ShowAddToNewPlaylistModal}>
+						Add to a new playlist
+					</Dropdown.Item>
 					<Dropdown.Divider />
 					<Dropdown.Item onClick={this.HandleLike}>Like</Dropdown.Item>
 					{ContextType === OWN_PLAYLIST_CONTEXT && (
