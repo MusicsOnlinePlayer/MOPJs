@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import Axios from 'axios';
 import ButtonIcon from '../Helper/ButtonIcon';
 import { ChangePlayingId as ChangePlayingIdRedux, AddCustomFilePath as AddCustomFilePathRedux } from '../../Actions/Action';
+import PlayerSlider from './PlayerSlider';
 
 const mapStateToProps = (state) => ({
 	PlayingMusic:
@@ -96,8 +97,8 @@ class PlayerConnected extends React.Component {
 		if (CurrentMusicId !== 0) ChangePlayingId(CurrentMusicId - 1);
 	}
 
-	HandleSliderChange = (event) => {
-		this.player.currentTime = event.target.value;
+	HandleSliderChange = (PosX) => {
+		this.player.currentTime = PosX;
 		this.forceUpdate();
 	};
 
@@ -178,16 +179,9 @@ class PlayerConnected extends React.Component {
 			return (
 				<>
 					<Navbar fixed="bottom" bg="light" className="px-2 mh-50 pt-0">
-						<div className="d-flex flex-column w-100 overflow-auto">
+						<div id="Player" className="d-flex flex-column w-100 overflow-auto">
 							<Row className="w-100 mx-0 py-0">
-								<input
-									className="PlayerSlider mb-1"
-									type="Range"
-									step="0.1"
-									onChange={this.HandleSliderChange}
-									value={this.player ? this.player.currentTime : 0}
-									max={this.GetSliderMaxValue()}
-								/>
+								<PlayerSlider Time={this.player ? this.player.currentTime : 0} EndTime={this.GetSliderMaxValue()} OnSliderChange={this.HandleSliderChange} />
 								{PlayingMusic.ImagePathDeezer ? <Image className="PlayerImage my-auto" rounded height="75em" src={PlayingMusic.ImagePathDeezer} />
 									: <Image className="PlayerImage my-auto" rounded height="75em" src={PlayingMusic.Image ? `data:image/jpeg;base64,${PlayingMusic.Image.toString('base64')}` : '/Ressources/noMusic.jpg'} />}
 
