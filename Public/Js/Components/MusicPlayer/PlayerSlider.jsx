@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Draggable from 'react-draggable';
 import PropTypes from 'prop-types';
 import useResize from './Helper/useResize';
