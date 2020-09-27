@@ -1,28 +1,26 @@
 import React, { useRef, useEffect, useState } from 'react';
 import Draggable from 'react-draggable';
 import PropTypes from 'prop-types';
+import useResize from './Helper/useResize';
 
 
 const PlayerSlider = ({ Time, EndTime, OnSliderChange }) => {
 	const ContainerRef = useRef(null);
-	const [SliderWidth, SetSliderWidth] = useState(0);
+	const { width } = useResize(ContainerRef);
 	const [IsDragging, SetIsDragging] = useState(false);
 
-	useEffect(() => {
-		SetSliderWidth(ContainerRef.current ? ContainerRef.current.offsetWidth : 0);
-	}, [ContainerRef.current]);
 	return (
 		<div ref={ContainerRef} style={{ width: '100%', height: '2px' }} id="Progress-container" className="mb-2">
 			<div
 				className={`Progress-bar ${IsDragging ? 'noTransition' : ''}`}
-				style={{ width: `${(Time * SliderWidth) / EndTime}px`, height: '100%' }}
+				style={{ width: `${(Time * width) / EndTime}px`, height: '100%' }}
 			/>
 
 			<Draggable
 				axis="x"
 				bounds="parent"
 				position={{
-					x: (Time * SliderWidth) / EndTime,
+					x: (Time * width) / EndTime,
 					y: 0,
 				}}
 				positionOffset={{
@@ -31,7 +29,7 @@ const PlayerSlider = ({ Time, EndTime, OnSliderChange }) => {
 				}}
 				onStart={() => SetIsDragging(true)}
 				onDrag={(e, data) => {
-					OnSliderChange((data.x * EndTime) / SliderWidth);
+					OnSliderChange((data.x * EndTime) / width);
 				}}
 				onStop={() => SetIsDragging(false)}
 			>
