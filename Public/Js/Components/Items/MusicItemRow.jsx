@@ -15,7 +15,7 @@ const MusicItemRow = ({
 	isAvailable,
 	AccessoryRight,
 }) => (
-	<tr className="w-100 m-0 p-0 PointerCursor">
+	<tr className="w-100 m-0 p-0 PointerCursor MusicItemRow">
 		<td className="p-0 py-3 pl-2" onClick={onClick} style={{ width: '50px' }}>
 			{ImageDz ? <ImgBootstrap className="PlayerImage my-auto" rounded height="50em" src={ImageDz} />
 				: <ImgBootstrap className="PlayerImage my-auto" rounded height="50em" src={Image ? `data:image/jpeg;base64,${Image.toString('base64')}` : '/Ressources/noMusic.jpg'} />}
@@ -34,7 +34,7 @@ const MusicItemRow = ({
 
 		{AccessoryRight}
 
-		<td className="align-middle pr-4">
+		<td className="align-middle pr-4 Accessory">
 			<MoreButtonMusic>
 				{children}
 			</MoreButtonMusic>

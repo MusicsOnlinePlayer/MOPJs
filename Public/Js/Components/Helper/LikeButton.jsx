@@ -35,7 +35,7 @@ class LikeButton extends React.Component {
 		const { IsLiked } = this.state;
 		const Icon = IsLiked ? faHeart : faHeartEmpty;
 
-		return (<ButtonIcon onClick={this.onButtonClick} faIcon={Icon} buttonClass="float-right d-none d-lg-block" />);
+		return (<ButtonIcon onClick={this.onButtonClick} faIcon={Icon} buttonClass="float-right d-none d-lg-block Accessory LikeButton" />);
 	}
 }
 

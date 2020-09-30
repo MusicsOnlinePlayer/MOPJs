@@ -178,7 +178,7 @@ class PlayerConnected extends React.Component {
 		if (PlayingMusic) {
 			return (
 				<>
-					<Navbar fixed="bottom" bg="light" className="px-2 mh-50 pt-0">
+					<Navbar fixed="bottom" className="px-2 mh-50 pt-0">
 						<div id="Player" className="d-flex flex-column w-100 overflow-auto">
 							<Row className="w-100 mx-0 py-0">
 								<PlayerSlider Time={this.player ? this.player.currentTime : 0} EndTime={this.GetSliderMaxValue()} OnSliderChange={this.HandleSliderChange} />
@@ -198,7 +198,7 @@ class PlayerConnected extends React.Component {
 								<ButtonIcon buttonClass="my-auto ml-2 p-0 mr-0" iconFontSize="1.75rem" onClick={this.HandleNext} faIcon={faStepForward} />
 
 
-								<Button variant="light" className="my-auto ml-1 mt-1 d-none d-lg-block" onClick={this.HandleOpenPlaylist}>
+								<Button variant="" className="my-auto ml-1 mt-1 d-none d-lg-block" onClick={this.HandleOpenPlaylist}>
 									{NextMusic ? `Next: ${NextMusic.Title}` : 'Queue'}
 								</Button>
 							</Row>

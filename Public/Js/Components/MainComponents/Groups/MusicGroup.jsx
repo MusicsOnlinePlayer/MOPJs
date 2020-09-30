@@ -96,7 +96,7 @@ class MusicGroupConnected extends React.Component {
 						<ButtonIcon faIcon={faPlay} onClick={this.onPlayAll} buttonClass="py-auto pr-4 float-right" />
 					</Col>
 				</Row>
-				<table className="table table-hover">
+				<table className="table table-hover table-borderless">
 					<tbody>{MusicItems}</tbody>
 				</table>
 			</div>

@@ -6,9 +6,9 @@ import MoreButton from './Helper/MoreButton';
 const AlbumItemCard = ({
 	onClick, Image, Name, Artist, ImageDz, children, MoreOptions,
 }) => (
-	<Card style={{ width: '18rem', cursor: 'pointer' }} className="m-2">
+	<Card style={{ width: '18rem', cursor: 'pointer' }} className="m-2 AlbumItemCard">
 		{MoreOptions && (
-			<div style={{ position: 'absolute', top: '13px', right: '13px' }}>
+			<div className="MoreIconButton">
 				<MoreButton>{children}</MoreButton>
 			</div>
 		)}
@@ -16,7 +16,7 @@ const AlbumItemCard = ({
 			: <Card.Img variant="top" src={Image ? `data:image/jpeg;base64,${Image.toString('base64')}` : '/Ressources/noMusic.jpg'} />}
 
 		<Card.Body onClick={onClick}>
-			<Card.Title>{Name}</Card.Title>
+			<Card.Title style={{ textAlign: 'center' }}>{Name}</Card.Title>
 			<Card.Text>{Artist}</Card.Text>
 		</Card.Body>
 
