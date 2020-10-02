@@ -3,6 +3,8 @@ import {
 	Navbar, FormControl, Form,
 } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import AccountTopNav from '../Authentification/AccountTopNav';
 
 export default class TopNav extends React.Component {
@@ -36,7 +38,17 @@ export default class TopNav extends React.Component {
 		return (
 			<Navbar variant="" bg="" expand="lg" className="justify-content-between">
 				<Navbar.Brand href="#">Mop - Js Edition</Navbar.Brand>
-				<Navbar.Toggle aria-controls="basic-navbar-nav" />
+				<Navbar.Toggle aria-controls="basic-navbar-nav">
+					<FontAwesomeIcon
+						icon={faCaretDown}
+						size="lg"
+						style={{
+							color: '#d6d6d6ff',
+							fontSize: '1.5rem',
+						}}
+					/>
+
+				</Navbar.Toggle>
 				<Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
 					<Form inline onSubmit={this.handleSearch}>
 						<FormControl type="text" placeholder="Search for musics" value={SearchValue} onChange={this.handleInputChange} className=" mr-sm-4 my-1" />

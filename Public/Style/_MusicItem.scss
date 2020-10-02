@@ -14,3 +14,9 @@
 .LikeButton {
     color: #CC506C !important;
 }
+
+@media only screen and (max-width: 768px) {
+    .MusicItemRow .Accessory {
+        transform: scale(1);
+    }
+}

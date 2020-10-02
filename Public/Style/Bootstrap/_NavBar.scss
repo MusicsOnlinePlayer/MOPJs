@@ -93,6 +93,24 @@ $dropDown : true;
         }
     }
 
+    .navbar-toggler {
+        -webkit-transition: transform .25s ease-in-out;
+        -moz-transition: transform .25s ease-in-out;
+        -o-transition: transform .25s ease-in-out;
+        transition: transform .25s ease-in-out;
+        border: 0px solid transparent;
+        outline: none !important;
+    }
+
+    .navbar-toggler:active {
+        transform: rotate(360deg);
+        border: 0px solid transparent;
+    }
+
+    .navbar-toggler:focus {
+        outline: none !important;
+    }
+
     .navbar-collapse,
     .navbar-form {
         border-color: $colDefault;
@@ -121,6 +139,19 @@ $dropDown : true;
         .dropdown-item.active {
             color: $colHighlight;
             background-color: $bgHighlight;
+        }
+    }
+
+    .navbar-toggle {
+        border-color: $bgHighlight;
+
+        &:hover,
+        &:focus {
+            background-color: $bgHighlight;
+        }
+
+        .navbar-toggler-icon {
+            color: $colDefault;
         }
     }
 }
