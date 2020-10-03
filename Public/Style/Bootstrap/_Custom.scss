@@ -127,11 +127,22 @@ $progress-bg: $gray-700;
 
 // List group
 
-$list-group-bg: $gray-800;
-$list-group-border-color: $gray-700;
-$list-group-hover-bg: $primary;
-$list-group-disabled-bg: $gray-700;
-$list-group-action-active-bg: $primary;
+$list-group-bg:                 $PrimaryColor2;
+$list-group-border:             #fff;
+$list-group-hover-bg:           $PrimaryColor4;
+
+$list-group-active-color:       #fff;
+$list-group-active-bg:          $AccentColor;
+$list-group-active-border:      transparent;
+$list-group-active-text-color:  #fff;
+
+$list-group-disabled-color:      #fff;
+$list-group-disabled-bg:         $PrimaryColor1;
+$list-group-disabled-text-color: #fff;
+
+$list-group-link-color:         #fff;
+$list-group-link-hover-color:   $AccentColor;
+$list-group-link-heading-color:  #fff;
 
 // Breadcrumbs
 

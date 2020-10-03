@@ -73,9 +73,9 @@ class AddToPlaylistModal extends React.Component {
 		const PlaylistsSmallItem = UserPlaylists.map((PlaylistApiRes) => (
 			<ListGroup.Item
 				action
+				className={`PlaylistItem${PlaylistApiRes._id === SelectedPlaylistId ? ' PlaylistItemSelected' : ''}`}
 				key={PlaylistApiRes._id}
 				onClick={() => this.OnPlaylistSelect(PlaylistApiRes._id)}
-				variant={PlaylistApiRes._id === SelectedPlaylistId ? 'primary' : ''}
 			>
 				{PlaylistApiRes.Name}
 			</ListGroup.Item>
@@ -92,7 +92,7 @@ class AddToPlaylistModal extends React.Component {
 						to playlist
 					</Modal.Title>
 				</Modal.Header>
-				<Modal.Body>{!IsLoading && <ListGroup>{PlaylistsSmallItem}</ListGroup>}</Modal.Body>
+				<Modal.Body>{!IsLoading && <ListGroup className="PlaylistSelector">{PlaylistsSmallItem}</ListGroup>}</Modal.Body>
 				<Modal.Footer>
 					<Button variant="primary" onClick={this.handleSubmit}>
 						{IsLoading && <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />}
