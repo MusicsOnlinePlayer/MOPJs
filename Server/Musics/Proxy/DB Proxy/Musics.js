@@ -30,6 +30,7 @@ const AppendMusicToAlbum = async (tags, AlbumDzId) => {
 	const albumDoc = await Album.findOne({ Name: tags.Album, DeezerId: AlbumDzId });
 	albumDoc.MusicsId.push(savedMusic._id);
 	await albumDoc.save();
+	savedMusic.AlbumId = albumDoc._id;
 	MopConsole.info(LogLocation, `Added new music to ${albumDoc.Name}`);
 };
 
@@ -153,6 +154,9 @@ async function AddMusicToDatabase(MusicTags, ArtistImage = undefined) {
 		artistDoc.AlbumsId.push(savedAlbum);
 		await artistDoc.save();
 	}
+
+	musicDoc.AlbumId = savedAlbum._id;
+	await musicDoc.save();
 	/* eslint consistent-return: "off" */
 	return musicDoc._id;
 }

@@ -16,6 +16,7 @@ const MusicSchema = new mongoose.Schema({
 	Title: { type: String, es_indexed: true, es_boost: 8.0 },
 	Artist: { type: String, es_indexed: true, es_boost: 1.0 },
 	Album: { type: String, es_indexed: true },
+	AlbumId: { type: mongoose.Schema.Types.ObjectId, ref: 'Album' },
 	PublishedDate: { type: Date, es_type: 'date', es_indexed: true },
 	TrackNumber: Number,
 	FilePath: String,
@@ -93,13 +94,13 @@ if (process.env.NODE_ENV !== 'test' && !UseMongoSearchIndex) {
 ArtistSchema.static('findOneOrCreate', async function findOneOrCreate(condition, doc) {
 	const one = await this.findOne(condition);
 
-	return one || this.create(doc);
+	return one || await this.create(doc);
 });
 
 AlbumSchema.static('findOneOrCreate', async function findOneOrCreate(condition, doc) {
 	const one = await this.findOne(condition);
 
-	return one || this.create(doc);
+	return one || await this.create(doc);
 });
 
 const MusicModel = mongoose.model('Music', MusicSchema, 'Music');
