@@ -7,13 +7,13 @@ const DBMusicSearch = (Query) => new Promise((resolve, reject) => {
 	Music
 		.find({ $text: { $search: Query } })
 		.limit(8)
+		.populate('AlbumId')
 		.exec(
 			(err, result) => {
 				if (err) {
 					MopConsole.error(LogLocation, err);
 					return;
 				}
-				const ClientResults = [];
 
 				if (!result) {
 					MopConsole.error(LogLocation, 'Request error !');
@@ -21,11 +21,7 @@ const DBMusicSearch = (Query) => new Promise((resolve, reject) => {
 					return;
 				}
 
-
-				result.map((doc) => {
-					ClientResults.push(doc._id);
-				});
-				resolve(ClientResults);
+				resolve(result);
 			},
 		);
 });

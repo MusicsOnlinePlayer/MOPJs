@@ -18,7 +18,7 @@ class SearchPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			MusicIds: [],
+			Musics: [],
 			AlbumIds: [],
 			ArtistIds: [],
 			PlaylistIds: [],
@@ -55,7 +55,7 @@ class SearchPage extends React.Component {
 			// TODO refactor by using parallel tasks
 			Axios.get(`/Music/Search/Music/Name/${values.q}`)
 				.then((res) => {
-					this.setState({ MusicIds: res.data, IsFetchingMusics: false, IsFetchingAlbums: true });
+					this.setState({ Musics: res.data, IsFetchingMusics: false, IsFetchingAlbums: true });
 					Axios.get(`/Music/Search/Album/Name/${values.q}`)
 						.then((res2) => {
 							this.setState({
@@ -93,13 +93,13 @@ class SearchPage extends React.Component {
 
 	render() {
 		const {
-			MusicIds, AlbumIds, ArtistIds, PlaylistIds,
+			Musics, AlbumIds, ArtistIds, PlaylistIds,
 			IsFetchingMusics, IsFetchingAlbums, IsFetchingArtists, IsFetchingPlaylists,
 		} = this.state;
 
 		return (
 			<div>
-				<MusicGroup MusicIds={MusicIds} DetailType="Musics" IsFetching={IsFetchingMusics} />
+				<MusicGroup Musics={Musics} DetailType="Musics" IsFetching={IsFetchingMusics} />
 				<AlbumGroup AlbumIds={AlbumIds} DetailType="Albums" IsFetching={IsFetchingAlbums} />
 				<ArtistGroup ArtistIds={ArtistIds} DetailType="Artists" IsFetching={IsFetchingArtists} />
 				<UserPlaylistGroup PlaylistsId={PlaylistIds} DetailType="Playlists" IsFetching={IsFetchingPlaylists} />

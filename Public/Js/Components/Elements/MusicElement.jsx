@@ -31,6 +31,10 @@ class MusicElementConnected extends React.Component {
 			Title: PropTypes.string.isRequired,
 			Artist: PropTypes.string.isRequired,
 			FilePath: PropTypes.string,
+			AlbumId: PropTypes.shape({
+				Image: PropTypes.string,
+				ImagePathDeezer: PropTypes.string,
+			}),
 		}).isRequired,
 		CustomImage: PropTypes.string,
 		CustomImageDz: PropTypes.string,
@@ -56,7 +60,6 @@ class MusicElementConnected extends React.Component {
 	}
 
 	onClick = () => {
-		// TODO incorrect
 		const { ApiResult } = this.state;
 		const { ChangePlayingMusic } = this.props;
 
@@ -155,8 +158,8 @@ class MusicElementConnected extends React.Component {
 					)}
 
 				<MusicItemRow
-					Image={CustomImage}
-					ImageDz={CustomImageDz}
+					Image={CustomImage || Music.AlbumId.Image}
+					ImageDz={CustomImageDz || Music.AlbumId.ImagePathDeezer}
 					Title={Music.Title}
 					Artist={Music.Artist}
 					onClick={this.onClick}
