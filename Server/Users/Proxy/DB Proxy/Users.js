@@ -9,7 +9,13 @@ const Location = 'Users.Proxy.DBProxy';
  */
 const GetLikedMusicsOfUser = async (UserId) => {
 	MopConsole.debug(Location, `Getting liked musics of user with db id ${UserId}`);
-	const FoundUser = await User.findById(UserId).lean();
+	const FoundUser = await User.findById(UserId).populate({
+		path: 'LikedMusics',
+		populate: [{
+			path: 'AlbumId',
+			model: 'Album',
+		}],
+	}).exec();
 	MopConsole.debug(Location, `Found ${FoundUser.LikedMusics ? FoundUser.LikedMusics.length : 0} liked musics of user with db id ${UserId}`);
 	return FoundUser.LikedMusics;
 };
@@ -19,7 +25,13 @@ const GetLikedMusicsOfUser = async (UserId) => {
  */
 const GetViewedMusicsOfUser = async (UserId) => {
 	MopConsole.debug(Location, `Getting viewed musics of user with db id ${UserId}`);
-	const FoundUser = await User.findById(UserId).lean();
+	const FoundUser = await User.findById(UserId).populate({
+		path: 'ViewedMusics',
+		populate: [{
+			path: 'AlbumId',
+			model: 'Album',
+		}],
+	}).exec();
 	MopConsole.debug(Location, `Found ${FoundUser.LikedMusics ? FoundUser.LikedMusics.length : 0} liked musics of user with db id ${UserId}`);
 	return FoundUser.ViewedMusics;
 };

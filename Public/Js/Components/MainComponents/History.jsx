@@ -20,7 +20,7 @@ class History extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			MusicIds: undefined,
+			Musics: undefined,
 		};
 	}
 
@@ -32,16 +32,16 @@ class History extends React.Component {
 
 			const MusicIds = MusicArray.slice(0, Size);
 			this.setState({
-				MusicIds: RemoveDups ? [...new Set(MusicIds)] : MusicIds,
+				Musics: RemoveDups ? [...new Set(MusicIds)] : MusicIds,
 			});
 		});
 	}
 
 	render() {
-		const { MusicIds } = this.state;
+		const { Musics } = this.state;
 
-		if (MusicIds) {
-			return <MusicGroup MusicIds={MusicIds} DetailType="History" ContextType={HIST_CONTEXT} />;
+		if (Musics) {
+			return <MusicGroup Musics={Musics} DetailType="History" ContextType={HIST_CONTEXT} />;
 		}
 
 		return <></>;
