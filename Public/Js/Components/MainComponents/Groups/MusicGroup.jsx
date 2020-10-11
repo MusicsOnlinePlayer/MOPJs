@@ -37,7 +37,9 @@ class MusicGroupConnected extends React.Component {
 	}
 
 	onPlayAll = () => {
-
+		const { ClearPlaylist, AddMusics, Musics } = this.props;
+		ClearPlaylist();
+		AddMusics(Musics);
 	};
 
 	render() {
