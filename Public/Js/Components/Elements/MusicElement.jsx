@@ -36,19 +36,12 @@ class MusicElementConnected extends React.Component {
 				ImagePathDeezer: PropTypes.string,
 			}),
 		}).isRequired,
-		CustomImage: PropTypes.string,
-		CustomImageDz: PropTypes.string,
 		ContextType: PropTypes.string.isRequired,
 		ContextPlaylistId: PropTypes.string,
 	}
 
 	static defaultProps = {
 		ContextPlaylistId: undefined,
-	}
-
-	static defaultProps = {
-		CustomImage: undefined,
-		CustomImageDz: undefined,
 	}
 
 	constructor(props) {
@@ -60,26 +53,22 @@ class MusicElementConnected extends React.Component {
 	}
 
 	onClick = () => {
-		const { ApiResult } = this.state;
-		const { ChangePlayingMusic } = this.props;
+		const { ChangePlayingMusic, Music } = this.props;
 
-		ChangePlayingMusic(ApiResult);
+		ChangePlayingMusic(Music);
 	};
 
 
 	HandleAdd = () => {
-		// TODO incorrect
-		const { ApiResult } = this.state;
-		const { AddMusic } = this.props;
+		const { AddMusic, Music } = this.props;
 
-		AddMusic(ApiResult);
+		AddMusic(Music);
 	};
 
 	HandleLike = () => {
-		// TODO incorrect
-		const { id } = this.props;
+		const { Music } = this.props;
 
-		Axios.get(`/Music/Music/Like/${id}`).then(() => {});
+		Axios.get(`/Music/Music/Like/${Music._id}`).then(() => {});
 	}
 
 	componentWillUnmount = () => {
@@ -122,9 +111,7 @@ class MusicElementConnected extends React.Component {
 
 	render() {
 		const { ShowAddToPlaylistModal, ShowAddToNewPlaylistModal } = this.state;
-		const {
-			ContextType, Music, CustomImage, CustomImageDz,
-		} = this.props;
+		const { ContextType, Music } = this.props;
 		const isAvailable = Music.FilePath !== undefined;
 
 		// TODO not working
@@ -158,8 +145,8 @@ class MusicElementConnected extends React.Component {
 					)}
 
 				<MusicItemRow
-					Image={CustomImage || Music.AlbumId.Image}
-					ImageDz={CustomImageDz || Music.AlbumId.ImagePathDeezer}
+					Image={Music.AlbumId.Image}
+					ImageDz={Music.AlbumId.ImagePathDeezer}
 					Title={Music.Title}
 					Artist={Music.Artist}
 					onClick={this.onClick}

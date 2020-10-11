@@ -52,16 +52,24 @@ class MusicGroupConnected extends React.Component {
 		} = this.props;
 
 		const MusicItems = Musics
-			.map((Music) => (
-				<MusicElement
-					key={Music._id}
-					Music={Music}
-					CustomImage={CommonImage}
-					CustomImageDz={CommonImageDz}
-					ContextType={ContextType}
-					ContextPlaylistId={ContextPlaylistId}
-				/>
-			));
+			.map((m) => {
+				const Music = m;
+				if (CommonImage || CommonImageDz) {
+					Music.AlbumId = {
+						Image: CommonImage,
+						ImagePathDeezer: CommonImageDz,
+					};
+				}
+
+				return (
+					<MusicElement
+						key={Music._id}
+						Music={Music}
+						ContextType={ContextType}
+						ContextPlaylistId={ContextPlaylistId}
+					/>
+				);
+			});
 
 		// TODO add empty graphic here
 

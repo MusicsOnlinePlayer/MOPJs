@@ -9,8 +9,10 @@ class PlaylistElement extends React.Component {
 		Music: PropTypes.shape({
 			Title: PropTypes.string.isRequired,
 			Artist: PropTypes.string.isRequired,
-			Image: PropTypes.string,
-			ImagePathDeezer: PropTypes.string,
+			AlbumId: PropTypes.shape({
+				Image: PropTypes.string,
+				ImagePathDeezer: PropTypes.string,
+			}),
 		}).isRequired,
 	}
 
@@ -22,12 +24,12 @@ class PlaylistElement extends React.Component {
 	render() {
 		const { Music } = this.props;
 		const {
-			Image, Title, Artist, ImagePathDeezer,
+			AlbumId, Title, Artist,
 		} = Music;
 		return (
 			<MusicItemRow
-				Image={Image || undefined}
-				ImageDz={ImagePathDeezer || undefined}
+				Image={AlbumId.Image || undefined}
+				ImageDz={AlbumId.ImagePathDeezer || undefined}
 				Title={Title}
 				Artist={Artist}
 				onClick={this.onPlaylistClick}
