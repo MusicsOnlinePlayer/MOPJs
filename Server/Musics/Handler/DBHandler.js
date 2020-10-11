@@ -132,7 +132,14 @@ module.exports = {
 	HandlePlaylistRequestById: (id) => new Promise((resolve, reject) => {
 		MopConsole.debug(Location, `Searching for playlist with db id ${id}`);
 		Playlist.findById(id)
-			.populate('Creator MusicsId')
+			.populate('Creator')
+			.populate({
+				path: 'MusicsId',
+				populate: [{
+					path: 'AlbumId',
+					model: 'Album',
+				}],
+			})
 			.exec(
 				async (err, doc) => {
 					if (err) {
@@ -147,11 +154,9 @@ module.exports = {
 
 					const PlaylistDoc = doc.toObject();
 
-					const AlbumOfMusic = await FindAlbumContainingMusic(PlaylistDoc.MusicsId[0]);
-
-					PlaylistDoc.Image = AlbumOfMusic.Image;
-					PlaylistDoc.ImagePathDeezer = AlbumOfMusic.ImagePathDeezer;
-					PlaylistDoc.ImageFormat = AlbumOfMusic.ImageFormat;
+					PlaylistDoc.Image = PlaylistDoc.MusicsId[0].AlbumId.Image;
+					PlaylistDoc.ImagePathDeezer = PlaylistDoc.MusicsId[0].AlbumId.ImagePathDeezer;
+					PlaylistDoc.ImageFormat = PlaylistDoc.MusicsId[0].AlbumId.ImageFormat;
 
 					resolve(PlaylistDoc);
 				},

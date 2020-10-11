@@ -25,12 +25,12 @@ const UpdateIfNeededTrackNumber = (tags) => new Promise((resolve) => {
  * @param {number} AlbumDzId - Deezer id of the album
  */
 const AppendMusicToAlbum = async (tags, AlbumDzId) => {
-	const savedMusic = await Music.create(tags);
-
 	const albumDoc = await Album.findOne({ Name: tags.Album, DeezerId: AlbumDzId });
+
+	const savedMusic = await Music.create({ ...tags, AlbumId: albumDoc._id });
 	albumDoc.MusicsId.push(savedMusic._id);
 	await albumDoc.save();
-	savedMusic.AlbumId = albumDoc._id;
+
 	MopConsole.info(LogLocation, `Added new music to ${albumDoc.Name}`);
 };
 

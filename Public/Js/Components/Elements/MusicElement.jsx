@@ -145,8 +145,8 @@ class MusicElementConnected extends React.Component {
 					)}
 
 				<MusicItemRow
-					Image={Music.AlbumId.Image}
-					ImageDz={Music.AlbumId.ImagePathDeezer}
+					Image={Music.AlbumId ? Music.AlbumId.Image : undefined}
+					ImageDz={Music.AlbumId ? Music.AlbumId.ImagePathDeezer : undefined}
 					Title={Music.Title}
 					Artist={Music.Artist}
 					onClick={this.onClick}
