@@ -26,8 +26,14 @@ class MusicElementConnected extends React.Component {
 		history: PropTypes.shape({ go: PropTypes.func }).isRequired,
 		ChangePlayingMusic: PropTypes.func.isRequired,
 		AddMusic: PropTypes.func.isRequired,
-		id: PropTypes.string.isRequired,
-		onDataReceived: PropTypes.func,
+		Music: PropTypes.shape({
+			_id: PropTypes.string.isRequired,
+			Title: PropTypes.string.isRequired,
+			Artist: PropTypes.string.isRequired,
+			FilePath: PropTypes.string,
+		}).isRequired,
+		CustomImage: PropTypes.string,
+		CustomImageDz: PropTypes.string,
 		ContextType: PropTypes.string.isRequired,
 		ContextPlaylistId: PropTypes.string,
 	}
@@ -37,19 +43,20 @@ class MusicElementConnected extends React.Component {
 	}
 
 	static defaultProps = {
-		onDataReceived: () => { },
+		CustomImage: undefined,
+		CustomImageDz: undefined,
 	}
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			ApiResult: '',
 			ShowAddToPlaylistModal: false,
 			ShowAddToNewPlaylistModal: false,
 		};
 	}
 
 	onClick = () => {
+		// TODO incorrect
 		const { ApiResult } = this.state;
 		const { ChangePlayingMusic } = this.props;
 
@@ -58,6 +65,7 @@ class MusicElementConnected extends React.Component {
 
 
 	HandleAdd = () => {
+		// TODO incorrect
 		const { ApiResult } = this.state;
 		const { AddMusic } = this.props;
 
@@ -65,6 +73,7 @@ class MusicElementConnected extends React.Component {
 	};
 
 	HandleLike = () => {
+		// TODO incorrect
 		const { id } = this.props;
 
 		Axios.get(`/Music/Music/Like/${id}`).then(() => {});
@@ -75,17 +84,6 @@ class MusicElementConnected extends React.Component {
 
 		};
 	}
-
-	componentDidMount = () => {
-		const { id, onDataReceived } = this.props;
-
-		Axios.get(`/Music/Music/id/${id}`).then((res) => {
-			this.setState({
-				ApiResult: res.data,
-			});
-			onDataReceived(res.data);
-		});
-	};
 
 	ShowAddToPlaylistModal = () => {
 		this.setState({
@@ -112,25 +110,29 @@ class MusicElementConnected extends React.Component {
 	}
 
 	HandleDeletePlaylistMusic = () => {
-		const { ContextPlaylistId, id, history } = this.props;
+		// TODO incorrect
+		const { ContextPlaylistId, Music, history } = this.props;
 		Axios.delete(`/Music/Playlist/id/${ContextPlaylistId}/Remove/`, {
-			data: { MusicId: id },
+			data: { MusicId: Music._id },
 		}).then(() => history.go(0));
 	}
 
 	render() {
-		const { ApiResult, ShowAddToPlaylistModal, ShowAddToNewPlaylistModal } = this.state;
-		const { ContextType, id } = this.props;
-		const isAvailable = ApiResult ? ApiResult.FilePath !== undefined : true;
+		const { ShowAddToPlaylistModal, ShowAddToNewPlaylistModal } = this.state;
+		const {
+			ContextType, Music, CustomImage, CustomImageDz,
+		} = this.props;
+		const isAvailable = Music.FilePath !== undefined;
 
+		// TODO not working
 		const LikeButtonAccessory = (
 			<td className="align-middle">
 				{
-					ApiResult
+					Music
 						? (
 							<LikeButton
 								onLike={this.HandleLike}
-								defaultLikeState={ApiResult ? ApiResult.IsLiked : undefined}
+								defaultLikeState={false}
 							/>
 						)
 						: undefined
@@ -143,15 +145,20 @@ class MusicElementConnected extends React.Component {
 		return (
 			<>
 				{ShowAddToPlaylistModal
-					&& <AddToPlaylistModal Music={ApiResult} OnClose={this.CloseAddToPlaylistModal} />}
+					&& <AddToPlaylistModal Music={Music} OnClose={this.CloseAddToPlaylistModal} />}
 				{ShowAddToNewPlaylistModal
-					&& <PlaylistCreateModal MusicsId={[id]} OnClose={this.CloseAddToNewPlaylistModal} />}
+					&& (
+						<PlaylistCreateModal
+							MusicsId={[Music._id]}
+							OnClose={this.CloseAddToNewPlaylistModal}
+						/>
+					)}
 
 				<MusicItemRow
-					Image={ApiResult ? ApiResult.Image : undefined}
-					ImageDz={ApiResult ? ApiResult.ImagePathDeezer : undefined}
-					Title={ApiResult ? ApiResult.Title : 'Loading...'}
-					Artist={ApiResult ? ApiResult.Artist : 'Loading...'}
+					Image={CustomImage}
+					ImageDz={CustomImageDz}
+					Title={Music.Title}
+					Artist={Music.Artist}
 					onClick={this.onClick}
 					isAvailable={isAvailable}
 					AccessoryRight={LikeButtonAccessory}

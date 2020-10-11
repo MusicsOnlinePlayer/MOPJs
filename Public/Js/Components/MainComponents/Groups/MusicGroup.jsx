@@ -20,50 +20,44 @@ class MusicGroupConnected extends React.Component {
 	static propTypes = {
 		ClearPlaylist: PropTypes.func.isRequired,
 		AddMusics: PropTypes.func.isRequired,
-		MusicIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+		Musics: PropTypes.arrayOf(PropTypes.any).isRequired,
 		DetailType: PropTypes.string.isRequired,
 		IsFetching: PropTypes.bool,
 		ContextType: PropTypes.string.isRequired,
 		ContextPlaylistId: PropTypes.string,
+		CommonImage: PropTypes.string,
+		CommonImageDz: PropTypes.string,
 	}
 
 	static defaultProps = {
 		IsFetching: false,
 		ContextPlaylistId: undefined,
+		CommonImage: undefined,
+		CommonImageDz: undefined,
 	}
-
-	constructor(props) {
-		super(props);
-		this.state = {
-			Musics: [],
-		};
-	}
-
-	onDataReceived = (Music) => {
-		this.setState((prev) => ({
-			Musics: [...prev.Musics, Music],
-		}));
-	};
 
 	onPlayAll = () => {
-		const { ClearPlaylist, AddMusics } = this.props;
-		const { Musics } = this.state;
 
-		ClearPlaylist();
-		AddMusics([...Musics].sort((a, b) => a.TrackNumber - b.TrackNumber));
 	};
 
 	render() {
 		const {
-			MusicIds, DetailType, IsFetching, ContextType, ContextPlaylistId,
+			Musics,
+			DetailType,
+			IsFetching,
+			ContextType,
+			ContextPlaylistId,
+			CommonImage,
+			CommonImageDz,
 		} = this.props;
 
-		const MusicItems = MusicIds
-			.map((id) => (
+		const MusicItems = Musics
+			.map((Music) => (
 				<MusicElement
-					key={id}
-					id={id}
-					onDataReceived={this.onDataReceived}
+					key={Music._id}
+					Music={Music}
+					CustomImage={CommonImage}
+					CustomImageDz={CommonImageDz}
 					ContextType={ContextType}
 					ContextPlaylistId={ContextPlaylistId}
 				/>
