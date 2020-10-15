@@ -20,6 +20,11 @@ const mapDispatchToProps = (dispatch) => ({
 	},
 });
 
+const mapStateToProps = (state) => {
+	const { UserAccountReducer } = state;
+	return { LikedMusics: UserAccountReducer.Account.LikedMusics };
+};
+
 class MusicElementConnected extends React.Component {
 	// TODO Add react viz for progressive loading
 	static propTypes = {
@@ -36,6 +41,7 @@ class MusicElementConnected extends React.Component {
 				ImagePathDeezer: PropTypes.string,
 			}),
 		}).isRequired,
+		LikedMusics: PropTypes.arrayOf(PropTypes.string).isRequired,
 		ContextType: PropTypes.string.isRequired,
 		ContextPlaylistId: PropTypes.string,
 	}
@@ -111,7 +117,7 @@ class MusicElementConnected extends React.Component {
 
 	render() {
 		const { ShowAddToPlaylistModal, ShowAddToNewPlaylistModal } = this.state;
-		const { ContextType, Music } = this.props;
+		const { ContextType, Music, LikedMusics } = this.props;
 		const isAvailable = Music.FilePath !== undefined;
 
 		// TODO not working
@@ -122,7 +128,7 @@ class MusicElementConnected extends React.Component {
 						? (
 							<LikeButton
 								onLike={this.HandleLike}
-								defaultLikeState={false}
+								defaultLikeState={LikedMusics.includes(Music._id)}
 							/>
 						)
 						: undefined
@@ -175,6 +181,6 @@ class MusicElementConnected extends React.Component {
 	}
 }
 
-const MusicElement = connect(null, mapDispatchToProps)(MusicElementConnected);
+const MusicElement = connect(mapStateToProps, mapDispatchToProps)(MusicElementConnected);
 
 export default withRouter(MusicElement);
