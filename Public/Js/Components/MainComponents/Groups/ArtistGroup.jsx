@@ -5,7 +5,7 @@ import ArtistElement from '../../Elements/ArtistElement';
 
 class ArtistGroup extends React.Component {
 	static propTypes = {
-		ArtistIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+		Artists: PropTypes.arrayOf(PropTypes.any).isRequired,
 		DetailType: PropTypes.string.isRequired,
 		IsFetching: PropTypes.bool,
 	}
@@ -22,10 +22,10 @@ class ArtistGroup extends React.Component {
 	}
 
 	render() {
-		const { ArtistIds, DetailType, IsFetching } = this.props;
+		const { Artists, DetailType, IsFetching } = this.props;
 
-		const ArtistItems = ArtistIds
-			.map((id) => <ArtistElement key={id} id={id} />);
+		const ArtistItems = Artists
+			.map((Artist) => <ArtistElement key={Artist._id} Artist={Artist} />);
 
 		// TODO add empty graphic here
 

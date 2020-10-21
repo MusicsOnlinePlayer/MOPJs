@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes, { array } from 'prop-types';
+import PropTypes from 'prop-types';
 import LazyLoad from 'react-lazyload';
 import { withRouter } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
@@ -50,6 +50,7 @@ class AlbumElementConnected extends React.Component {
 		const { MusicsId } = Album;
 
 		MusicsId.forEach((value, index, arr) => {
+			/* eslint no-param-reassign: "off" */
 			arr[index].AlbumId = Album;
 		}, MusicsId);
 

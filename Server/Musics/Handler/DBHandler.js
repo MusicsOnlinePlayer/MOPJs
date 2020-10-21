@@ -101,32 +101,47 @@ module.exports = {
 			});
 	}),
 	HandleArtistRequestById: (id, QueryMode) => new Promise((resolve, reject) => {
+		// TODO QueryMode is useless
 		MopConsole.debug(Location, `Searching for artist with db id ${id} - query mode ${QueryMode}`);
-		Artist.findById(id, async (err, doc) => {
-			let ArtistDoc = doc;
-			if (err) {
-				MopConsole.error(Location, err);
-				reject(err);
-				return;
-			}
-			if (!ArtistDoc) {
-				MopConsole.warn(Location, `Artist id not found ${id}`);
-				resolve({});
-				return;
-			}
-			MopConsole.debug(Location, `Found artist named ${ArtistDoc.Name}`);
-			if (ArtistDoc.DeezerId) {
-				if (QueryMode === 'all') {
-					await CompleteArtist(ArtistDoc);
-					ArtistDoc = await Artist.findById(id);
+		Artist.findById(id)
+			.populate({
+				path: 'AlbumsId',
+				populate: {
+					path: 'MusicsId',
+					model: 'Music',
+				},
+			})
+			.exec(async (err, doc) => {
+				let ArtistDoc = doc;
+				if (err) {
+					MopConsole.error(Location, err);
+					reject(err);
+					return;
 				}
-				if (!ArtistDoc.ImagePath) {
-					ArtistDoc.ImagePath = await GetImageOfArtist(ArtistDoc.DeezerId);
-					ArtistDoc.save();
+				if (!ArtistDoc) {
+					MopConsole.warn(Location, `Artist id not found ${id}`);
+					resolve({});
+					return;
 				}
-			}
-			resolve(ArtistDoc);
-		});
+				MopConsole.debug(Location, `Found artist named ${ArtistDoc.Name}`);
+				if (ArtistDoc.DeezerId) {
+					if (QueryMode === 'all') {
+						await CompleteArtist(ArtistDoc);
+						ArtistDoc = await Artist.findById(id).populate({
+							path: 'AlbumsId',
+							populate: {
+								path: 'MusicsId',
+								model: 'Music',
+							},
+						});
+					}
+					if (!ArtistDoc.ImagePath) {
+						ArtistDoc.ImagePath = await GetImageOfArtist(ArtistDoc.DeezerId);
+						ArtistDoc.save();
+					}
+				}
+				resolve(ArtistDoc);
+			});
 	}),
 
 	HandlePlaylistRequestById: (id) => new Promise((resolve, reject) => {

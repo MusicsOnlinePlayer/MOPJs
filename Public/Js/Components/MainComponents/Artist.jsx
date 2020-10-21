@@ -35,7 +35,7 @@ class Artist extends React.Component {
 	render() {
 		const { ArtistName, AlbumsId } = this.state;
 
-		return <AlbumGroup AlbumIds={AlbumsId} DetailType={ArtistName} />;
+		return <AlbumGroup Albums={AlbumsId} DetailType={ArtistName} />;
 	}
 }
 

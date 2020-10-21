@@ -20,7 +20,7 @@ class SearchPage extends React.Component {
 		this.state = {
 			Musics: [],
 			Albums: [],
-			ArtistIds: [],
+			Artists: [],
 			PlaylistIds: [],
 			IsFetchingMusics: false,
 			IsFetchingAlbums: false,
@@ -66,7 +66,7 @@ class SearchPage extends React.Component {
 							Axios.get(`/Music/Search/Artist/Name/${values.q}`)
 								.then((res3) => {
 									this.setState({
-										ArtistIds: res3.data,
+										Artists: res3.data,
 										IsFetchingArtists: false,
 										IsFetchingPlaylists: true,
 									});
@@ -93,7 +93,7 @@ class SearchPage extends React.Component {
 
 	render() {
 		const {
-			Musics, Albums, ArtistIds, PlaylistIds,
+			Musics, Albums, Artists, PlaylistIds,
 			IsFetchingMusics, IsFetchingAlbums, IsFetchingArtists, IsFetchingPlaylists,
 		} = this.state;
 
@@ -101,7 +101,7 @@ class SearchPage extends React.Component {
 			<div>
 				<MusicGroup Musics={Musics} DetailType="Musics" IsFetching={IsFetchingMusics} />
 				<AlbumGroup Albums={Albums} DetailType="Albums" IsFetching={IsFetchingAlbums} />
-				<ArtistGroup ArtistIds={ArtistIds} DetailType="Artists" IsFetching={IsFetchingArtists} />
+				<ArtistGroup Artists={Artists} DetailType="Artists" IsFetching={IsFetchingArtists} />
 				<UserPlaylistGroup PlaylistsId={PlaylistIds} DetailType="Playlists" IsFetching={IsFetchingPlaylists} />
 			</div>
 		);
