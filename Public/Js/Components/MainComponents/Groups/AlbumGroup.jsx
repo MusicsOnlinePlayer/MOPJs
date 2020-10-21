@@ -5,7 +5,7 @@ import AlbumElement from '../../Elements/AlbumElement';
 
 class AlbumGroup extends React.Component {
 	static propTypes = {
-		AlbumIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+		Albums: PropTypes.arrayOf(PropTypes.any).isRequired,
 		DetailType: PropTypes.string.isRequired,
 		IsFetching: PropTypes.bool,
 	}
@@ -22,10 +22,10 @@ class AlbumGroup extends React.Component {
 	}
 
 	render() {
-		const { AlbumIds, DetailType, IsFetching } = this.props;
+		const { Albums, DetailType, IsFetching } = this.props;
 
-		const AlbumItems = AlbumIds
-			.map((id) => <AlbumElement key={id} id={id} />);
+		const AlbumItems = Albums
+			.map((Album) => <AlbumElement key={Album._id} Album={Album} />);
 
 		// TODO add empty graphic here
 

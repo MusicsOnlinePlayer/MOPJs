@@ -108,7 +108,6 @@ class MusicElementConnected extends React.Component {
 	}
 
 	HandleDeletePlaylistMusic = () => {
-		// TODO incorrect
 		const { ContextPlaylistId, Music, history } = this.props;
 		Axios.delete(`/Music/Playlist/id/${ContextPlaylistId}/Remove/`, {
 			data: { MusicId: Music._id },

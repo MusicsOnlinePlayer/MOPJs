@@ -5,6 +5,7 @@ const { esClient } = require('../../../Model');
 const LogLocation = 'Musics.Proxy.Search.ESProxy.Musics';
 
 const EsMusicSearch = (Query) => new Promise((resolve, reject) => {
+	// TODO Populate query.
 	Music.search(
 		{
 			function_score: {
