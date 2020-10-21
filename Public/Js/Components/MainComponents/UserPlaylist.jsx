@@ -28,7 +28,6 @@ class UserPlaylist extends React.Component {
 		const { match } = this.props;
 
 		Axios.get(`/Music/Playlist/id/${match.params.id}`).then((res) => {
-			console.log(res.data.MusicsId);
 			this.setState({
 				Musics: res.data.MusicsId,
 				PlaylistName: res.data.Name,

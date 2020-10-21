@@ -64,7 +64,7 @@ class PlaylistContainerConnected extends React.Component {
 						</Col>
 					</Row>
 				</small>
-				<table className="table table-hover">
+				<table className="table table-hover table-borderless">
 					<tbody>{PlaylistItems}</tbody>
 				</table>
 			</div>
