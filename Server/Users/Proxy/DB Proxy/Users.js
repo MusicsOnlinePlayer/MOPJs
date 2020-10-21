@@ -96,15 +96,17 @@ function GetPlaylistsIdOfUser(UserId, IncludePrivate) {
 	return new Promise((resolve, reject) => {
 		MopConsole.debug(Location, `Getting playlists created by ${UserId} - include privates : ${IncludePrivate}`);
 		const req = IncludePrivate ? { Creator: UserId } : { Creator: UserId, IsPublic: true };
-		Playlist.find(req, (err, docs) => {
-			if (err) {
-				MopConsole.error(Location, err);
-				reject();
-				return;
-			}
+		Playlist.find(req)
+			.populate({ path: 'MusicsId', populate: { path: 'AlbumId', model: 'Album' } })
+			.exec((err, docs) => {
+				if (err) {
+					MopConsole.error(Location, err);
+					reject();
+					return;
+				}
 
-			resolve(docs.map((music) => music._id));
-		});
+				resolve(docs);
+			});
 	});
 }
 

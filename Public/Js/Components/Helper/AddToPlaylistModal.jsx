@@ -35,18 +35,10 @@ class AddToPlaylistModal extends React.Component {
 			IsLoading: true,
 		});
 		Axios.get('/User/Playlists').then((res) => {
-			const AxiosReqArr = [];
-			res.data.PlaylistsId.forEach((PlaylistId) => {
-				AxiosReqArr.push(Axios.get(`/Music/Playlist/id/${PlaylistId}`));
+			this.setState({
+				UserPlaylists: res.data.PlaylistsId,
+				IsLoading: false,
 			});
-			Axios.all(AxiosReqArr).then(
-				Axios.spread((...responses) => {
-					this.setState({
-						UserPlaylists: responses.map((resEl) => resEl.data),
-						IsLoading: false,
-					});
-				}),
-			);
 		});
 	};
 
