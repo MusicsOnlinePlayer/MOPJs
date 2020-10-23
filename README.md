@@ -100,7 +100,7 @@ npm run-script BuildClientProd
 node index.js
 ```
 And congratulation your mop instance is running ! 
-The web app is accesible at `localhost`, the port is specified in the config file.
+The web app is accessible at `localhost`, the port is specified in the config file.
 
 ## Acknowledgments
 Thanks @An0nimia for providing the python deezer API, see [here](https://github.com/An0nimia/deezloader).
