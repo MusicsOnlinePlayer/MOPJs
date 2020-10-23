@@ -10,3 +10,4 @@ Server/Config/MopConf.json
 /MusicsFolderProd/**
 /MusicsFolder/**
 /coverage/**
+.env

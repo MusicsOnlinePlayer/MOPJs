@@ -1,9 +1,11 @@
 {
-    "DeezerArlToken" : "mytoken",
-    "EsHost" : "http://localhost:9200",
-    "MongoUrl" : "mongodb://localhost:27017/MOP",
+    "EsHost" : "http://elasticsearch:9200",
+    "MongoUrl" : "mongodb://mongodb:27017/MOP",
     "EnableMongoAuth": false,
-    "MinLogLevel": 0,
-    "MopPort": 8080,
-    "UseFluentdLogging": true
+    "MinLogLevel": -2,
+    "MopPort": 80,
+    "EnsureAuth": false,
+    "UseFluentdLogging": false,
+    "DisableDeezerClient": false,
+    "UseMongoSearchIndex": true
 }

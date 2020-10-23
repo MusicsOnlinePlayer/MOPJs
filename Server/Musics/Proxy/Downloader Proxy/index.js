@@ -2,7 +2,6 @@ const { PythonShell } = require('python-shell');
 const queue = require('queue');
 const fs = require('fs');
 const path = require('path');
-const { DeezerArlToken } = require('../../../Config/MopConf.json');
 const { MusicsFolder } = require('../../Config');
 const MopConsole = require('../../../Tools/MopConsole');
 const { Music } = require('../../Model');
@@ -103,7 +102,7 @@ class DzDownloader {
 	}
 }
 
-const Downloader = CheckIfDeezerReqAreAllowed() ? () => {} : new DzDownloader(DeezerArlToken);
+const Downloader = CheckIfDeezerReqAreAllowed() ? () => {} : new DzDownloader(process.env.MOP_DEEZER_ARL);
 
 module.exports = {
 	Downloader,

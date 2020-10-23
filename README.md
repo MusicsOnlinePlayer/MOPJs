@@ -38,6 +38,28 @@ Before installing MOPJs, it is needed to have the following software (which are 
 Installs of each softwares are pretty much straightforward but if you run into an issue, feel free to open an issue on this repo.
 
 ## Installation
+### Using docker (Linux, Mac, Windows 10) - Without elasticsearch
+First make sure you have Docker installed as well as docker compose.
+Then clone the repo on your computer.
+``` bash
+git clone https://github.com/MusicsOnlinePlayer/MOPJs.git
+cd MOPJs
+```
+Before running the app you need to add an `.env` file at the root of the project with your deezer token.
+``` env
+MOP_DEEZER_ARL=<YOUR DEEZER ARL TOKEN>
+```
+
+Then to start the app you need to type the following
+
+```bash
+docker-compose up
+```
+
+Mop is available on `localhost`
+
+### Using npm
+
 Thanks to the npm packager the installation process is fairly easy.
 Start by cloning the repo on your computer.
 ``` bash
@@ -56,7 +78,6 @@ Before starting the node app, you need to edit the config file located here `./S
 Here is an example for a classical install with elasticsearch and mongodb and everything on the same computer.
 ``` json
 {
-    "DeezerArlToken" : "mytoken",
     "EsHost" : "http://localhost:9200",
     "MongoUrl" : "mongodb://localhost:27017/MOP",
     "EnableMongoAuth": false,
@@ -67,6 +88,12 @@ Here is an example for a classical install with elasticsearch and mongodb and ev
     "UseMongoSearchIndex": false
 }
 ```
+Also, you need to set Deezer Arl Token (optional) to be able to download deezer musics. To do that, you need to add a file called `.env` at the root of the project.
+
+``` env
+MOP_DEEZER_ARL=<YOUR DEEZER ARL TOKEN>
+```
+
 Finally you can run the app (by the way, it is recommended to use pm2 for production use)
 ``` bash
 npm run-script BuildClientProd
