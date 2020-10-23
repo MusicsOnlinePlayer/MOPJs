@@ -38,7 +38,6 @@ class UserPlaylistElementConnected extends React.Component {
 		AddMusics: PropTypes.func.isRequired,
 	}
 
-	// TODO Add react viz for progressive loading
 	constructor(props) {
 		super(props);
 		this.state = {

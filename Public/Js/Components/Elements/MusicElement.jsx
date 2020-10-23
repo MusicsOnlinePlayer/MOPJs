@@ -26,7 +26,6 @@ const mapStateToProps = (state) => {
 };
 
 class MusicElementConnected extends React.Component {
-	// TODO Add react viz for progressive loading
 	static propTypes = {
 		history: PropTypes.shape({ go: PropTypes.func }).isRequired,
 		ChangePlayingMusic: PropTypes.func.isRequired,
@@ -119,7 +118,6 @@ class MusicElementConnected extends React.Component {
 		const { ContextType, Music, LikedMusics } = this.props;
 		const isAvailable = Music.FilePath !== undefined;
 
-		// TODO not working
 		const LikeButtonAccessory = (
 			<td className="align-middle">
 				{
