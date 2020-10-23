@@ -1,0 +1,48 @@
+version: "3.8"
+services:
+  web:
+    build: .
+    depends_on: 
+        elasticsearch:
+            condition: service_started
+        mongodb:
+            condition: service_started
+    networks:
+      - front-network
+      - back-network
+    ports:
+      - "80:80"
+  mongodb:
+    ports: 
+      - "27017:27017"
+    image: "mongo:latest"
+    networks:
+      - back-network
+    volumes:
+      - data_mongodb:/data/db
+  elasticsearch:
+    ports:
+      - "9200:9200"
+    image: "elasticsearch:7.9.2"
+    networks:
+      - back-network
+    volumes:
+      - data_elasticsearch:/usr/share/elasticsearch/data
+    environment:
+      - node.name=mopjs-es
+      - cluster.name=mopjs-es-cluster
+      - discovery.zen.ping.multicast.enabled=false
+      - node.local=true
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+networks: 
+  front-network:
+    driver: bridge
+  back-network:
+    driver: bridge
+
+volumes:
+  data_mongodb:
+    driver: local
+  data_elasticsearch:
+    driver: local
