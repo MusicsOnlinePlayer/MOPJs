@@ -20,14 +20,27 @@ const mapDispatchToProps = (dispatch) => ({
 	},
 });
 
+const mapStateToProps = (state) => {
+	const { UserAccountReducer } = state;
+	return { LikedMusics: UserAccountReducer.Account.LikedMusics };
+};
+
 class MusicElementConnected extends React.Component {
-	// TODO Add react viz for progressive loading
 	static propTypes = {
 		history: PropTypes.shape({ go: PropTypes.func }).isRequired,
 		ChangePlayingMusic: PropTypes.func.isRequired,
 		AddMusic: PropTypes.func.isRequired,
-		id: PropTypes.string.isRequired,
-		onDataReceived: PropTypes.func,
+		Music: PropTypes.shape({
+			_id: PropTypes.string.isRequired,
+			Title: PropTypes.string.isRequired,
+			Artist: PropTypes.string.isRequired,
+			FilePath: PropTypes.string,
+			AlbumId: PropTypes.shape({
+				Image: PropTypes.string,
+				ImagePathDeezer: PropTypes.string,
+			}),
+		}).isRequired,
+		LikedMusics: PropTypes.arrayOf(PropTypes.string).isRequired,
 		ContextType: PropTypes.string.isRequired,
 		ContextPlaylistId: PropTypes.string,
 	}
@@ -36,38 +49,31 @@ class MusicElementConnected extends React.Component {
 		ContextPlaylistId: undefined,
 	}
 
-	static defaultProps = {
-		onDataReceived: () => { },
-	}
-
 	constructor(props) {
 		super(props);
 		this.state = {
-			ApiResult: '',
 			ShowAddToPlaylistModal: false,
 			ShowAddToNewPlaylistModal: false,
 		};
 	}
 
 	onClick = () => {
-		const { ApiResult } = this.state;
-		const { ChangePlayingMusic } = this.props;
+		const { ChangePlayingMusic, Music } = this.props;
 
-		ChangePlayingMusic(ApiResult);
+		ChangePlayingMusic(Music);
 	};
 
 
 	HandleAdd = () => {
-		const { ApiResult } = this.state;
-		const { AddMusic } = this.props;
+		const { AddMusic, Music } = this.props;
 
-		AddMusic(ApiResult);
+		AddMusic(Music);
 	};
 
 	HandleLike = () => {
-		const { id } = this.props;
+		const { Music } = this.props;
 
-		Axios.get(`/Music/Music/Like/${id}`).then(() => {});
+		Axios.get(`/Music/Music/Like/${Music._id}`).then(() => {});
 	}
 
 	componentWillUnmount = () => {
@@ -75,17 +81,6 @@ class MusicElementConnected extends React.Component {
 
 		};
 	}
-
-	componentDidMount = () => {
-		const { id, onDataReceived } = this.props;
-
-		Axios.get(`/Music/Music/id/${id}`).then((res) => {
-			this.setState({
-				ApiResult: res.data,
-			});
-			onDataReceived(res.data);
-		});
-	};
 
 	ShowAddToPlaylistModal = () => {
 		this.setState({
@@ -112,25 +107,25 @@ class MusicElementConnected extends React.Component {
 	}
 
 	HandleDeletePlaylistMusic = () => {
-		const { ContextPlaylistId, id, history } = this.props;
+		const { ContextPlaylistId, Music, history } = this.props;
 		Axios.delete(`/Music/Playlist/id/${ContextPlaylistId}/Remove/`, {
-			data: { MusicId: id },
+			data: { MusicId: Music._id },
 		}).then(() => history.go(0));
 	}
 
 	render() {
-		const { ApiResult, ShowAddToPlaylistModal, ShowAddToNewPlaylistModal } = this.state;
-		const { ContextType, id } = this.props;
-		const isAvailable = ApiResult ? ApiResult.FilePath !== undefined : true;
+		const { ShowAddToPlaylistModal, ShowAddToNewPlaylistModal } = this.state;
+		const { ContextType, Music, LikedMusics } = this.props;
+		const isAvailable = Music.FilePath !== undefined;
 
 		const LikeButtonAccessory = (
 			<td className="align-middle">
 				{
-					ApiResult
+					Music
 						? (
 							<LikeButton
 								onLike={this.HandleLike}
-								defaultLikeState={ApiResult ? ApiResult.IsLiked : undefined}
+								defaultLikeState={LikedMusics.includes(Music._id)}
 							/>
 						)
 						: undefined
@@ -143,15 +138,20 @@ class MusicElementConnected extends React.Component {
 		return (
 			<>
 				{ShowAddToPlaylistModal
-					&& <AddToPlaylistModal Music={ApiResult} OnClose={this.CloseAddToPlaylistModal} />}
+					&& <AddToPlaylistModal Music={Music} OnClose={this.CloseAddToPlaylistModal} />}
 				{ShowAddToNewPlaylistModal
-					&& <PlaylistCreateModal MusicsId={[id]} OnClose={this.CloseAddToNewPlaylistModal} />}
+					&& (
+						<PlaylistCreateModal
+							MusicsId={[Music._id]}
+							OnClose={this.CloseAddToNewPlaylistModal}
+						/>
+					)}
 
 				<MusicItemRow
-					Image={ApiResult ? ApiResult.Image : undefined}
-					ImageDz={ApiResult ? ApiResult.ImagePathDeezer : undefined}
-					Title={ApiResult ? ApiResult.Title : 'Loading...'}
-					Artist={ApiResult ? ApiResult.Artist : 'Loading...'}
+					Image={Music.AlbumId ? Music.AlbumId.Image : undefined}
+					ImageDz={Music.AlbumId ? Music.AlbumId.ImagePathDeezer : undefined}
+					Title={Music.Title}
+					Artist={Music.Artist}
 					onClick={this.onClick}
 					isAvailable={isAvailable}
 					AccessoryRight={LikeButtonAccessory}
@@ -178,6 +178,6 @@ class MusicElementConnected extends React.Component {
 	}
 }
 
-const MusicElement = connect(null, mapDispatchToProps)(MusicElementConnected);
+const MusicElement = connect(mapStateToProps, mapDispatchToProps)(MusicElementConnected);
 
 export default withRouter(MusicElement);

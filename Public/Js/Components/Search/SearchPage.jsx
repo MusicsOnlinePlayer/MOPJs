@@ -18,10 +18,10 @@ class SearchPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			MusicIds: [],
-			AlbumIds: [],
-			ArtistIds: [],
-			PlaylistIds: [],
+			Musics: [],
+			Albums: [],
+			Artists: [],
+			Playlists: [],
 			IsFetchingMusics: false,
 			IsFetchingAlbums: false,
 			IsFetchingArtists: false,
@@ -55,25 +55,25 @@ class SearchPage extends React.Component {
 			// TODO refactor by using parallel tasks
 			Axios.get(`/Music/Search/Music/Name/${values.q}`)
 				.then((res) => {
-					this.setState({ MusicIds: res.data, IsFetchingMusics: false, IsFetchingAlbums: true });
+					this.setState({ Musics: res.data, IsFetchingMusics: false, IsFetchingAlbums: true });
 					Axios.get(`/Music/Search/Album/Name/${values.q}`)
 						.then((res2) => {
 							this.setState({
-								AlbumIds: res2.data,
+								Albums: res2.data,
 								IsFetchingAlbums: false,
 								IsFetchingArtists: true,
 							});
 							Axios.get(`/Music/Search/Artist/Name/${values.q}`)
 								.then((res3) => {
 									this.setState({
-										ArtistIds: res3.data,
+										Artists: res3.data,
 										IsFetchingArtists: false,
 										IsFetchingPlaylists: true,
 									});
 									Axios.get(`/Music/Search/Playlist/Name/${values.q}`)
 										.then((res4) => {
 											this.setState({
-												PlaylistIds: res4.data,
+												Playlists: res4.data,
 												IsFetchingPlaylists: false,
 											});
 										});
@@ -93,16 +93,16 @@ class SearchPage extends React.Component {
 
 	render() {
 		const {
-			MusicIds, AlbumIds, ArtistIds, PlaylistIds,
+			Musics, Albums, Artists, Playlists,
 			IsFetchingMusics, IsFetchingAlbums, IsFetchingArtists, IsFetchingPlaylists,
 		} = this.state;
 
 		return (
 			<div>
-				<MusicGroup MusicIds={MusicIds} DetailType="Musics" IsFetching={IsFetchingMusics} />
-				<AlbumGroup AlbumIds={AlbumIds} DetailType="Albums" IsFetching={IsFetchingAlbums} />
-				<ArtistGroup ArtistIds={ArtistIds} DetailType="Artists" IsFetching={IsFetchingArtists} />
-				<UserPlaylistGroup PlaylistsId={PlaylistIds} DetailType="Playlists" IsFetching={IsFetchingPlaylists} />
+				<MusicGroup Musics={Musics} DetailType="Musics" IsFetching={IsFetchingMusics} />
+				<AlbumGroup Albums={Albums} DetailType="Albums" IsFetching={IsFetchingAlbums} />
+				<ArtistGroup Artists={Artists} DetailType="Artists" IsFetching={IsFetchingArtists} />
+				<UserPlaylistGroup Playlists={Playlists} DetailType="Playlists" IsFetching={IsFetchingPlaylists} />
 			</div>
 		);
 	}

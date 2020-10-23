@@ -70,7 +70,7 @@ module.exports = {
 	HandleAlbumRequestById: (id, QueryMode) => new Promise((resolve, reject) => {
 		MopConsole.debug(Location, `Searching for album with db id ${id} - query mode ${QueryMode}`);
 		Album.findById(id)
-			.populate({ path: 'MusicsId', options: { sort: { TrackNumber: 1 } }, select: 'TrackNumber _id' })
+			.populate({ path: 'MusicsId', options: { sort: { TrackNumber: 1 } } })
 			.exec(async (err, doc) => {
 				if (err) {
 					MopConsole.error('Action.Album', err);
@@ -84,7 +84,6 @@ module.exports = {
 				}
 				let AlbumDoc = doc.toObject();
 				MopConsole.debug(Location, `Found album named ${AlbumDoc.Name}`);
-				AlbumDoc.MusicsId = AlbumDoc.MusicsId.map((obj) => obj._id);
 				if (AlbumDoc.DeezerId) {
 					if (!AlbumDoc.IsComplete && QueryMode === 'all') {
 						MopConsole.debug(Location, `It is an incomplete deezer album, requesting all musics of the album (query mode: ${QueryMode} )`);
@@ -92,49 +91,70 @@ module.exports = {
 						await CompleteAlbum(AlbumDoc);
 
 						const newAlbum = await Album.findById(id);
-						await newAlbum.populate({ path: 'MusicsId', options: { sort: { TrackNumber: 1 } }, select: 'TrackNumber _id' })
+						await newAlbum.populate({ path: 'MusicsId', options: { sort: { TrackNumber: 1 } } })
 							.execPopulate();
 
 						AlbumDoc = await newAlbum.toObject();
-						AlbumDoc.MusicsId = AlbumDoc.MusicsId.map((obj) => obj._id);
 					}
 				}
 				resolve(AlbumDoc);
 			});
 	}),
 	HandleArtistRequestById: (id, QueryMode) => new Promise((resolve, reject) => {
+		// TODO QueryMode is useless
 		MopConsole.debug(Location, `Searching for artist with db id ${id} - query mode ${QueryMode}`);
-		Artist.findById(id, async (err, doc) => {
-			let ArtistDoc = doc;
-			if (err) {
-				MopConsole.error(Location, err);
-				reject(err);
-				return;
-			}
-			if (!ArtistDoc) {
-				MopConsole.warn(Location, `Artist id not found ${id}`);
-				resolve({});
-				return;
-			}
-			MopConsole.debug(Location, `Found artist named ${ArtistDoc.Name}`);
-			if (ArtistDoc.DeezerId) {
-				if (QueryMode === 'all') {
-					await CompleteArtist(ArtistDoc);
-					ArtistDoc = await Artist.findById(id);
+		Artist.findById(id)
+			.populate({
+				path: 'AlbumsId',
+				populate: {
+					path: 'MusicsId',
+					model: 'Music',
+				},
+			})
+			.exec(async (err, doc) => {
+				let ArtistDoc = doc;
+				if (err) {
+					MopConsole.error(Location, err);
+					reject(err);
+					return;
 				}
-				if (!ArtistDoc.ImagePath) {
-					ArtistDoc.ImagePath = await GetImageOfArtist(ArtistDoc.DeezerId);
-					ArtistDoc.save();
+				if (!ArtistDoc) {
+					MopConsole.warn(Location, `Artist id not found ${id}`);
+					resolve({});
+					return;
 				}
-			}
-			resolve(ArtistDoc);
-		});
+				MopConsole.debug(Location, `Found artist named ${ArtistDoc.Name}`);
+				if (ArtistDoc.DeezerId) {
+					if (QueryMode === 'all') {
+						await CompleteArtist(ArtistDoc);
+						ArtistDoc = await Artist.findById(id).populate({
+							path: 'AlbumsId',
+							populate: {
+								path: 'MusicsId',
+								model: 'Music',
+							},
+						});
+					}
+					if (!ArtistDoc.ImagePath) {
+						ArtistDoc.ImagePath = await GetImageOfArtist(ArtistDoc.DeezerId);
+						ArtistDoc.save();
+					}
+				}
+				resolve(ArtistDoc);
+			});
 	}),
 
 	HandlePlaylistRequestById: (id) => new Promise((resolve, reject) => {
 		MopConsole.debug(Location, `Searching for playlist with db id ${id}`);
 		Playlist.findById(id)
-			.populate('Creator MusicsId')
+			.populate('Creator')
+			.populate({
+				path: 'MusicsId',
+				populate: [{
+					path: 'AlbumId',
+					model: 'Album',
+				}],
+			})
 			.exec(
 				async (err, doc) => {
 					if (err) {
@@ -149,11 +169,9 @@ module.exports = {
 
 					const PlaylistDoc = doc.toObject();
 
-					const AlbumOfMusic = await FindAlbumContainingMusic(PlaylistDoc.MusicsId[0]);
-
-					PlaylistDoc.Image = AlbumOfMusic.Image;
-					PlaylistDoc.ImagePathDeezer = AlbumOfMusic.ImagePathDeezer;
-					PlaylistDoc.ImageFormat = AlbumOfMusic.ImageFormat;
+					PlaylistDoc.Image = PlaylistDoc.MusicsId[0].AlbumId.Image;
+					PlaylistDoc.ImagePathDeezer = PlaylistDoc.MusicsId[0].AlbumId.ImagePathDeezer;
+					PlaylistDoc.ImageFormat = PlaylistDoc.MusicsId[0].AlbumId.ImageFormat;
 
 					resolve(PlaylistDoc);
 				},

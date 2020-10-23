@@ -16,7 +16,7 @@ class UserPlaylist extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			MusicsId: undefined,
+			Musics: undefined,
 			PlaylistName: '',
 			PlaylistId: '',
 			CreatorName: '',
@@ -29,7 +29,7 @@ class UserPlaylist extends React.Component {
 
 		Axios.get(`/Music/Playlist/id/${match.params.id}`).then((res) => {
 			this.setState({
-				MusicsId: res.data.MusicsId.map((music) => music._id),
+				Musics: res.data.MusicsId,
 				PlaylistName: res.data.Name,
 				PlaylistId: res.data._id,
 				CreatorName: res.data.Creator.username,
@@ -40,17 +40,17 @@ class UserPlaylist extends React.Component {
 
 	render() {
 		const {
-			MusicsId,
+			Musics,
 			PlaylistName,
 			CreatorName,
 			OwnPlaylist,
 			PlaylistId,
 		} = this.state;
 
-		if (MusicsId) {
+		if (Musics) {
 			return (
 				<MusicGroup
-					MusicIds={MusicsId}
+					Musics={Musics}
 					DetailType={`${PlaylistName} by ${CreatorName}`}
 					ContextType={OwnPlaylist ? OWN_PLAYLIST_CONTEXT : PLAYLIST_CONTEXT}
 					ContextPlaylistId={PlaylistId}

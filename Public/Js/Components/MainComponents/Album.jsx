@@ -16,7 +16,9 @@ class Album extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			MusicIds: undefined,
+			Musics: undefined,
+			AlbumImage: undefined,
+			AlbumImageDz: undefined,
 			AlbumName: '',
 		};
 	}
@@ -26,17 +28,29 @@ class Album extends React.Component {
 
 		Axios.get(`/Music/Album/id/${match.params.id}?mode=all`).then((res) => {
 			this.setState({
-				MusicIds: res.data.MusicsId,
+				Musics: res.data.MusicsId,
+				AlbumImage: res.data.Image,
+				AlbumImageDz: res.data.ImagePathDeezer,
 				AlbumName: res.data.Name,
 			});
 		});
 	};
 
 	render() {
-		const { MusicIds, AlbumName } = this.state;
+		const {
+			Musics, AlbumName, AlbumImage, AlbumImageDz,
+		} = this.state;
 
-		if (MusicIds) {
-			return <MusicGroup MusicIds={MusicIds} DetailType={AlbumName} ContextType={ALBUM_CONTEXT} />;
+		if (Musics) {
+			return (
+				<MusicGroup
+					CommonImage={AlbumImage}
+					CommonImageDz={AlbumImageDz}
+					Musics={Musics}
+					DetailType={AlbumName}
+					ContextType={ALBUM_CONTEXT}
+				/>
+			);
 		}
 
 		return <></>;

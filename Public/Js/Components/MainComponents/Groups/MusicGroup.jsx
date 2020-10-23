@@ -20,54 +20,58 @@ class MusicGroupConnected extends React.Component {
 	static propTypes = {
 		ClearPlaylist: PropTypes.func.isRequired,
 		AddMusics: PropTypes.func.isRequired,
-		MusicIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+		Musics: PropTypes.arrayOf(PropTypes.any).isRequired,
 		DetailType: PropTypes.string.isRequired,
 		IsFetching: PropTypes.bool,
 		ContextType: PropTypes.string.isRequired,
 		ContextPlaylistId: PropTypes.string,
+		CommonImage: PropTypes.string,
+		CommonImageDz: PropTypes.string,
 	}
 
 	static defaultProps = {
 		IsFetching: false,
 		ContextPlaylistId: undefined,
+		CommonImage: undefined,
+		CommonImageDz: undefined,
 	}
-
-	constructor(props) {
-		super(props);
-		this.state = {
-			Musics: [],
-		};
-	}
-
-	onDataReceived = (Music) => {
-		this.setState((prev) => ({
-			Musics: [...prev.Musics, Music],
-		}));
-	};
 
 	onPlayAll = () => {
-		const { ClearPlaylist, AddMusics } = this.props;
-		const { Musics } = this.state;
-
+		const { ClearPlaylist, AddMusics, Musics } = this.props;
 		ClearPlaylist();
-		AddMusics([...Musics].sort((a, b) => a.TrackNumber - b.TrackNumber));
+		AddMusics(Musics);
 	};
 
 	render() {
 		const {
-			MusicIds, DetailType, IsFetching, ContextType, ContextPlaylistId,
+			Musics,
+			DetailType,
+			IsFetching,
+			ContextType,
+			ContextPlaylistId,
+			CommonImage,
+			CommonImageDz,
 		} = this.props;
 
-		const MusicItems = MusicIds
-			.map((id) => (
-				<MusicElement
-					key={id}
-					id={id}
-					onDataReceived={this.onDataReceived}
-					ContextType={ContextType}
-					ContextPlaylistId={ContextPlaylistId}
-				/>
-			));
+		const MusicItems = Musics
+			.map((m) => {
+				const Music = m;
+				if (CommonImage || CommonImageDz) {
+					Music.AlbumId = {
+						Image: CommonImage,
+						ImagePathDeezer: CommonImageDz,
+					};
+				}
+
+				return (
+					<MusicElement
+						key={Music._id}
+						Music={Music}
+						ContextType={ContextType}
+						ContextPlaylistId={ContextPlaylistId}
+					/>
+				);
+			});
 
 		// TODO add empty graphic here
 

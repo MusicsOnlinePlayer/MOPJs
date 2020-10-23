@@ -17,25 +17,30 @@ class UserPlaylists extends React.Component {
 		super(props);
 		this.state = {
 			CreatorName: '',
-			PlaylistsId: [],
+			IsFetching: false,
+			Playlists: [],
 		};
 	}
 
 	componentDidMount = () => {
 		const { match } = this.props;
+		this.setState({
+			IsFetching: true,
+		});
 		Axios.get(`/User/${match.params.id}/Playlists`).then((res) => {
 			this.setState({
 				CreatorName: res.data.Creator.username,
-				PlaylistsId: res.data.PlaylistsId,
+				Playlists: res.data.PlaylistsId,
+				IsFetching: false,
 			});
 		});
 	}
 
 
 	render() {
-		const { CreatorName, PlaylistsId } = this.state;
+		const { CreatorName, Playlists, IsFetching } = this.state;
 
-		return <UserPlaylistGroup PlaylistsId={PlaylistsId} DetailType={`Playlists of ${CreatorName}`} />;
+		return <UserPlaylistGroup Playlists={Playlists} DetailType={`Playlists of ${CreatorName}`} IsFetching={IsFetching} />;
 	}
 }
 

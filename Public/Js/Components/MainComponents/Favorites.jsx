@@ -18,7 +18,7 @@ class Favorites extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			MusicIds: undefined,
+			Musics: undefined,
 		};
 	}
 
@@ -29,16 +29,16 @@ class Favorites extends React.Component {
 			const MusicArray = Reverse ? res.data.MusicsId.reverse() : res.data.MusicsId;
 
 			this.setState({
-				MusicIds: MusicArray.slice(0, Size),
+				Musics: MusicArray.slice(0, Size),
 			});
 		});
 	}
 
 	render() {
-		const { MusicIds } = this.state;
+		const { Musics } = this.state;
 
-		if (MusicIds) {
-			return <MusicGroup MusicIds={MusicIds} DetailType="Favorites" ContextType={FAV_CONTEXT} />;
+		if (Musics) {
+			return <MusicGroup Musics={Musics} DetailType="Favorites" ContextType={FAV_CONTEXT} />;
 		}
 
 		return <></>;

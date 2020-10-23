@@ -47,11 +47,13 @@ class PlayerConnected extends React.Component {
 		PlayingMusic: PropTypes.shape({
 			_id: PropTypes.string.isRequired,
 			Title: PropTypes.string.isRequired,
-			Image: PropTypes.string,
 			Album: PropTypes.string.isRequired,
 			Artist: PropTypes.string.isRequired,
 			FilePath: PropTypes.string.isRequired,
-			ImagePathDeezer: PropTypes.string,
+			AlbumId: PropTypes.shape({
+				Image: PropTypes.string,
+				ImagePathDeezer: PropTypes.string,
+			}).isRequired,
 		}),
 		NextMusic: PropTypes.shape({
 			Title: PropTypes.string.isRequired,
@@ -181,9 +183,22 @@ class PlayerConnected extends React.Component {
 					<Navbar fixed="bottom" className="px-2 mh-50 pt-0">
 						<div id="Player" className="d-flex flex-column w-100 overflow-auto">
 							<Row className="w-100 mx-0 py-0">
-								<PlayerSlider Time={this.player ? this.player.currentTime : 0} EndTime={this.GetSliderMaxValue()} OnSliderChange={this.HandleSliderChange} />
-								{PlayingMusic.ImagePathDeezer ? <Image className="PlayerImage my-auto" rounded height="75em" src={PlayingMusic.ImagePathDeezer} />
-									: <Image className="PlayerImage my-auto" rounded height="75em" src={PlayingMusic.Image ? `data:image/jpeg;base64,${PlayingMusic.Image.toString('base64')}` : '/Ressources/noMusic.jpg'} />}
+								<PlayerSlider
+									Time={this.player ? this.player.currentTime : 0}
+									EndTime={this.GetSliderMaxValue()}
+									OnSliderChange={this.HandleSliderChange}
+								/>
+								{PlayingMusic.AlbumId.ImagePathDeezer
+									? <Image className="PlayerImage my-auto" rounded height="75em" src={PlayingMusic.AlbumId.ImagePathDeezer} />
+									: (
+										<Image
+											className="PlayerImage my-auto"
+											rounded
+											height="75em"
+											src={PlayingMusic.AlbumId.Image
+												? `data:image/jpeg;base64,${PlayingMusic.AlbumId.Image.toString('base64')}` : '/Ressources/noMusic.jpg'}
+										/>
+									)}
 
 								<Col className="my-1 mt-0 col-md-auto  text-truncate" onClick={this.HandleOpenPlaylist}>
 									<h6>{PlayingMusic.Title}</h6>

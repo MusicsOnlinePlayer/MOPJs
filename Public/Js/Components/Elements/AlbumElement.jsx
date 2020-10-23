@@ -1,42 +1,43 @@
 import React from 'react';
-import Axios from 'axios';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import LazyLoad from 'react-lazyload';
 import { withRouter } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 import AlbumItemCard from '../Items/AlbumItemCard';
+import { AddMultipleMusics, ClearPlaylist as ClearPlaylistRedux } from '../../Actions/Action';
 
+const mapDispatchToProps = (dispatch) => ({
+	ClearPlaylist: () => {
+		dispatch(ClearPlaylistRedux());
+	},
+	AddMusics: (Musics) => {
+		dispatch(AddMultipleMusics(Musics));
+	},
+});
 
-class AlbumElement extends React.Component {
+class AlbumElementConnected extends React.Component {
 	static propTypes = {
 		history: PropTypes.shape({
 			push: PropTypes.func.isRequired,
 		}).isRequired,
-		id: PropTypes.string.isRequired,
-	}
-
-	// TODO Add react viz for progressive loading
-	constructor(props) {
-		super(props);
-		this.state = {
-			ApiResult: '',
-		};
+		Album: PropTypes.shape({
+			_id: PropTypes.string,
+			Name: PropTypes.string,
+			Image: PropTypes.string,
+			ImageFormat: PropTypes.string,
+			ImagePathDeezer: PropTypes.string,
+			MusicsId: PropTypes.arrayOf(PropTypes.any),
+		}).isRequired,
+		ClearPlaylist: PropTypes.func.isRequired,
+		AddMusics: PropTypes.func.isRequired,
 	}
 
 	onClick = () => {
-		const { ApiResult } = this.state;
-		const { history } = this.props;
-		if (ApiResult) history.push(`/Album/${ApiResult._id}`);
+		const { history, Album } = this.props;
+		history.push(`/Album/${Album._id}`);
 	};
 
-	componentDidMount = () => {
-		const { id } = this.props;
-		Axios.get(`/Music/Album/id/${id}`).then((res) => {
-			this.setState({
-				ApiResult: res.data,
-			});
-		});
-	};
 
 	componentWillUnmount = () => {
 		this.setState = () => {
@@ -44,30 +45,51 @@ class AlbumElement extends React.Component {
 		};
 	}
 
+	GetAlbumMusics = () => {
+		const { Album } = this.props;
+		const { MusicsId } = Album;
+
+		MusicsId.forEach((value, index, arr) => {
+			/* eslint no-param-reassign: "off" */
+			arr[index].AlbumId = Album;
+		}, MusicsId);
+
+		return MusicsId;
+	}
+
+	OnAdd = () => {
+		const { AddMusics } = this.props;
+		AddMusics(this.GetAlbumMusics());
+	}
+
+	OnPlay = () => {
+		const { AddMusics, ClearPlaylist } = this.props;
+		ClearPlaylist();
+		AddMusics(this.GetAlbumMusics());
+	}
+
 	render() {
-		const { ApiResult } = this.state;
-		const {
-			Image, Name, ImageFormat, ImagePathDeezer,
-		} = ApiResult;
+		const { Album } = this.props;
+
 		return (
 			<LazyLoad>
 				<AlbumItemCard
-					Image={Image}
-					ImageFormat={ImageFormat}
-					ImageDz={ImagePathDeezer}
-					Name={Name}
+					Image={Album.Image}
+					ImageFormat={Album.ImageFormat}
+					ImageDz={Album.ImagePathDeezer}
+					Name={Album.Name}
 					onClick={this.onClick}
 					MoreOptions
 				>
-					<Dropdown.Item>Play</Dropdown.Item>
-					{/* //TODO Implement this */ }
-					<Dropdown.Item>Add to current playlist</Dropdown.Item>
-					{/* //TODO Implement this */ }
+					<Dropdown.Item onClick={this.OnPlay}>Play</Dropdown.Item>
+					<Dropdown.Item onClick={this.OnAdd}>Add to current playlist</Dropdown.Item>
 				</AlbumItemCard>
 			</LazyLoad>
 
 		);
 	}
 }
+
+const AlbumElement = connect(null, mapDispatchToProps)(AlbumElementConnected);
 
 export default withRouter(AlbumElement);

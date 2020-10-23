@@ -5,7 +5,7 @@ import UserPlaylistElement from '../../Elements/UserPlaylistElement';
 
 class UserPlaylistGroup extends React.Component {
 	static propTypes = {
-		PlaylistsId: PropTypes.arrayOf(PropTypes.string).isRequired,
+		Playlists: PropTypes.arrayOf(PropTypes.any).isRequired,
 		DetailType: PropTypes.string.isRequired,
 		IsFetching: PropTypes.bool,
 	}
@@ -22,10 +22,10 @@ class UserPlaylistGroup extends React.Component {
 	}
 
 	render() {
-		const { PlaylistsId, DetailType, IsFetching } = this.props;
+		const { Playlists, DetailType, IsFetching } = this.props;
 
-		const PlaylistItems = PlaylistsId
-			.map((id) => <UserPlaylistElement key={id} id={id} />);
+		const PlaylistItems = Playlists
+			.map((Playlist) => <UserPlaylistElement key={Playlist._id} Playlist={Playlist} />);
 
 		// TODO add empty graphic here
 
