@@ -31,25 +31,25 @@ const app = module.exports;
 
 app.get('/Search/Music/Name/:name', EnsureAuth, async (req, res) => {
 	await SearchAndAddMusicsDeezer(req.params.name);
-	SearchMusics(req.params.name)
+	SearchMusics(req.params.name, parseInt(req.query.Page, 10), parseInt(req.query.PerPage, 10))
 		.then((searchResult) => res.send(searchResult))
 		.catch(() => res.send({}));
 });
 
 app.get('/Search/Album/Name/:name', EnsureAuth, (req, res) => {
-	SearchAlbums(req.params.name)
+	SearchAlbums(req.params.name, parseInt(req.query.Page, 10), parseInt(req.query.PerPage, 10))
 		.then((searchResult) => res.send(searchResult))
 		.catch(() => res.send({}));
 });
 
 app.get('/Search/Artist/Name/:name', EnsureAuth, (req, res) => {
-	SearchArtists(req.params.name)
+	SearchArtists(req.params.name, parseInt(req.query.Page, 10), parseInt(req.query.PerPage, 10))
 		.then((searchResult) => res.send(searchResult))
 		.catch(() => res.send({}));
 });
 
 app.get('/Search/Playlist/Name/:name', EnsureAuth, (req, res) => {
-	SearchPlaylists(req.params.name)
+	SearchPlaylists(req.params.name, parseInt(req.query.Page, 10), parseInt(req.query.PerPage, 10))
 		.then((searchResult) => res.send(searchResult))
 		.catch(() => res.send({}));
 });

@@ -3,10 +3,11 @@ const MopConsole = require('../../../../Tools/MopConsole');
 
 const LogLocation = 'Musics.Proxy.Search.DBSearch.Albums';
 
-const DBAlbumSearch = (Query) => new Promise((resolve, reject) => {
+const DBAlbumSearch = (Query, Page = 0, PerPage = 8) => new Promise((resolve, reject) => {
 	Album
 		.find({ $text: { $search: Query } })
-		.limit(8)
+		.limit(PerPage)
+		.skip(Page * PerPage)
 		.populate('MusicsId')
 		.exec(
 			(err, result) => {
