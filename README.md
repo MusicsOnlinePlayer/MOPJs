@@ -17,7 +17,7 @@ A few of the things you can accomplish with MOPJs.
  - Access all your music library from the web or your mobile
  - Have an unified music library containing your personal and deezer musics.
  - Like musics, create playlists and access them using your own account
- - Impoer public deezer playlists
+ - Import public deezer playlists
 
 ## Feedbacks
 
