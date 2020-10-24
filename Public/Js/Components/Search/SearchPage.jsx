@@ -6,6 +6,7 @@ import MusicGroup from '../MainComponents/Groups/MusicGroup';
 import AlbumGroup from '../MainComponents/Groups/AlbumGroup';
 import ArtistGroup from '../MainComponents/Groups/ArtistGroup';
 import UserPlaylistGroup from '../MainComponents/Groups/UserPlaylistGroup';
+import { SEARCH_CONTEXT } from '../../Constants/MusicsConstants';
 
 
 class SearchPage extends React.Component {
@@ -99,7 +100,7 @@ class SearchPage extends React.Component {
 
 		return (
 			<div>
-				<MusicGroup Musics={Musics} DetailType="Musics" IsFetching={IsFetchingMusics} />
+				<MusicGroup Musics={Musics} DetailType="Musics" IsFetching={IsFetchingMusics} ContextType={SEARCH_CONTEXT} />
 				<AlbumGroup Albums={Albums} DetailType="Albums" IsFetching={IsFetchingAlbums} />
 				<ArtistGroup Artists={Artists} DetailType="Artists" IsFetching={IsFetchingArtists} />
 				<UserPlaylistGroup Playlists={Playlists} DetailType="Playlists" IsFetching={IsFetchingPlaylists} />
