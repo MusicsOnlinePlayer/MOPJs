@@ -28,12 +28,12 @@ I'm glad you want to support my project. Before you commit a pull request, just 
 
 ## Requirements
 Before installing MOPJs, it is needed to have the following software (which are completely free & open source)
- * Elasticsearch *(v7 at least, optional)* - [Dowload link](https://www.elastic.co/downloads/elasticsearch)
- * MongoDB *(v4 at least)* - [Dowload link](https://www.mongodb.com/try/download/community)
- * Python with pip *(version 3 required)* - [Dowload link](https://www.python.org/downloads/)
- * Nodejs *(8 at least for general use but 10 at least for testing and dev)* - [Dowload link](https://nodejs.org/en/download/)
+ * Elasticsearch *(v7 at least, optional)* - [Download link](https://www.elastic.co/downloads/elasticsearch)
+ * MongoDB *(v4 at least)* - [Download link](https://www.mongodb.com/try/download/community)
+ * Python with pip *(version 3 required)* - [Download link](https://www.python.org/downloads/)
+ * Nodejs *(8 at least for general use but 10 at least for testing and dev)* - [Download link](https://nodejs.org/en/download/)
  * A deezer arl token *(not mendatory)*
- * Fluentd *(optional)* - [Dowload link](https://docs.fluentd.org/installation)
+ * Fluentd *(optional)* - [Download link](https://docs.fluentd.org/installation)
 
 Installs of each softwares are pretty much straightforward but if you run into an issue, feel free to open an issue on this repo.
 
