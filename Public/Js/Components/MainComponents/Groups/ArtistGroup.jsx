@@ -1,5 +1,7 @@
 import React from 'react';
-import { Col, Row, Spinner } from 'react-bootstrap';
+import {
+	Button, Col, Row, Spinner,
+} from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import ArtistElement from '../../Elements/ArtistElement';
 
@@ -8,10 +10,14 @@ class ArtistGroup extends React.Component {
 		Artists: PropTypes.arrayOf(PropTypes.any).isRequired,
 		DetailType: PropTypes.string.isRequired,
 		IsFetching: PropTypes.bool,
+		MoreButton: PropTypes.bool,
+		OnMoreClick: PropTypes.func,
 	}
 
 	static defaultProps = {
 		IsFetching: false,
+		MoreButton: false,
+		OnMoreClick: () => {},
 	}
 
 	constructor(props) {
@@ -22,7 +28,13 @@ class ArtistGroup extends React.Component {
 	}
 
 	render() {
-		const { Artists, DetailType, IsFetching } = this.props;
+		const {
+			Artists,
+			DetailType,
+			IsFetching,
+			MoreButton,
+			OnMoreClick,
+		} = this.props;
 
 		const ArtistItems = Artists
 			.map((Artist) => <ArtistElement key={Artist._id} Artist={Artist} />);
@@ -54,6 +66,11 @@ class ArtistGroup extends React.Component {
 				<div className="card-deck">
 					{ArtistItems}
 				</div>
+				{MoreButton && (
+					<div style={{ textAlign: 'center' }}>
+						<Button onClick={OnMoreClick} variant="outline-dark">More</Button>
+					</div>
+				)}
 			</div>
 		);
 	}

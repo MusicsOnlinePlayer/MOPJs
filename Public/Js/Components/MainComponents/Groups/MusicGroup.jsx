@@ -1,5 +1,7 @@
 import React from 'react';
-import { Col, Row, Spinner } from 'react-bootstrap';
+import {
+	Button, Col, Row, Spinner,
+} from 'react-bootstrap';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -27,6 +29,8 @@ class MusicGroupConnected extends React.Component {
 		ContextPlaylistId: PropTypes.string,
 		CommonImage: PropTypes.string,
 		CommonImageDz: PropTypes.string,
+		MoreButton: PropTypes.bool,
+		OnMoreClick: PropTypes.func,
 	}
 
 	static defaultProps = {
@@ -34,6 +38,8 @@ class MusicGroupConnected extends React.Component {
 		ContextPlaylistId: undefined,
 		CommonImage: undefined,
 		CommonImageDz: undefined,
+		MoreButton: false,
+		OnMoreClick: () => {},
 	}
 
 	onPlayAll = () => {
@@ -51,6 +57,8 @@ class MusicGroupConnected extends React.Component {
 			ContextPlaylistId,
 			CommonImage,
 			CommonImageDz,
+			MoreButton,
+			OnMoreClick,
 		} = this.props;
 
 		const MusicItems = Musics
@@ -103,6 +111,11 @@ class MusicGroupConnected extends React.Component {
 				<table className="table table-hover table-borderless">
 					<tbody>{MusicItems}</tbody>
 				</table>
+				{MoreButton && (
+					<div style={{ textAlign: 'center' }}>
+						<Button onClick={OnMoreClick} variant="outline-dark">More</Button>
+					</div>
+				)}
 			</div>
 		);
 	}

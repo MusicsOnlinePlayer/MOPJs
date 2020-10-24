@@ -1,5 +1,7 @@
 import React from 'react';
-import { Col, Row, Spinner } from 'react-bootstrap';
+import {
+	Button, Col, Row, Spinner,
+} from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import UserPlaylistElement from '../../Elements/UserPlaylistElement';
 
@@ -8,10 +10,14 @@ class UserPlaylistGroup extends React.Component {
 		Playlists: PropTypes.arrayOf(PropTypes.any).isRequired,
 		DetailType: PropTypes.string.isRequired,
 		IsFetching: PropTypes.bool,
+		MoreButton: PropTypes.bool,
+		OnMoreClick: PropTypes.func,
 	}
 
 	static defaultProps = {
 		IsFetching: false,
+		MoreButton: false,
+		OnMoreClick: () => {},
 	}
 
 	constructor(props) {
@@ -22,7 +28,13 @@ class UserPlaylistGroup extends React.Component {
 	}
 
 	render() {
-		const { Playlists, DetailType, IsFetching } = this.props;
+		const {
+			Playlists,
+			DetailType,
+			IsFetching,
+			MoreButton,
+			OnMoreClick,
+		} = this.props;
 
 		const PlaylistItems = Playlists
 			.map((Playlist) => <UserPlaylistElement key={Playlist._id} Playlist={Playlist} />);
@@ -54,6 +66,11 @@ class UserPlaylistGroup extends React.Component {
 				<div className="card-deck">
 					{PlaylistItems}
 				</div>
+				{MoreButton && (
+					<div style={{ textAlign: 'center' }}>
+						<Button onClick={OnMoreClick} variant="outline-dark">More</Button>
+					</div>
+				)}
 			</div>
 		);
 	}
