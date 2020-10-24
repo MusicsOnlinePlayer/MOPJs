@@ -1,3 +1,6 @@
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 process.on('uncaughtException', (exception) => {
 	console.error(exception);
