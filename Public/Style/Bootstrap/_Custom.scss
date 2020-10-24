@@ -41,6 +41,7 @@ $body-bg: $PrimaryColor2;
 $body-color: $white;
 
 // Fonts
+$text-muted: darken($white, 5%);
 
 // stylelint-disable-next-line value-keyword-case
 $font-family-sans-serif: system-ui,

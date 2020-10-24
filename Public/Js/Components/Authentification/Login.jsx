@@ -35,7 +35,7 @@ function LoginConnected({ history, dispatch }) {
 
 	return (
 		<Form className="m-5" onSubmit={handleSubmit(onSubmit)}>
-			<h2 className="text-center text-muted">Login</h2>
+			<h2 className="text-center">Login</h2>
 
 			<Form.Group controlId="formBasicEmail">
 				<Form.Label>Username</Form.Label>

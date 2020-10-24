@@ -33,7 +33,7 @@ function RegisterConnected({ history, dispatch }) {
 
 	return (
 		<Form className="m-5" onSubmit={handleSubmit(onSubmit)}>
-			<h2 className="text-center text-muted">Register</h2>
+			<h2 className="text-center">Register</h2>
 			<Form.Group controlId="formName">
 				<Form.Label>Name</Form.Label>
 				<Form.Control name="name" type="text" placeholder="Enter your name" ref={register({ required: true, maxLength: 20, minLength: 3 })} />
