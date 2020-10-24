@@ -35,7 +35,7 @@ describe('DB Proxy for user should work properly', () => {
 
 		const LikedMusics = await GetLikedMusicsOfUser(u._id);
 
-		expect(LikedMusics).toEqual([m._id]);
+		expect(LikedMusics).toContainObject({ _id: m._id });
 	});
 
 	it('Should get viewed musics of an user', async () => {
@@ -53,7 +53,7 @@ describe('DB Proxy for user should work properly', () => {
 
 		const ViewedMusics = await GetViewedMusicsOfUser(u._id);
 
-		expect(ViewedMusics).toEqual([m._id]);
+		expect(ViewedMusics).toContainObject({ _id: m._id });
 	});
 
 	it('Should check if a music is liked or not', async () => {
@@ -131,7 +131,7 @@ describe('DB Proxy for user should work properly', () => {
 
 		const ViewedMusics = await GetViewedMusicsOfUser(u._id);
 
-		expect(ViewedMusics).toEqual([m._id]);
+		expect(ViewedMusics).toContainObject({ _id: m._id });
 	});
 
 	it('Should get all playlists id of an user', async () => {
@@ -151,7 +151,8 @@ describe('DB Proxy for user should work properly', () => {
 
 		const PlaylistIds = await GetPlaylistsIdOfUser(u._id, true);
 
-		expect(PlaylistIds).toStrictEqual([p1._id, p2._id]);
+		expect(PlaylistIds).toContainObject({ _id: p1._id });
+		expect(PlaylistIds).toContainObject({ _id: p2._id });
 	});
 
 	it('Should get all playlists id of an user and remove private playlists', async () => {
@@ -173,6 +174,6 @@ describe('DB Proxy for user should work properly', () => {
 
 		const PlaylistIds = await GetPlaylistsIdOfUser(u._id, false);
 
-		expect(PlaylistIds).toStrictEqual([p1._id]);
+		expect(PlaylistIds).toContainObject({ _id: p1._id });
 	});
 });

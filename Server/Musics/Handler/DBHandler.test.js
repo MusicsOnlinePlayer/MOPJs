@@ -91,7 +91,7 @@ describe('Musics.Handler.DBHandler should work properly', () => {
 			IsComplete: true,
 			ImagePathDeezer: SampleAlbum.ImagePathDeezer,
 		});
-		expect(FoundAlbum.MusicsId).toContainEqual(m1._id);
+		expect(FoundAlbum.MusicsId).toContainObject({ _id: m1._id });
 	});
 
 	it('Should get an artist by a db id and all his albums', async () => {
@@ -104,7 +104,7 @@ describe('Musics.Handler.DBHandler should work properly', () => {
 
 		const FoundArtist = await HandleArtistRequestById(ar1._id);
 		expect(FoundArtist).toMatchObject({ Name: SampleArtist.Name });
-		expect(FoundArtist.AlbumsId).toContainEqual(a1._id);
+		expect(FoundArtist.AlbumsId).toContainObject({ _id: a1._id });
 	});
 
 	it('should handle a filepath request without a user specified', async () => {
