@@ -28,6 +28,7 @@ class AlbumElementConnected extends React.Component {
 			ImageFormat: PropTypes.string,
 			ImagePathDeezer: PropTypes.string,
 			MusicsId: PropTypes.arrayOf(PropTypes.any),
+			IsComplete: PropTypes.bool,
 		}).isRequired,
 		ClearPlaylist: PropTypes.func.isRequired,
 		AddMusics: PropTypes.func.isRequired,
@@ -78,6 +79,7 @@ class AlbumElementConnected extends React.Component {
 					ImageFormat={Album.ImageFormat}
 					ImageDz={Album.ImagePathDeezer}
 					Name={Album.Name}
+					IsComplete={Album.IsComplete}
 					onClick={this.onClick}
 					MoreOptions
 				>
