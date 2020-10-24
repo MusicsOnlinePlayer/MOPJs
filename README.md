@@ -16,7 +16,8 @@ See [MOPNative](https://github.com/MusicsOnlinePlayer/MOPNative) for the mobile 
 A few of the things you can accomplish with MOPJs.
  - Access all your music library from the web or your mobile
  - Have an unified music library containing your personal and deezer musics.
- - Like musics, create playlists (wip) and access them using your own account
+ - Like musics, create playlists and access them using your own account
+ - Import public deezer playlists
 
 ## Feedbacks
 
