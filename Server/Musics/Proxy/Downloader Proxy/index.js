@@ -49,30 +49,34 @@ class DzDownloader {
 		return path.join(MusicsFolder, `${musicId}.mp3`);
 	}
 
-	static CheckIfMusicAlreadyExist(musicId) {
-		if (fs.existsSync(DzDownloader.GetPathFromMusicId(musicId))) { return true; }
-		return undefined;
+	static async GetFilePath(musicId) {
+		const MusicPath = DzDownloader.GetPathFromMusicId(musicId);
+		MopConsole.debug(LogLocation, `Saving path ${MusicPath} to db (dz id: ${musicId} )`);
+		await Music.findOneAndUpdate({ DeezerId: musicId }, { FilePath: MusicPath });
+		MopConsole.debug(LogLocation, `Saved path ${MusicPath} to db (dz id: ${musicId} )`);
+		return MusicPath;
 	}
 
 	AddToDownload(musicId) {
 		this.downloadQueue.push(() => new Promise((resolve, reject) => {
+			if (fs.existsSync(path.join(MusicsFolder, `${musicId}.mp3`))) {
+				MopConsole.warn(LogLocation, 'Music already downloaded');
+				DzDownloader.GetFilePath(musicId)
+					.then((MusicPath) => {
+						resolve({ MusicPath, MusicDzId: musicId });
+					});
+				return;
+			}
+
 			MopConsole.info(LogLocation, `Starting download of musics id ${musicId}`);
 			MopConsole.time(LogLocation, 'Time ');
-
-			if (DzDownloader.CheckIfMusicAlreadyExist(musicId)) {
-				MopConsole.warn(LogLocation, 'Already downloaded in this queue');
-				return (DzDownloader.GetPathFromMusicId(musicId));
-			}
 
 			this.SendDownloadMusicPython(musicId);
 			this.GotEndedMessage()
 				.then(async () => {
-					MopConsole.info(LogLocation, ' Done.');
+					MopConsole.info(LogLocation, 'Done.');
 					MopConsole.timeEnd(LogLocation, 'Time ');
-					const MusicPath = DzDownloader.GetPathFromMusicId(musicId);
-					MopConsole.debug(LogLocation, `Saving path ${MusicPath} to db (dz id: ${musicId} )`);
-					await Music.findOneAndUpdate({ DeezerId: musicId }, { FilePath: MusicPath });
-					MopConsole.debug(LogLocation, `Saved path ${MusicPath} to db (dz id: ${musicId} )`);
+					const MusicPath = await DzDownloader.GetFilePath(musicId);
 					resolve({ MusicPath, MusicDzId: musicId });
 				}).catch((err) => {
 					MopConsole.error(LogLocation, ' Fail.');
@@ -82,12 +86,6 @@ class DzDownloader {
 		}));
 	}
 
-	AddToQueue(musicId) {
-		if (!fs.existsSync(path.join(MusicsFolder, `${musicId}.mp3`))) {
-			this.AddToDownload(musicId);
-		} else MopConsole.warn(LogLocation, 'Already exist skipping...');
-	}
-
 	AddToQueueAsync(musicId) {
 		return new Promise((resolve) => {
 			this.downloadQueue.on('success', ({ MusicPath, MusicDzId }) => {
@@ -95,7 +93,7 @@ class DzDownloader {
 			});
 			MopConsole.info(LogLocation,
 				`Added to queue music with id: ${musicId} - Position ${this.downloadQueue.length}`);
-			this.AddToQueue(musicId);
+			this.AddToDownload(musicId);
 
 		// TODO Implement errors
 		});
