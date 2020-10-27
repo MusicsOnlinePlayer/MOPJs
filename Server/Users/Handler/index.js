@@ -6,6 +6,9 @@ const {
 	LikeMusicOnUserReq,
 	RegisterToUserHistory,
 	GetPlaylistsOfUser,
+	GetCurrentPlaylistOfUser,
+	SetCurrentPlaylistOfUser,
+	SetCurrentPlaylistPlayingOfUser,
 } = require('./DBHandler');
 
 module.exports = {
@@ -16,4 +19,7 @@ module.exports = {
 	LikeMusicOnUserReq,
 	RegisterToUserHistory,
 	GetPlaylistsOfUser,
+	GetCurrentPlaylistOfUser,
+	SetCurrentPlaylistOfUser,
+	SetCurrentPlaylistPlayingOfUser,
 };

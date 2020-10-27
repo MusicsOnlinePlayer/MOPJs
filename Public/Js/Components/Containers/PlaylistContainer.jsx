@@ -27,7 +27,11 @@ class PlaylistContainerConnected extends React.Component {
 		Musics: PropTypes.array.isRequired,
 		CurrentPlaying: PropTypes.shape({
 			id: PropTypes.string,
-		}).isRequired,
+		}),
+	}
+
+	static defaultProps = {
+		CurrentPlaying: undefined,
 	}
 
 	HandlePlaylistItemClick = (id) => {
@@ -45,7 +49,7 @@ class PlaylistContainerConnected extends React.Component {
 				key={Musics.indexOf(Music)}
 				ChangePlayingId={this.HandlePlaylistItemClick}
 				Music={Music}
-				IsThisPlaying={CurrentPlaying.id === Music.id}
+				IsThisPlaying={CurrentPlaying ? CurrentPlaying.id === Music.id : false}
 				PlaylistId={Musics.indexOf(Music)}
 			/>
 		));

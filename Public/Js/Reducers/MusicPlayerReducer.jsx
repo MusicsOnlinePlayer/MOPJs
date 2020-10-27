@@ -5,12 +5,14 @@ import {
 	CLEAR_PLAYLIST,
 	ADD_MULTIPLE_MUSICS,
 	ADD_CUSTOM_FILEPATH,
+	UPDATE_CURRENT_PLAYLIST,
 } from '../Actions/Action';
+
 
 const initialState = {
 	CustomFilePath: undefined,
 	Playlist: {
-		PlayingId: 0,
+		PlayingId: -1,
 		Musics: [],
 	},
 };
@@ -42,6 +44,14 @@ export default function MusicPlayerReducer(state = initialState, action) {
 			{
 				Musics: [...state.Playlist.Musics, ...action.AddedMusics],
 				PlayingId: state.Playlist.PlayingId,
+			},
+		};
+	case UPDATE_CURRENT_PLAYLIST:
+		return {
+			Playlist:
+			{
+				Musics: action.UpdatedMusics,
+				PlayingId: action.UpdatedPlayingId,
 			},
 		};
 	case CHANGE_PLAYING_ID:

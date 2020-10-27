@@ -4,6 +4,7 @@ export const ADD_MUSIC = 'ADD_MUSIC';
 export const ADD_MULTIPLE_MUSICS = 'ADD_MULTIPLE_MUSICS';
 export const CLEAR_PLAYLIST = 'CLEAR_PLAYLIST';
 export const ADD_CUSTOM_FILEPATH = 'ADD_CUSTOM_FILEPATH';
+export const UPDATE_CURRENT_PLAYLIST = 'UPDATE_CURRENT_PLAYLIST';
 
 export function AddCustomFilePath(CustomFilePath) {
 	return {
@@ -33,6 +34,14 @@ export function AddMultipleMusics(Musics) {
 		type: ADD_MULTIPLE_MUSICS,
 		AddedMusics: Musics,
 		AddedAt: Date.now(),
+	};
+}
+
+export function UpdateCurrentPlaylist(UpdatedMusics, UpdatedPlayingId) {
+	return {
+		type: UPDATE_CURRENT_PLAYLIST,
+		UpdatedMusics,
+		UpdatedPlayingId,
 	};
 }
 

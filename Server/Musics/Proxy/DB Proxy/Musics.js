@@ -4,7 +4,7 @@ const MopConsole = require('../../../Tools/MopConsole');
 const { Music, Album, Artist } = require('../../Model');
 const { ArtistsImageFolder } = require('../../Config');
 
-const LogLocation = 'Musics.Proxy.DBProxy.Musics';
+const LogLocation = 'Musics.Proxy.DB Proxy.Musics';
 
 /** This function performs an update directly on the database to change the track number
  * @param {object} tags - Tags of the music that need to change music id
@@ -134,7 +134,7 @@ async function AddMusicToDatabase(MusicTags, ArtistImage = undefined) {
 	try {
 		musicDoc = await newMusic.save();
 	} catch (err) {
-		MopConsole.error('Music.Handler.BackEnd.Index', err);
+		MopConsole.error(LogLocation, err);
 		return;
 	}
 
@@ -150,7 +150,7 @@ async function AddMusicToDatabase(MusicTags, ArtistImage = undefined) {
 	albumDoc.MusicsId.push(musicDoc._id);
 	const savedAlbum = await albumDoc.save();
 	if (artistDoc.AlbumsId.indexOf(savedAlbum._id) === -1) {
-		MopConsole.info('Music.Handler.BackEnd.Index', `Added ${savedAlbum.Name}`);
+		MopConsole.info(LogLocation, `Added ${savedAlbum.Name}`);
 		artistDoc.AlbumsId.push(savedAlbum);
 		await artistDoc.save();
 	}

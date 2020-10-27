@@ -12,6 +12,10 @@ const User = new mongoose.Schema({
 	LikedMusics: [{
 		type: mongoose.Schema.Types.ObjectId, default: [], ref: 'Music', es_indexed: true, es_schema: MusicSchema, es_select: 'Title Artist Album',
 	}],
+	CurrentPlaylist: [{
+		type: mongoose.Schema.Types.ObjectId, default: [], ref: 'Music', es_indexed: true, es_schema: MusicSchema, es_select: 'Title Artist Album',
+	}],
+	CurrentPlaylistPlaying: { type: Number, es_indexed: 'true', default: 0 },
 });
 User.plugin(passportLocalMongoose);
 
@@ -20,6 +24,7 @@ User.plugin(mongoosastic, {
 	populate: [
 		{ path: 'ViewedMusics', select: 'Title Artist Album' },
 		{ path: 'LikedMusics', select: 'Title Artist Album' },
+		{ path: 'CurrentPlaylist', select: 'Title Artist Album' },
 	],
 });
 

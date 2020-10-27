@@ -63,6 +63,52 @@ const GetPlaylistsOfUser = async (UserId, IncludePrivate) => {
 	};
 };
 
+/** Get Current Playlist of specified user
+ * @param {string} UserId id of the user
+ * @returns {Promise<Music[]>} An array of current playlists' musics
+ */
+const GetCurrentPlaylistOfUser = async (UserId) => {
+	const MyUser = await User.findById(UserId).populate({
+		path: 'CurrentPlaylist',
+		populate: {
+			path: 'AlbumId',
+			model: 'Album',
+		},
+	});
+	MopConsole.info('User.Handler.DBHandler', 'Retrieved CurrentPlaylist of user');
+	return {
+		CurrentPlaylist: MyUser.CurrentPlaylist,
+		CurrentPlaylistPlaying: MyUser.CurrentPlaylistPlaying,
+	};
+};
+
+/** Set Current Playlist of specified user
+ * @param {string} UserId id of the user
+ * @param {string[]} MusicIds Musics of the current playlist
+ */
+const SetCurrentPlaylistOfUser = async (UserId, MusicIds) => {
+	await User.updateOne({ _id: UserId }, {
+		$set: {
+			CurrentPlaylist: MusicIds,
+		},
+	});
+	MopConsole.info('User.Handler.DBHandler', 'Updated CurrentPlaylist musics of user');
+};
+
+/** Set Current Playlist of specified user
+ * @param {string} UserId id of the user
+ * @param {string[]} CurrentPlaylistPlaying Music id played on the client
+ */
+const SetCurrentPlaylistPlayingOfUser = async (UserId, CurrentPlaylistPlaying) => {
+	await User.updateOne({ _id: UserId }, {
+		$set: {
+			CurrentPlaylistPlaying,
+		},
+	});
+	MopConsole.info('User.Handler.DBHandler', 'Updated CurrentPlaylist playing of user');
+};
+
+
 module.exports = {
 	RegisterUser,
 	GetLikedMusicsOfUserReq,
@@ -71,4 +117,7 @@ module.exports = {
 	LikeMusicOnUserReq,
 	RegisterToUserHistory,
 	GetPlaylistsOfUser,
+	GetCurrentPlaylistOfUser,
+	SetCurrentPlaylistOfUser,
+	SetCurrentPlaylistPlayingOfUser,
 };

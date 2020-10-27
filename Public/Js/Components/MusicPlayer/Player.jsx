@@ -9,7 +9,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Axios from 'axios';
 import ButtonIcon from '../Helper/ButtonIcon';
-import { ChangePlayingId as ChangePlayingIdRedux, AddCustomFilePath as AddCustomFilePathRedux } from '../../Actions/Action';
+import {
+	ChangePlayingId as ChangePlayingIdRedux,
+	AddCustomFilePath as AddCustomFilePathRedux,
+	UpdateCurrentPlaylist as UpdateCurrentPlaylistRedux,
+} from '../../Actions/Action';
 import PlayerSlider from './PlayerSlider';
 
 const mapStateToProps = (state) => ({
@@ -30,6 +34,9 @@ const mapDispatchToProps = (dispatch) => ({
 	AddCustomFilePath: (path) => {
 		dispatch(AddCustomFilePathRedux(path));
 	},
+	UpdateCurrentPlaylist: (Musics, PlayingId) => {
+		dispatch(UpdateCurrentPlaylistRedux(Musics, PlayingId));
+	},
 });
 
 class PlayerConnected extends React.Component {
@@ -43,6 +50,7 @@ class PlayerConnected extends React.Component {
 		}).isRequired,
 		ChangePlayingId: PropTypes.func.isRequired,
 		AddCustomFilePath: PropTypes.func.isRequired,
+		UpdateCurrentPlaylist: PropTypes.func.isRequired,
 		MusicFilePath: PropTypes.string,
 		PlayingMusic: PropTypes.shape({
 			_id: PropTypes.string.isRequired,
@@ -109,10 +117,15 @@ class PlayerConnected extends React.Component {
 	};
 
 	componentDidMount = () => {
+		const { UpdateCurrentPlaylist } = this.props;
 		const { IsPlaying } = this.state;
 		if (this.player) {
 			IsPlaying ? this.player.play() : this.player.pause();
 		}
+		Axios.get('/User/CurrentPlaylist')
+			.then(({ data }) => {
+				UpdateCurrentPlaylist(data.CurrentPlaylist, data.CurrentPlaylistPlaying);
+			});
 	}
 
 	componentDidUpdate = (prevProps) => {
