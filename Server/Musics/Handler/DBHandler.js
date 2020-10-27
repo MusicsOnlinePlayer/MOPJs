@@ -100,9 +100,9 @@ module.exports = {
 				resolve(AlbumDoc);
 			});
 	}),
-	HandleArtistRequestById: (id, QueryMode) => new Promise((resolve, reject) => {
+	HandleArtistRequestById: (id) => new Promise((resolve, reject) => {
 		// TODO QueryMode is useless
-		MopConsole.debug(Location, `Searching for artist with db id ${id} - query mode ${QueryMode}`);
+		MopConsole.debug(Location, `Searching for artist with db id ${id}`);
 		Artist.findById(id)
 			.populate({
 				path: 'AlbumsId',
@@ -125,16 +125,14 @@ module.exports = {
 				}
 				MopConsole.debug(Location, `Found artist named ${ArtistDoc.Name}`);
 				if (ArtistDoc.DeezerId) {
-					if (QueryMode === 'all') {
-						await CompleteArtist(ArtistDoc);
-						ArtistDoc = await Artist.findById(id).populate({
-							path: 'AlbumsId',
-							populate: {
-								path: 'MusicsId',
-								model: 'Music',
-							},
-						});
-					}
+					await CompleteArtist(ArtistDoc);
+					ArtistDoc = await Artist.findById(id).populate({
+						path: 'AlbumsId',
+						populate: {
+							path: 'MusicsId',
+							model: 'Music',
+						},
+					});
 					if (!ArtistDoc.ImagePath) {
 						ArtistDoc.ImagePath = await GetImageOfArtist(ArtistDoc.DeezerId);
 						ArtistDoc.save();
