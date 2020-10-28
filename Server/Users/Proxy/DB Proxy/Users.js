@@ -7,33 +7,43 @@ const Location = 'Users.Proxy.DBProxy';
 /** This function gets liked musics of an user
  * @param {ObjectId} UserId - User who wants his liked musics
  */
-const GetLikedMusicsOfUser = async (UserId) => {
+const GetLikedMusicsOfUser = async (UserId, Page = 0, PerPage = 8) => {
 	MopConsole.debug(Location, `Getting liked musics of user with db id ${UserId}`);
-	const FoundUser = await User.findById(UserId).populate({
-		path: 'LikedMusics',
-		populate: [{
-			path: 'AlbumId',
-			model: 'Album',
-		}],
-	}).exec();
+	const FoundUser = await User
+		.findById(UserId)
+		.populate({
+			path: 'LikedMusics',
+			populate: [{
+				path: 'AlbumId',
+				model: 'Album',
+			}],
+		})
+		.exec();
 	MopConsole.debug(Location, `Found ${FoundUser.LikedMusics ? FoundUser.LikedMusics.length : 0} liked musics of user with db id ${UserId}`);
-	return FoundUser.LikedMusics;
+	const ReversedLikedMusics = FoundUser.LikedMusics.reverse();
+
+	return ReversedLikedMusics.slice(Page * PerPage, Page * PerPage + PerPage);
 };
 
 /** This function gets viewed musics of an user
  * @param {ObjectId} UserId - User who wants his viewed musics
  */
-const GetViewedMusicsOfUser = async (UserId) => {
+const GetViewedMusicsOfUser = async (UserId, Page = 0, PerPage = 8) => {
 	MopConsole.debug(Location, `Getting viewed musics of user with db id ${UserId}`);
-	const FoundUser = await User.findById(UserId).populate({
-		path: 'ViewedMusics',
-		populate: [{
-			path: 'AlbumId',
-			model: 'Album',
-		}],
-	}).exec();
+	const FoundUser = await User
+		.findById(UserId)
+		.populate({
+			path: 'ViewedMusics',
+			populate: [{
+				path: 'AlbumId',
+				model: 'Album',
+			}],
+		})
+		.exec();
 	MopConsole.debug(Location, `Found ${FoundUser.LikedMusics ? FoundUser.LikedMusics.length : 0} liked musics of user with db id ${UserId}`);
-	return FoundUser.ViewedMusics;
+	const ReversedViewedMusics = FoundUser.ViewedMusics.reverse();
+
+	return ReversedViewedMusics.slice(Page * PerPage, Page * PerPage + PerPage);
 };
 
 /** This function check if this particular music is like by a specified user

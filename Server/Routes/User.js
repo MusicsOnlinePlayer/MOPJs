@@ -46,11 +46,21 @@ app.get('/Me', (req, res) => {
 });
 
 app.get('/LikedMusics', EnsureAuth, (req, res) => {
-	GetLikedMusicsOfUserReq(req.user).then((musics) => res.send({ MusicsId: musics }));
+	GetLikedMusicsOfUserReq(
+		req.user,
+		parseInt(req.query.Page, 10),
+		parseInt(req.query.PerPage, 10),
+	)
+		.then((musics) => res.send(musics));
 });
 
 app.get('/ViewedMusics', EnsureAuth, (req, res) => {
-	GetViewedMusicsOfUserReq(req.user).then((musics) => res.send({ MusicsId: musics }));
+	GetViewedMusicsOfUserReq(
+		req.user,
+		parseInt(req.query.Page, 10),
+		parseInt(req.query.PerPage, 10),
+	)
+		.then((musics) => res.send(musics));
 });
 
 app.get('/:id/Playlists', EnsureAuth, (req, res) => {

@@ -19,26 +19,46 @@ class Favorites extends React.Component {
 		super(props);
 		this.state = {
 			Musics: undefined,
+			PrevPageEmpty: false,
+			CurrentPage: 0,
 		};
 	}
 
 	componentDidMount() {
 		const { Size, Reverse } = this.props;
 
-		Axios.get('/User/LikedMusics').then((res) => {
-			const MusicArray = Reverse ? res.data.MusicsId.reverse() : res.data.MusicsId;
-
+		Axios.get('/User/LikedMusics?PerPage=8&Page=0').then((res) => {
 			this.setState({
-				Musics: MusicArray.slice(0, Size),
+				Musics: res.data,
 			});
 		});
 	}
 
+	OnMoreClick = () => {
+		const { CurrentPage } = this.state;
+
+		Axios.get(`/User/LikedMusics?PerPage=8&Page=${CurrentPage + 1}`).then((res) => {
+			this.setState((prevState) => ({
+				Musics: [...prevState.Musics, ...res.data],
+				CurrentPage: prevState.CurrentPage + 1,
+				PrevPageEmpty: res.data.length === 0,
+			}));
+		});
+	};
+
 	render() {
-		const { Musics } = this.state;
+		const { Musics, PrevPageEmpty } = this.state;
 
 		if (Musics) {
-			return <MusicGroup Musics={Musics} DetailType="Favorites" ContextType={FAV_CONTEXT} />;
+			return (
+				<MusicGroup
+					Musics={Musics}
+					DetailType="Favorites"
+					ContextType={FAV_CONTEXT}
+					MoreButton={!PrevPageEmpty}
+					OnMoreClick={this.OnMoreClick}
+				/>
+			);
 		}
 
 		return <></>;

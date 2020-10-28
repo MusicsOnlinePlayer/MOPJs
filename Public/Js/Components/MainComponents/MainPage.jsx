@@ -12,7 +12,7 @@ class MainPage extends React.Component {
 		return (
 			<>
 				<Favorites Size={10} />
-				<History Size={10} RemoveDups />
+				<History Size={10} />
 			</>
 		);
 	}

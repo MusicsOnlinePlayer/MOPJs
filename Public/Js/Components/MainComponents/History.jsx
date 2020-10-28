@@ -8,40 +8,59 @@ class History extends React.Component {
 	static propTypes = {
 		Size: PropTypes.number,
 		RemoveDups: PropTypes.bool,
-		Reverse: PropTypes.bool,
 	}
 
 	static defaultProps = {
-		Size: undefined,
-		RemoveDups: false,
-		Reverse: true,
+		Size: 20,
+		RemoveDups: true,
 	}
 
 	constructor(props) {
 		super(props);
 		this.state = {
 			Musics: undefined,
+			PrevPageEmpty: false,
+			CurrentPage: 0,
 		};
 	}
 
 	componentDidMount() {
-		const { Size, RemoveDups, Reverse } = this.props;
+		const { Size, RemoveDups } = this.props;
 
-		Axios.get('/User/ViewedMusics').then((res) => {
-			const MusicArray = Reverse ? res.data.MusicsId.reverse() : res.data.MusicsId;
-
-			const MusicIds = MusicArray.slice(0, Size);
+		Axios.get(`/User/ViewedMusics?Page=0&PerPage=${Size}`).then((res) => {
 			this.setState({
-				Musics: RemoveDups ? [...new Set(MusicIds)] : MusicIds,
+				Musics: RemoveDups ? [...new Set(res.data)] : res.data,
 			});
 		});
 	}
 
+	OnMoreClick = () => {
+		const { Size, RemoveDups } = this.props;
+		const { CurrentPage } = this.state;
+
+		Axios.get(`/User/ViewedMusics?PerPage=${Size}&Page=${CurrentPage + 1}`).then((res) => {
+			this.setState((prevState) => ({
+				Musics: [...prevState.Musics, ...(RemoveDups ? [...new Set(res.data)] : res.data)],
+				CurrentPage: prevState.CurrentPage + 1,
+				PrevPageEmpty: res.data.length === 0,
+			}));
+		});
+	};
+
 	render() {
-		const { Musics } = this.state;
+		const { Musics, PrevPageEmpty } = this.state;
 
 		if (Musics) {
-			return <MusicGroup Musics={Musics} DetailType="History" ContextType={HIST_CONTEXT} />;
+			return (
+				<MusicGroup
+					Musics={Musics}
+					DetailType="History"
+					ContextType={HIST_CONTEXT}
+
+					MoreButton={!PrevPageEmpty}
+					OnMoreClick={this.OnMoreClick}
+				/>
+			);
 		}
 
 		return <></>;

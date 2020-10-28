@@ -35,9 +35,13 @@ const RegisterUser = (username, password) => new Promise((resolve, reject) => {
 	}
 });
 
-const GetLikedMusicsOfUserReq = async (UserReq) => await GetLikedMusicsOfUser(UserReq._id);
+const GetLikedMusicsOfUserReq = async (
+	UserReq, Page, PerPage,
+) => await GetLikedMusicsOfUser(UserReq._id, Page, PerPage);
 
-const GetViewedMusicsOfUserReq = async (UserReq) => await GetViewedMusicsOfUser(UserReq._id);
+const GetViewedMusicsOfUserReq = async (
+	UserReq, Page, PerPage,
+) => await GetViewedMusicsOfUser(UserReq._id, Page, PerPage);
 
 const CheckIfMusicIsLikedByUserReq = async (
 	UserReq,
