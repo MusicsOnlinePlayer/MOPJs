@@ -67,8 +67,8 @@ module.exports = {
 			resolve(MusicDoc);
 		});
 	}),
-	HandleAlbumRequestById: (id, QueryMode) => new Promise((resolve, reject) => {
-		MopConsole.debug(Location, `Searching for album with db id ${id} - query mode ${QueryMode}`);
+	HandleAlbumRequestById: (id) => new Promise((resolve, reject) => {
+		MopConsole.debug(Location, `Searching for album with db id ${id}`);
 		Album.findById(id)
 			.populate({ path: 'MusicsId', options: { sort: { TrackNumber: 1 } } })
 			.exec(async (err, doc) => {
@@ -85,7 +85,7 @@ module.exports = {
 				let AlbumDoc = doc.toObject();
 				MopConsole.debug(Location, `Found album named ${AlbumDoc.Name}`);
 				if (AlbumDoc.DeezerId) {
-					if (!AlbumDoc.IsComplete && QueryMode === 'all') {
+					if (!AlbumDoc.IsComplete) {
 						MopConsole.debug(Location, `It is an incomplete deezer album, requesting all musics of the album (query mode: ${QueryMode} )`);
 
 						await CompleteAlbum(AlbumDoc);
