@@ -86,7 +86,7 @@ module.exports = {
 				MopConsole.debug(Location, `Found album named ${AlbumDoc.Name}`);
 				if (AlbumDoc.DeezerId) {
 					if (!AlbumDoc.IsComplete) {
-						MopConsole.debug(Location, `It is an incomplete deezer album, requesting all musics of the album (query mode: ${QueryMode} )`);
+						MopConsole.debug(Location, 'It is an incomplete deezer album, requesting all musics of the album');
 
 						await CompleteAlbum(AlbumDoc);
 
@@ -101,7 +101,6 @@ module.exports = {
 			});
 	}),
 	HandleArtistRequestById: (id) => new Promise((resolve, reject) => {
-		// TODO QueryMode is useless
 		MopConsole.debug(Location, `Searching for artist with db id ${id}`);
 		Artist.findById(id)
 			.populate({
