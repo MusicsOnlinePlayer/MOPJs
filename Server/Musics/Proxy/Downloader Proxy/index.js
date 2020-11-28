@@ -1,7 +1,9 @@
-const { PythonShell } = require('python-shell');
 const queue = require('queue');
+const NodeID3 = require('node-id3').Promise;
 const fs = require('fs');
 const path = require('path');
+const { CreateUser, GetTrackById, GetDownloadStream } = require('@mopjs/dzdownloadernode');
+const { default: Axios } = require('axios');
 const { MusicsFolder } = require('../../Config');
 const MopConsole = require('../../../Tools/MopConsole');
 const { Music } = require('../../Model');
@@ -14,35 +16,26 @@ class DzDownloader {
 		this.downloadQueue = queue();
 		this.downloadQueue.concurrency = 1;
 
-		this.PyShell = new PythonShell(path.join(__dirname, 'Deezloader.py'), { args: [MusicsFolder, arlToken] });
-		this.PyShell.on('message', (msg) => {
-			// MopConsole.info('Python', msg);
-			if (msg === 'ready') {
-				this.downloadQueue.autostart = true;
+		const ProxyConfig = {
+			host: process.env.PROXY_HOST,
+			port: parseInt(process.env.PROXY_PORT, 10),
+		};
+
+		if (process.env.PROXY_HOST) {
+			MopConsole.warn(LogLocation, 'Using proxy for deezer download');
+			MopConsole.warn(LogLocation, `Host: ${ProxyConfig.host}:${ProxyConfig.port}`);
+		}
+
+
+		CreateUser(arlToken, process.env.PROXY_HOST ? ProxyConfig : undefined)
+			.then((User) => {
+				this.User = User;
 				MopConsole.info(LogLocation, 'Downloader State: Ready');
-			}
-		});
-		this.PyShell.on('stderr', (err) => {
-			MopConsole.error(LogLocation, 'Internal python script error (see traceback below)');
-			MopConsole.error(LogLocation, err);
-		});
-		this.PyShell.on('error', (err) => {
-			MopConsole.error(LogLocation, 'Internal python script error (see traceback below)');
-			MopConsole.error(LogLocation, err);
-		});
-	}
-
-	SendDownloadMusicPython(musicId) {
-		this.PyShell.send(JSON.stringify({ type: 1, dl: musicId }));
-	}
-
-	GotEndedMessage() {
-		return new Promise((resolve, reject) => {
-			this.PyShell.on('message', (msg) => {
-				if (msg === 'end') resolve();
-				else reject();
+				this.downloadQueue.autostart = true;
+			})
+			.catch((err) => {
+				MopConsole.error(LogLocation, err);
 			});
-		});
 	}
 
 	static GetPathFromMusicId(musicId) {
@@ -57,33 +50,74 @@ class DzDownloader {
 		return MusicPath;
 	}
 
+	static async GetCoverOfTrack(Track) {
+		const music = await Music.findOne({ DeezerId: Track.Id }).populate('AlbumId');
+		const res = await Axios.get(music.AlbumId.ImagePathDeezer, {
+			responseType: 'arraybuffer',
+		});
+
+		return res.data;
+	}
+
+	static async WriteTagsToBuffer(Buffer, Track) {
+		return await NodeID3.write(
+			{
+				title: Track.Title,
+				artist: Track.Artist,
+				album: Track.Album,
+				trackNumber: Track.TrackNumber,
+				image: {
+					mime: 'jpeg',
+					type: {
+						id: 3,
+						name: 'front cover',
+					},
+					imageBuffer: await DzDownloader.GetCoverOfTrack(Track),
+				},
+			},
+			Buffer,
+		);
+	}
+
 	AddToDownload(musicId) {
-		this.downloadQueue.push(() => new Promise((resolve, reject) => {
-			if (fs.existsSync(path.join(MusicsFolder, `${musicId}.mp3`))) {
-				MopConsole.warn(LogLocation, 'Music already downloaded');
-				DzDownloader.GetFilePath(musicId)
-					.then((MusicPath) => {
+		this.downloadQueue.push(
+			() => new Promise((resolve, reject) => {
+				if (fs.existsSync(path.join(MusicsFolder, `${musicId}.mp3`))) {
+					MopConsole.warn(LogLocation, 'Music already downloaded');
+					DzDownloader.GetFilePath(musicId).then((MusicPath) => {
 						resolve({ MusicPath, MusicDzId: musicId });
 					});
-				return;
-			}
+					return;
+				}
 
-			MopConsole.info(LogLocation, `Starting download of musics id ${musicId}`);
-			MopConsole.time(LogLocation, 'Time ');
+				MopConsole.info(LogLocation, `Starting download of musics id ${musicId}`);
+				MopConsole.time(LogLocation, 'Time ');
 
-			this.SendDownloadMusicPython(musicId);
-			this.GotEndedMessage()
-				.then(async () => {
-					MopConsole.info(LogLocation, 'Done.');
-					MopConsole.timeEnd(LogLocation, 'Time ');
-					const MusicPath = await DzDownloader.GetFilePath(musicId);
-					resolve({ MusicPath, MusicDzId: musicId });
-				}).catch((err) => {
-					MopConsole.error(LogLocation, ' Fail.');
-					MopConsole.error(LogLocation, err);
-					reject(err);
-				});
-		}));
+				GetTrackById(musicId, this.User)
+					.then((track) => {
+						MopConsole.debug(LogLocation, `Got track details from api - ${track.Title}`);
+
+						GetDownloadStream(track, this.User).then(async (MusicBuffer) => {
+							const TaggedMusicBuffer = await DzDownloader.WriteTagsToBuffer(MusicBuffer, track);
+							MopConsole.debug(LogLocation, 'Wrote tags to music file');
+
+							const MusicPath = await DzDownloader.GetFilePath(musicId);
+							fs.writeFileSync(MusicPath, TaggedMusicBuffer);
+
+							MopConsole.debug(LogLocation, `Saved to ${MusicPath}`);
+							MopConsole.info(LogLocation, 'Done.');
+							MopConsole.timeEnd(LogLocation, 'Time ');
+
+							resolve({ MusicPath, MusicDzId: musicId });
+						});
+					})
+					.catch((err) => {
+						MopConsole.error(LogLocation, ' Fail.');
+						MopConsole.error(LogLocation, err);
+						reject(err);
+					});
+			}),
+		);
 	}
 
 	AddToQueueAsync(musicId) {
@@ -91,11 +125,10 @@ class DzDownloader {
 			this.downloadQueue.on('success', ({ MusicPath, MusicDzId }) => {
 				if (MusicDzId === musicId) resolve(MusicPath);
 			});
-			MopConsole.info(LogLocation,
-				`Added to queue music with id: ${musicId} - Position ${this.downloadQueue.length}`);
+			MopConsole.info(LogLocation, `Added to queue music with id: ${musicId} - Position ${this.downloadQueue.length}`);
 			this.AddToDownload(musicId);
 
-		// TODO Implement errors
+			// TODO Implement errors
 		});
 	}
 }

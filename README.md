@@ -31,7 +31,6 @@ I'm glad you want to support my project. Before you commit a pull request, just 
 Before installing MOPJs, it is needed to have the following software (which are completely free & open source)
  * Elasticsearch *(v7 at least, optional)* - [Download link](https://www.elastic.co/downloads/elasticsearch)
  * MongoDB *(v4 at least)* - [Download link](https://www.mongodb.com/try/download/community)
- * Python with pip *(version 3 required)* - [Download link](https://www.python.org/downloads/)
  * Nodejs *(8 at least for general use but 10 at least for testing and dev)* - [Download link](https://nodejs.org/en/download/)
  * A deezer arl token *(not mendatory)*
  * Fluentd *(optional)* - [Download link](https://docs.fluentd.org/installation)
@@ -71,10 +70,6 @@ So now that you have downloaded the project, you can install all node modules by
 ``` bash
 npm install
 ```
-If you want to connect to your deezer account you will need to install deezloader python package using pip. *(you can skip this step if you only want to access your personal music library)*
-``` bash
-python -m pip install git+https://github.com/MalauD/DeezloaderPython.git
-```
 Before starting the node app, you need to edit the config file located here `./Server/Config/MopConf.json`
 Here is an example for a classical install with elasticsearch and mongodb and everything on the same computer.
 ``` json
@@ -102,6 +97,3 @@ node index.js
 ```
 And congratulation your mop instance is running ! 
 The web app is accessible at `localhost`, the port is specified in the config file.
-
-## Acknowledgments
-Thanks @An0nimia for providing the python deezer API, see [here](https://github.com/An0nimia/deezloader).
