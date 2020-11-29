@@ -52,11 +52,13 @@ class DzDownloader {
 
 	static async GetCoverOfTrack(Track) {
 		const music = await Music.findOne({ DeezerId: Track.Id }).populate('AlbumId');
-		const res = await Axios.get(music.AlbumId.ImagePathDeezer, {
-			responseType: 'arraybuffer',
-		});
-
-		return res.data;
+		if (music.AlbumId.ImagePathDeezer) {
+			const res = await Axios.get(music.AlbumId.ImagePathDeezer, {
+				responseType: 'arraybuffer',
+			});
+			return res.data;
+		}
+		return undefined;
 	}
 
 	static async WriteTagsToBuffer(Buffer, Track) {
@@ -79,6 +81,7 @@ class DzDownloader {
 		);
 	}
 
+
 	AddToDownload(musicId) {
 		this.downloadQueue.push(
 			() => new Promise((resolve, reject) => {
@@ -93,28 +96,35 @@ class DzDownloader {
 				MopConsole.info(LogLocation, `Starting download of musics id ${musicId}`);
 				MopConsole.time(LogLocation, 'Time ');
 
-				GetTrackById(musicId, this.User)
-					.then((track) => {
-						MopConsole.debug(LogLocation, `Got track details from api - ${track.Title}`);
+				this.User.EnsureConnection()
+					.then((WasConnected) => {
+						if (!WasConnected) {
+							MopConsole.warn(LogLocation, 'User was disconnected, logged back in');
+						}
+						GetTrackById(musicId, this.User)
+							.then((track) => {
+								MopConsole.debug(LogLocation, `Got track details from api - ${track.Title}`);
 
-						GetDownloadStream(track, this.User).then(async (MusicBuffer) => {
-							const TaggedMusicBuffer = await DzDownloader.WriteTagsToBuffer(MusicBuffer, track);
-							MopConsole.debug(LogLocation, 'Wrote tags to music file');
+								GetDownloadStream(track, this.User).then(async (MusicBuffer) => {
+									const TaggedMusicBuffer = await DzDownloader
+										.WriteTagsToBuffer(MusicBuffer, track);
+									MopConsole.debug(LogLocation, 'Wrote tags to music file');
 
-							const MusicPath = await DzDownloader.GetFilePath(musicId);
-							fs.writeFileSync(MusicPath, TaggedMusicBuffer);
+									const MusicPath = await DzDownloader.GetFilePath(musicId);
+									fs.writeFileSync(MusicPath, TaggedMusicBuffer);
 
-							MopConsole.debug(LogLocation, `Saved to ${MusicPath}`);
-							MopConsole.info(LogLocation, 'Done.');
-							MopConsole.timeEnd(LogLocation, 'Time ');
+									MopConsole.debug(LogLocation, `Saved to ${MusicPath}`);
+									MopConsole.info(LogLocation, 'Done.');
+									MopConsole.timeEnd(LogLocation, 'Time ');
 
-							resolve({ MusicPath, MusicDzId: musicId });
-						});
-					})
-					.catch((err) => {
-						MopConsole.error(LogLocation, ' Fail.');
-						MopConsole.error(LogLocation, err);
-						reject(err);
+									resolve({ MusicPath, MusicDzId: musicId });
+								});
+							})
+							.catch((err) => {
+								MopConsole.error(LogLocation, ' Fail.');
+								MopConsole.error(LogLocation, err);
+								reject(err);
+							});
 					});
 			}),
 		);
@@ -133,7 +143,8 @@ class DzDownloader {
 	}
 }
 
-const Downloader = CheckIfDeezerReqAreAllowed() ? () => {} : new DzDownloader(process.env.MOP_DEEZER_ARL);
+const Downloader = CheckIfDeezerReqAreAllowed()
+	? () => {} : new DzDownloader(process.env.MOP_DEEZER_ARL);
 
 module.exports = {
 	Downloader,
