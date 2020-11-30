@@ -7,7 +7,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.13.0",
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "@fortawesome/react-fontawesome": "^0.1.9",
-    "@mopjs/dzdownloadernode": "^1.0.6",
+    "@mopjs/dzdownloadernode": "^1.0.12",
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.5.0",
@@ -42,7 +42,9 @@
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.3",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "send-seekable": "^1.0.4",
+    "stream-cache": "0.0.2"
   },
   "main": "./index.js",
   "devDependencies": {

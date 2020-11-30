@@ -7,6 +7,7 @@ const {
 	RemoveMusicOfPlaylist,
 	RemovePlaylistById,
 	GetMusicFilePath,
+	GetMusicStream,
 	IncrementLikeCount,
 	MakeIndexation,
 	AddMusicsFromDeezer,
@@ -55,4 +56,5 @@ module.exports = {
 	SearchAndAddMusicsDeezer,
 	ConstructPlaylistFromDz,
 	CreatePlaylist,
+	GetMusicStream,
 };

@@ -1,5 +1,7 @@
 const express = require('express');
-
+const sendSeekable = require('send-seekable');
+const StreamCache = require('stream-cache');
+const { PassThrough } = require('stream');
 const {
 	EnsureAuth,
 } = require('../Auth/EnsureAuthentification');
@@ -15,6 +17,7 @@ const {
 	AddMusicsToPlaylist,
 	RemoveMusicOfPlaylist,
 	GetMusicFilePath,
+	GetMusicStream,
 	IncrementLikeCount,
 	SearchAndAddMusicsDeezer,
 	ConstructPlaylistFromDz,
@@ -24,6 +27,7 @@ const {
 const { MusicsFolder } = require('../Musics/Config');
 const { LikeMusicOnUserReq } = require('../Users/Handler');
 const MopConsole = require('../Tools/MopConsole');
+const { StreamingQueue } = require('../Musics/Proxy/Downloader Proxy/StreamQueue');
 
 module.exports = express();
 const app = module.exports;
@@ -80,10 +84,19 @@ app.get('/Music/get/:id', EnsureAuth, (req, res) => {
 		.catch(() => res.send({}));
 });
 
-app.get('/cdn/:id', (req, res) => {
+app.get('/cdn/:id', sendSeekable, (req, res) => {
 	GetMusicFilePath(req.params.id, req.user, true)
-		.then(({ FilePath }) => {
-			res.sendFile(FilePath, { root: MusicsFolder }, () => {});
+		.then(async (result) => {
+			if (result.FilePath) {
+				res.sendFile(result.FilePath, { root: MusicsFolder });
+			} else {
+				const { TotalLength, StreamingCache } = await GetMusicStream(result.DeezerId, undefined);
+
+				res.sendSeekable(StreamingCache, {
+					type: 'audio/mpeg',
+					length: TotalLength,
+				});
+			}
 		})
 		.catch((err) => res.send(err));
 });
