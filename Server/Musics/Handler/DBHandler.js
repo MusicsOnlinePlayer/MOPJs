@@ -250,9 +250,7 @@ module.exports = {
 	}),
 
 
-	GetMusicStream: async (id, stream, Start, End) => await StreamingQueue.AddToQueueAsync(
-		id, stream, Start, End,
-	),
+	GetMusicStream: async (id) => await StreamingQueue.AddToQueueAsync(id),
 
 	IncrementLikeCount: async (id, increment = 1) => {
 		const music = await Music.findById(id);

@@ -1,7 +1,5 @@
 const express = require('express');
 const sendSeekable = require('send-seekable');
-const StreamCache = require('stream-cache');
-const { PassThrough } = require('stream');
 const {
 	EnsureAuth,
 } = require('../Auth/EnsureAuthentification');
@@ -77,20 +75,13 @@ app.get('/Artist/id/:id', EnsureAuth, (req, res) => {
 		.catch(() => res.send({}));
 });
 
-
-app.get('/Music/get/:id', EnsureAuth, (req, res) => {
-	GetMusicFilePath(req.params.id, req.user, !(req.query.noLog === 'true'))
-		.then((FilePath) => res.send(FilePath))
-		.catch(() => res.send({}));
-});
-
 app.get('/cdn/:id', sendSeekable, (req, res) => {
 	GetMusicFilePath(req.params.id, req.user, true)
 		.then(async (result) => {
 			if (result.FilePath) {
 				res.sendFile(result.FilePath, { root: MusicsFolder });
 			} else {
-				const { TotalLength, StreamingCache } = await GetMusicStream(result.DeezerId, undefined);
+				const { TotalLength, StreamingCache } = await GetMusicStream(result.DeezerId);
 
 				res.sendSeekable(StreamingCache, {
 					type: 'audio/mpeg',
