@@ -167,9 +167,11 @@ class StreamQueue {
 		});
 	}
 }
-const StreamingQueue = CheckIfDeezerReqAreAllowed()
-	? () => {} : new StreamQueue();
+if (process.env.NODE_ENV !== 'test') {
+	const StreamingQueue = CheckIfDeezerReqAreAllowed()
+		? () => {} : new StreamQueue();
 
-module.exports = {
-	StreamingQueue,
-};
+	module.exports = {
+		StreamingQueue,
+	};
+}
