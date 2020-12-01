@@ -11,28 +11,24 @@ import Axios from 'axios';
 import ButtonIcon from '../Helper/ButtonIcon';
 import {
 	ChangePlayingId as ChangePlayingIdRedux,
-	AddCustomFilePath as AddCustomFilePathRedux,
 	UpdateCurrentPlaylist as UpdateCurrentPlaylistRedux,
 } from '../../Actions/Action';
 import PlayerSlider from './PlayerSlider';
 
-const mapStateToProps = (state) => ({
-	PlayingMusic:
-		state.MusicPlayerReducer.Playlist.Musics[state.MusicPlayerReducer.Playlist.PlayingId],
-	NextMusic:
-		state.MusicPlayerReducer.Playlist.Musics[state.MusicPlayerReducer.Playlist.PlayingId + 1],
-	CurrentMusicId: state.MusicPlayerReducer.Playlist.PlayingId,
-	PlaylistLength: state.MusicPlayerReducer.Playlist.Musics.length,
-	MusicFilePath:
-		state.MusicPlayerReducer.CustomFilePath ? state.MusicPlayerReducer.CustomFilePath : undefined,
-});
+const mapStateToProps = (state) => {
+	const { Playlist } = state.MusicPlayerReducer;
+	return {
+		PlayingMusic: Playlist.Musics[state.MusicPlayerReducer.Playlist.PlayingId],
+		NextMusic: Playlist.Musics[state.MusicPlayerReducer.Playlist.PlayingId + 1],
+		CurrentMusicId: Playlist.PlayingId,
+		PlaylistLength: Playlist.Musics.length,
+		MusicFilePath: Playlist.Musics[Playlist.PlayingId] ? `/Music/cdn/${Playlist.Musics[Playlist.PlayingId]._id}` : undefined,
+	};
+};
 
 const mapDispatchToProps = (dispatch) => ({
 	ChangePlayingId: (id) => {
 		dispatch(ChangePlayingIdRedux(id));
-	},
-	AddCustomFilePath: (path) => {
-		dispatch(AddCustomFilePathRedux(path));
 	},
 	UpdateCurrentPlaylist: (Musics, PlayingId) => {
 		dispatch(UpdateCurrentPlaylistRedux(Musics, PlayingId));
@@ -49,7 +45,6 @@ class PlayerConnected extends React.Component {
 			}),
 		}).isRequired,
 		ChangePlayingId: PropTypes.func.isRequired,
-		AddCustomFilePath: PropTypes.func.isRequired,
 		UpdateCurrentPlaylist: PropTypes.func.isRequired,
 		MusicFilePath: PropTypes.string,
 		PlayingMusic: PropTypes.shape({
@@ -127,26 +122,6 @@ class PlayerConnected extends React.Component {
 				UpdateCurrentPlaylist(data.CurrentPlaylist, data.CurrentPlaylistPlaying);
 			});
 	}
-
-	componentDidUpdate = (prevProps) => {
-		const { PlayingMusic, MusicFilePath } = this.props;
-		if (PlayingMusic) {
-			if (!MusicFilePath || prevProps.PlayingMusic !== PlayingMusic) {
-				this.GetNewFilePath();
-			}
-		}
-	}
-
-	GetNewFilePath = () => {
-		const { PlayingMusic, AddCustomFilePath } = this.props;
-
-		Axios.get(`/Music/Music/get/${PlayingMusic._id}`)
-			.then((res) => {
-				AddCustomFilePath(res.data.FilePath);
-				// this.forceUpdate();
-			});
-	}
-
 
 	OnPlayerEnd = () => {
 		const { NextMusic, ChangePlayingId, CurrentMusicId } = this.props;

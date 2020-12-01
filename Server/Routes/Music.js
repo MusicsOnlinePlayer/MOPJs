@@ -25,7 +25,6 @@ const {
 const { MusicsFolder } = require('../Musics/Config');
 const { LikeMusicOnUserReq } = require('../Users/Handler');
 const MopConsole = require('../Tools/MopConsole');
-const { StreamingQueue } = require('../Musics/Proxy/Downloader Proxy/StreamQueue');
 
 module.exports = express();
 const app = module.exports;
