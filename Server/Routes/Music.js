@@ -1,5 +1,5 @@
 const express = require('express');
-
+const sendSeekable = require('send-seekable');
 const {
 	EnsureAuth,
 } = require('../Auth/EnsureAuthentification');
@@ -15,6 +15,7 @@ const {
 	AddMusicsToPlaylist,
 	RemoveMusicOfPlaylist,
 	GetMusicFilePath,
+	GetMusicStream,
 	IncrementLikeCount,
 	SearchAndAddMusicsDeezer,
 	ConstructPlaylistFromDz,
@@ -73,17 +74,19 @@ app.get('/Artist/id/:id', EnsureAuth, (req, res) => {
 		.catch(() => res.send({}));
 });
 
-
-app.get('/Music/get/:id', EnsureAuth, (req, res) => {
-	GetMusicFilePath(req.params.id, req.user, !(req.query.noLog === 'true'))
-		.then((FilePath) => res.send(FilePath))
-		.catch(() => res.send({}));
-});
-
-app.get('/cdn/:id', (req, res) => {
+app.get('/cdn/:id', sendSeekable, (req, res) => {
 	GetMusicFilePath(req.params.id, req.user, true)
-		.then(({ FilePath }) => {
-			res.sendFile(FilePath, { root: MusicsFolder }, () => {});
+		.then(async (result) => {
+			if (result.FilePath) {
+				res.sendFile(result.FilePath, { root: MusicsFolder });
+			} else {
+				const { TotalLength, StreamingCache } = await GetMusicStream(result.DeezerId);
+
+				res.sendSeekable(StreamingCache, {
+					type: 'audio/mpeg',
+					length: TotalLength,
+				});
+			}
 		})
 		.catch((err) => res.send(err));
 });

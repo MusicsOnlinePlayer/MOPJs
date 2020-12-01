@@ -3,15 +3,7 @@ export const CHANGE_PLAYING_ID = 'CHANGE_PLAYING_ID';
 export const ADD_MUSIC = 'ADD_MUSIC';
 export const ADD_MULTIPLE_MUSICS = 'ADD_MULTIPLE_MUSICS';
 export const CLEAR_PLAYLIST = 'CLEAR_PLAYLIST';
-export const ADD_CUSTOM_FILEPATH = 'ADD_CUSTOM_FILEPATH';
 export const UPDATE_CURRENT_PLAYLIST = 'UPDATE_CURRENT_PLAYLIST';
-
-export function AddCustomFilePath(CustomFilePath) {
-	return {
-		type: ADD_CUSTOM_FILEPATH,
-		CustomFilePath,
-	};
-}
 
 export function ChangePlayingMusic(Music, RemoveOthers = true) {
 	return {

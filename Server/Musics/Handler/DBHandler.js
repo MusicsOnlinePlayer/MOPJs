@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 const {
 	Music, Album, Artist, Playlist,
 } = require('../Model');
@@ -8,6 +9,7 @@ const { CompleteAlbum, CompleteArtist, GetMusicFilePath } = require('./DeezerHan
 const { GetImageOfArtist } = require('../Proxy/Deezer Proxy');
 const { RegisterToUserHistory, CheckIfMusicIsLikedByUserReq } = require('../../Users/Handler');
 const { ReadTagsFromDisk, GetMusicsFiles } = require('../Proxy/Disk Proxy');
+const { StreamingQueue } = require('../Proxy/Downloader Proxy/StreamQueue');
 
 const Location = 'Musics.Handler.DBHandler';
 
@@ -242,11 +244,14 @@ module.exports = {
 				return;
 			}
 
-			MopConsole.debug(Location, `Music file path for db id ${id} is not present, downloading using DzDownloader`);
-			await GetMusicFilePath(MusicDoc.DeezerId);
-			Music.findById(id, (_err, newMusic) => resolve({ FilePath: newMusic.FilePath ? path.basename(newMusic.FilePath) : '' }));
+			MopConsole.debug(Location, `Music file path for db id ${id} is not present, using stream instead`);
+			resolve({ DeezerId: doc.DeezerId });
 		});
 	}),
+
+
+	GetMusicStream: async (id) => await StreamingQueue.AddToQueueAsync(id),
+
 	IncrementLikeCount: async (id, increment = 1) => {
 		const music = await Music.findById(id);
 		music.Likes += increment;
