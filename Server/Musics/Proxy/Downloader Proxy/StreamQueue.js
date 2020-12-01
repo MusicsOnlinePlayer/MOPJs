@@ -37,9 +37,8 @@ class StreamQueue {
 
 	static async GetFilePath(musicId) {
 		const MusicPath = StreamQueue.GetPathFromMusicId(musicId);
-		MopConsole.debug(LogLocation, `Saving path ${MusicPath} to db (dz id: ${musicId} )`);
 		await Music.findOneAndUpdate({ DeezerId: musicId }, { FilePath: MusicPath });
-		MopConsole.debug(LogLocation, `Saved path ${MusicPath} to db (dz id: ${musicId} )`);
+		MopConsole.debug(LogLocation, `[${musicId}] Saved path to db`);
 		return MusicPath;
 	}
 
@@ -76,16 +75,16 @@ class StreamQueue {
 
 	OnStreamEnd = async (Track) => {
 		const musicId = Track.Id;
-		MopConsole.info(LogLocation, `Stream ended for ${musicId}`);
+		MopConsole.info(LogLocation, `[${musicId}] Stream ended`);
 
 		const FilePath = StreamQueue.GetPathFromMusicId(musicId);
 
 		const ws = fs.createWriteStream(FilePath);
 
 		ws.on('finish', () => {
-			MopConsole.info(LogLocation, `Music file save for ${musicId}`);
+			MopConsole.info(LogLocation, `[${musicId}] Music file saved`);
 			StreamQueue.WriteTagsToFile(FilePath, Track)
-				.then(() => MopConsole.info(LogLocation, `Tags wrote to music ${musicId}`));
+				.then(() => MopConsole.info(LogLocation, `[${musicId}] Tags added`));
 			StreamQueue.GetFilePath(musicId);
 			this.StreamCache[musicId] = undefined;
 		});
@@ -101,10 +100,10 @@ class StreamQueue {
 	}
 
 	GetStreamFromMusic = (musicId) => new Promise((resolve, reject) => {
-		MopConsole.debug(LogLocation, `Stream requested for ${musicId}`);
+		MopConsole.debug(LogLocation, `[${musicId}] Stream requested`);
 
 		if (this.StreamCache[musicId]) {
-			MopConsole.debug(LogLocation, `Stream received ${musicId} (cache)`);
+			MopConsole.debug(LogLocation, `[${musicId}] Stream received (cache)`);
 			resolve({
 				MusicId: musicId,
 				TotalLength: this.StreamCache[musicId].Length,
@@ -113,9 +112,9 @@ class StreamQueue {
 			return;
 		}
 
-		GetTrackById(musicId, this.User)
+		GetTrackById(musicId, this.User, { retries: 3 })
 			.then((track) => {
-				MopConsole.debug(LogLocation, `Got track data for ${musicId}`);
+				MopConsole.debug(LogLocation, `[${musicId}] Got track data`);
 
 				this.StreamCache[musicId] = {
 					Stream: new StreamCache(),
@@ -129,9 +128,10 @@ class StreamQueue {
 					this.User,
 					this.StreamCache[musicId].Stream,
 					() => this.OnStreamEnd(track),
+					{ retries: 3 },
 				)
 					.then(async () => {
-						MopConsole.debug(LogLocation, `Stream received ${musicId}`);
+						MopConsole.debug(LogLocation, `[${musicId}] Stream received`);
 						resolve({
 							MusicId: track.Id,
 							TotalLength: track.Size,
