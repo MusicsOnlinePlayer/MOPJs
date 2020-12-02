@@ -114,6 +114,19 @@ class StreamQueue {
 
 		GetTrackById(musicId, this.User, { retries: 3 })
 			.then((track) => {
+				if (!track.Size) {
+					this.User.EnsureConnection()
+						.then((wasConnected) => {
+							if (!wasConnected) {
+								MopConsole.warn(LogLocation, 'Client was disconnected, now connected');
+							}
+							this.GetStreamFromMusic(musicId)
+								.then((d) => resolve(d))
+								.catch((e) => reject(e));
+						});
+					return;
+				}
+
 				MopConsole.debug(LogLocation, `[${musicId}] Got track data`);
 
 				this.StreamCache[musicId] = {
