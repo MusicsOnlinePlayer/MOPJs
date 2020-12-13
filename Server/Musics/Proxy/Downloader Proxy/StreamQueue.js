@@ -116,10 +116,8 @@ class StreamQueue {
 			.then((track) => {
 				if (!track.Size) {
 					this.User.EnsureConnection()
-						.then((wasConnected) => {
-							if (!wasConnected) {
-								MopConsole.warn(LogLocation, 'Client was disconnected, now connected');
-							}
+						.then(() => {
+							MopConsole.warn(LogLocation, 'Client was disconnected, now connected');
 							this.GetStreamFromMusic(musicId)
 								.then((d) => resolve(d))
 								.catch((e) => reject(e));
