@@ -11,6 +11,6 @@ EXPOSE 80
 
 RUN mv Server/Config/MopConfSample.json Server/Config/MopConf.json 
 
-RUN npm run build --if-present
+RUN npm run build-ts
 
-CMD [ "node", "index.js" ]
+CMD [ "node", "./Build/index.js" ]
