@@ -17,6 +17,7 @@
     "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
     "elasticsearch": "^16.7.1",
+    "eslint-import-resolver-typescript": "^2.3.0",
     "eslint-plugin-jest": "^23.13.1",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
@@ -46,20 +47,28 @@
     "send-seekable": "^1.0.4",
     "stream-cache": "0.0.2"
   },
-  "main": "./index.js",
+  "main": "./Build",
   "devDependencies": {
     "@babel/core": "^7.9.6",
     "@babel/preset-env": "^7.9.6",
     "@babel/preset-react": "^7.9.4",
+    "@types/elasticsearch": "^5.0.37",
+    "@types/express": "^4.17.9",
+    "@types/express-session": "^1.17.3",
+    "@types/mongoose": "^5.10.3",
+    "@types/node": "^14.14.13",
+    "@typescript-eslint/eslint-plugin": "^4.4.1",
+    "@typescript-eslint/parser": "^4.10.0",
     "arkit": "^1.6.4",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
-    "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-react": "^7.20.0",
-    "eslint-plugin-react-hooks": "^2.5.1",
+    "eslint-config-airbnb-typescript": "^12.0.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react-hooks": "^4.0.8",
     "file-loader": "^6.0.0",
     "jest": "^26.0.1",
     "mongodb-memory-server": "^6.6.0",
@@ -70,14 +79,23 @@
     "webpack-dev-server": "^3.11.0"
   },
   "scripts": {
-    "test": "jest --runInBand --detectOpenHandles",
-    "build": "webpack --mode production",
+    "test": "tsc --project tsconfig.test.json && jest ./Build --runInBand --detectOpenHandles",
     "StartAll": "webpack --mode production && node index.js",
     "BuildClient": "webpack --mode development --watch",
     "BuildClientProd": "webpack --mode production --watch",
     "StartServer": "node index.js",
     "ClearAlbumStatus": "node Utils.js",
     "clean": "node clean.js",
-    "deptree": ""
+    "deptree": "",
+    "build-ts": "tsc -b --verbose",
+    "build-react": "webpack --mode production"
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
+  "jest": {
+    "testMatch": ["**/Build/**/*.test.js"]
   }
 }

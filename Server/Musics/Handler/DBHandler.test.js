@@ -49,7 +49,6 @@ const SampleMusic = {
 	Likes: 0,
 };
 
-
 describe('Musics.Handler.DBHandler should work properly', () => {
 	it('Should get a music by a db id, and gather additional important info about the music requested', async () => {
 		const m1 = await Music.create({
@@ -62,9 +61,8 @@ describe('Musics.Handler.DBHandler should work properly', () => {
 			Likes: 0,
 		});
 		await Album.create({ ...SampleAlbum, MusicsId: [m1._id] });
-
-		const NotFoundMusic = await HandleMusicRequestById('5ec5a5e79e29336824be64a5');
-		expect(NotFoundMusic).toStrictEqual({});
+		expect.assertions(2);
+		await HandleMusicRequestById('5ec5a5e79e29336824be64a5').catch((e) => expect(e instanceof Error).toBe(true));
 
 		const FoundMusic = await HandleMusicRequestById(m1._id);
 		expect(FoundMusic).toMatchObject({
@@ -81,8 +79,8 @@ describe('Musics.Handler.DBHandler should work properly', () => {
 		const m1 = await Music.create(SampleMusic);
 		const a1 = await Album.create({ ...SampleAlbum, MusicsId: [m1._id] });
 
-		const NotFoundAlbum = await HandleAlbumRequestById('5ec5a5e79e29336824be64a5');
-		expect(NotFoundAlbum).toStrictEqual({});
+		expect.assertions(3);
+		await HandleAlbumRequestById('5ec5a5e79e29336824be64a5').catch((e) => expect(e instanceof Error).toBe(true));
 
 		const FoundAlbum = await HandleAlbumRequestById(a1._id);
 		expect(FoundAlbum).toMatchObject({
@@ -99,8 +97,8 @@ describe('Musics.Handler.DBHandler should work properly', () => {
 		const a1 = await Album.create({ ...SampleAlbum, MusicsId: [m1._id] });
 		const ar1 = await Artist.create({ ...SampleArtist, DeezerId: undefined, AlbumsId: [a1._id] });
 
-		const NotFoundArtist = await HandleArtistRequestById('5ec5a5e79e29336824be64a5');
-		expect(NotFoundArtist).toStrictEqual({});
+		expect.assertions(3);
+		await HandleArtistRequestById('5ec5a5e79e29336824be64a5').catch((e) => expect(e instanceof Error).toBe(true));
 
 		const FoundArtist = await HandleArtistRequestById(ar1._id);
 		expect(FoundArtist).toMatchObject({ Name: SampleArtist.Name });

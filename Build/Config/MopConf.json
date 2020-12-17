@@ -1,0 +1,11 @@
+{
+    "EsHost": "http://localhost:9200",
+    "MongoUrl": "mongodb://localhost:27017/MOP",
+    "EnableMongoAuth": false,
+    "MinLogLevel": -2,
+    "MopPort": 80,
+    "EnsureAuth": false,
+    "UseFluentdLogging": false,
+    "DisableDeezerClient": false,
+    "UseMongoSearchIndex": true
+}
