@@ -15,5 +15,6 @@
 	"cSpell.words": [
 		"fluentd",
 		"upsert"
-	]
+	],
+	"typescript.preferences.importModuleSpecifier": "relative"
 }

@@ -1,0 +1,23 @@
+{
+	"compilerOptions": {
+		"target": "es6",
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
+		"allowJs": true,
+		"importHelpers": true,
+		"jsx": "react",
+		"alwaysStrict": true,
+		"sourceMap": true,
+		"noImplicitAny": true,
+		"noImplicitThis": false,
+		"strictNullChecks": false,
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"rootDir": "Server",
+		"outDir": "Build",
+		"esModuleInterop": true
+	},
+	"include": ["./Server/**/*"],
+	"exclude": ["**/*.test.ts", "**/*.mock.ts"]
+}
