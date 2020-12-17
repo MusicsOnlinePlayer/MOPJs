@@ -22,4 +22,3 @@ module.exports = {
         : ES_Proxy_1.EsPlaylistSearch(q)),
     RefreshEsMusicIndex: () => (MopConf_json_1.UseMongoSearchIndex ? new Promise((r) => r()) : ES_Proxy_1.RefreshEsMusicIndex()),
 };
-//# sourceMappingURL=index.js.map

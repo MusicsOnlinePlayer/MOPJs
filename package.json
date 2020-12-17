@@ -47,7 +47,7 @@
     "send-seekable": "^1.0.4",
     "stream-cache": "0.0.2"
   },
-  "main": "./index.js",
+  "main": "./Build",
   "devDependencies": {
     "@babel/core": "^7.9.6",
     "@babel/preset-env": "^7.9.6",
@@ -79,19 +79,23 @@
     "webpack-dev-server": "^3.11.0"
   },
   "scripts": {
-    "test": "jest --runInBand --detectOpenHandles",
-    "build": "webpack --mode production",
+    "test": "tsc --project tsconfig.test.json && jest ./Build --runInBand --detectOpenHandles",
     "StartAll": "webpack --mode production && node index.js",
     "BuildClient": "webpack --mode development --watch",
     "BuildClientProd": "webpack --mode production --watch",
     "StartServer": "node index.js",
     "ClearAlbumStatus": "node Utils.js",
     "clean": "node clean.js",
-    "deptree": ""
+    "deptree": "",
+    "build-ts": "tsc -b --verbose",
+    "build-react": "webpack --mode production"
   },
   "settings": {
     "import/resolver": {
       "typescript": {}
     }
+  },
+  "jest": {
+    "testMatch": ["**/Build/**/*.test.js"]
   }
 }

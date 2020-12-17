@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ConvertTags = void 0;
 const tslib_1 = require("tslib");
 const fs_1 = tslib_1.__importDefault(require("fs"));
 /** This function normalizes ID3 tags
@@ -42,4 +41,3 @@ function ConvertTags(tags, MusicFilePath) {
     };
 }
 exports.ConvertTags = ConvertTags;
-//# sourceMappingURL=DiskTagsInterpreter.js.map

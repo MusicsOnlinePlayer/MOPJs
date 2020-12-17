@@ -5,4 +5,3 @@ tslib_1.__exportStar(require("./Musics"), exports);
 tslib_1.__exportStar(require("./Albums"), exports);
 tslib_1.__exportStar(require("./Artists"), exports);
 tslib_1.__exportStar(require("./Playlists"), exports);
-//# sourceMappingURL=index.js.map

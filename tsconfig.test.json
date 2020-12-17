@@ -8,6 +8,7 @@
 		"importHelpers": true,
 		"jsx": "react",
 		"alwaysStrict": true,
+		"sourceMap": true,
 		"noImplicitAny": true,
 		"noImplicitThis": false,
 		"strictNullChecks": false,
@@ -17,6 +18,5 @@
 		"outDir": "Build",
 		"esModuleInterop": true
 	},
-	"include": ["./Server/**/*"],
-	"exclude": ["**/*.test.ts", "**/*.mock.ts"]
+	"include": ["./Server/**/*"]
 }

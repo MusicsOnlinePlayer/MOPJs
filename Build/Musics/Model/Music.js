@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MusicSchema = exports.PlaylistModel = exports.ArtistModel = exports.AlbumModel = exports.MusicModel = exports.esClient = void 0;
 const tslib_1 = require("tslib");
 const mongoose_1 = tslib_1.__importDefault(require("mongoose"));
 const elasticsearch = tslib_1.__importStar(require("elasticsearch"));
@@ -105,4 +104,3 @@ if (process.env.NODE_ENV !== 'test' && !MopConf_json_1.UseMongoSearchIndex) {
     exports.ArtistModel.synchronize();
     exports.PlaylistModel.synchronize();
 }
-//# sourceMappingURL=Music.js.map

@@ -23,4 +23,3 @@ describe('Musics.DBProxy.Playlist should work properly', () => {
         expect(FoundPlaylist.IsPublic).toBe(true);
     }));
 });
-//# sourceMappingURL=Playlist.test.js.map

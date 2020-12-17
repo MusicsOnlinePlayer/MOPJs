@@ -20,4 +20,3 @@ describe('Musics.DiskProxy.Indexer should work properly', () => {
         expect(true).toBe(true);
     }));
 });
-//# sourceMappingURL=Indexer.test.js.map

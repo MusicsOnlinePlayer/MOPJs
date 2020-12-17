@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetPlaylistsIdOfUser = exports.RegisterToUserHistory = exports.LikeMusicOnUser = exports.CheckLikeMusic = exports.GetViewedMusicsOfUser = exports.GetLikedMusicsOfUser = void 0;
 const tslib_1 = require("tslib");
 const Model_1 = require("../../Model");
 const MopConsole_1 = tslib_1.__importDefault(require("../../../Tools/MopConsole"));
@@ -10,7 +9,7 @@ const Location = 'Users.Proxy.DBProxy';
 /** This function gets liked musics of an user
  * @param {ObjectId} UserId - User who wants his liked musics
  */
-const GetLikedMusicsOfUser = (UserId, Page = 0, PerPage = 8) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+exports.GetLikedMusicsOfUser = (UserId, Page = 0, PerPage = 8) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     MopConsole_1.default.debug(Location, `Getting liked musics of user with db id ${UserId}`);
     const FoundUser = yield Model_1.User
         .findById(UserId)
@@ -27,11 +26,10 @@ const GetLikedMusicsOfUser = (UserId, Page = 0, PerPage = 8) => tslib_1.__awaite
     const musics = ReversedLikedMusics.slice(Page * PerPage, Page * PerPage + PerPage);
     return musics.map((m) => (Interfaces_1.isMusic(m) ? m : undefined));
 });
-exports.GetLikedMusicsOfUser = GetLikedMusicsOfUser;
 /** This function gets viewed musics of an user
  * @param {ObjectId} UserId - User who wants his viewed musics
  */
-const GetViewedMusicsOfUser = (UserId, Page = 0, PerPage = 8) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+exports.GetViewedMusicsOfUser = (UserId, Page = 0, PerPage = 8) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     MopConsole_1.default.debug(Location, `Getting viewed musics of user with db id ${UserId}`);
     const FoundUser = yield Model_1.User
         .findById(UserId)
@@ -48,25 +46,23 @@ const GetViewedMusicsOfUser = (UserId, Page = 0, PerPage = 8) => tslib_1.__await
     const musics = ReversedViewedMusics.slice(Page * PerPage, Page * PerPage + PerPage);
     return musics.map((m) => (Interfaces_1.isMusic(m) ? m : undefined));
 });
-exports.GetViewedMusicsOfUser = GetViewedMusicsOfUser;
 /** This function check if this particular music is like by a specified user
  * @param {ObjectId} MusicId - Music to like
  * @param {ObjectId} UserId - User who liked the music
  * @returns {boolean} Is music liked ?
  */
-const CheckLikeMusic = (MusicId, UserId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+exports.CheckLikeMusic = (MusicId, UserId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     const FoundUser = yield Model_1.User.findById(UserId);
     const index = FoundUser.LikedMusics.indexOf(MusicId);
     return index !== -1;
 });
-exports.CheckLikeMusic = CheckLikeMusic;
 /** This function add music to liked music of the user
  * if it is already like, then it will dislike the music to undo.
  * @param {ObjectId} MusicId - Music to like
  * @param {ObjectId} UserId - User who liked the music
  * @returns return true if the music is now liked by the user
  */
-const LikeMusicOnUser = (MusicId, UserId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+exports.LikeMusicOnUser = (MusicId, UserId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     const FoundUser = yield Model_1.User.findById(UserId);
     const index = FoundUser.LikedMusics.indexOf(MusicId);
     if (index === -1) {
@@ -78,7 +74,6 @@ const LikeMusicOnUser = (MusicId, UserId) => tslib_1.__awaiter(void 0, void 0, v
     yield FoundUser.save();
     return false;
 });
-exports.LikeMusicOnUser = LikeMusicOnUser;
 /** This function add a music to a specified user history (async)
  * @param {ObjectId} MusicId - Music viewed by user
  * @param {ObjectId} UserId - User who viewed the music
@@ -122,4 +117,3 @@ function GetPlaylistsIdOfUser(UserId, IncludePrivate) {
     });
 }
 exports.GetPlaylistsIdOfUser = GetPlaylistsIdOfUser;
-//# sourceMappingURL=Users.js.map

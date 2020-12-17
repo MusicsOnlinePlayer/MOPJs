@@ -28,4 +28,3 @@ describe('Musics.DBProxy.Musics should work properly', () => {
         expect(newAlbum.MusicsId[0].Title).toEqual(MusicTags.Title);
     }));
 });
-//# sourceMappingURL=Musics.test.js.map

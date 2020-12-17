@@ -1,12 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.EsPlaylistSearch = void 0;
 const tslib_1 = require("tslib");
 const Model_1 = require("../../../Model");
 const MopConsole_1 = tslib_1.__importDefault(require("../../../../Tools/MopConsole"));
 const LogLocation = 'Musics.Proxy.Search.ESProxy.Playlists';
 // eslint-disable-next-line import/prefer-default-export
-const EsPlaylistSearch = (Query) => new Promise((resolve, reject) => {
+exports.EsPlaylistSearch = (Query) => new Promise((resolve, reject) => {
     Model_1.Playlist.search({
         bool: {
             must: [
@@ -46,5 +45,3 @@ const EsPlaylistSearch = (Query) => new Promise((resolve, reject) => {
         resolve(ClientResults);
     });
 });
-exports.EsPlaylistSearch = EsPlaylistSearch;
-//# sourceMappingURL=Playlists.js.map

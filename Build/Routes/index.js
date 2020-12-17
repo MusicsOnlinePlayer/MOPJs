@@ -27,4 +27,3 @@ app.use(express_1.default.static(staticPath));
 app.use(express_1.default.static(Config_1.MusicsFolder));
 app.use(express_1.default.static(Config_1.ArtistsImageFolder));
 app.use(express_1.default.static(path_1.default.join(__dirname, '../../Public/Dist')));
-//# sourceMappingURL=index.js.map

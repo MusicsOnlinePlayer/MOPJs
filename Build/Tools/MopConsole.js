@@ -69,4 +69,3 @@ class MopConsole {
     }
 }
 exports.default = MopConsole;
-//# sourceMappingURL=MopConsole.js.map

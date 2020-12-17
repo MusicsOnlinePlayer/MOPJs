@@ -44,4 +44,3 @@ describe('Musics.DBProxy.Albums should work properly', () => {
         expect(newArtist.AlbumsId.length).toEqual(2);
     }));
 });
-//# sourceMappingURL=Albums.test.js.map

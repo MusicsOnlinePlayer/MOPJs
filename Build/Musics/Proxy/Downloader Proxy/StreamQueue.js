@@ -158,4 +158,3 @@ class StreamQueue {
 }
 exports.default = Deezer_Proxy_1.CheckIfDeezerReqAreAllowed() && process.env.NODE_ENV !== 'test'
     ? null : new StreamQueue();
-//# sourceMappingURL=StreamQueue.js.map

@@ -48,4 +48,3 @@ Database_1.ConnectToDB().then(() => {
     app.use(require('./Routes/index').default);
     app.listen(MopConf_json_1.MopPort);
 });
-//# sourceMappingURL=index.js.map

@@ -50,4 +50,3 @@ module.exports.clearDatabase = () => tslib_1.__awaiter(void 0, void 0, void 0, f
         yield collection.deleteMany();
     }
 });
-//# sourceMappingURL=DbHandler.js.map

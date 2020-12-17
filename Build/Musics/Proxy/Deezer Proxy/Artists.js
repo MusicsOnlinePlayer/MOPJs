@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetImageOfArtist = void 0;
 const tslib_1 = require("tslib");
 /* eslint-disable import/prefer-default-export */
 const axios_1 = tslib_1.__importDefault(require("axios"));
@@ -12,7 +11,7 @@ const LogLocation = 'Musics.Proxy.DeezerProxy.Artist';
      * @param {number} ArtistDzId - The deezer Id of the artist
      * @returns {Promise<string>} File path from the Deezer API of the Artist Image
      */
-const GetImageOfArtist = (ArtistDzId) => new Promise((resolve, reject) => {
+exports.GetImageOfArtist = (ArtistDzId) => new Promise((resolve, reject) => {
     MopConsole_1.default.debug(LogLocation, `Begin requesting image of artist with Deezer id ${ArtistDzId}`);
     if (Misc_1.CheckIfDeezerReqAreAllowed())
         reject(new Error('Deezer requests not allowed'));
@@ -27,5 +26,3 @@ const GetImageOfArtist = (ArtistDzId) => new Promise((resolve, reject) => {
         reject();
     });
 });
-exports.GetImageOfArtist = GetImageOfArtist;
-//# sourceMappingURL=Artists.js.map

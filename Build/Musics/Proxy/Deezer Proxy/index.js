@@ -7,4 +7,3 @@ tslib_1.__exportStar(require("./Artists"), exports);
 tslib_1.__exportStar(require("./Misc"), exports);
 tslib_1.__exportStar(require("./Playlist"), exports);
 tslib_1.__exportStar(require("./Search"), exports);
-//# sourceMappingURL=index.js.map

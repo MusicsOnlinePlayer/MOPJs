@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AddMusicsFromDeezer = exports.IncrementLikeCount = exports.GetMusicStream = exports.GetMusicFilePath = exports.RemovePlaylistById = exports.RemoveMusicOfPlaylist = exports.AddMusicsToPlaylist = exports.HandlePlaylistRequestById = exports.HandleArtistRequestById = exports.HandleAlbumRequestById = exports.HandleMusicRequestById = exports.MakeIndexation = void 0;
 const tslib_1 = require("tslib");
 const path_1 = tslib_1.__importDefault(require("path"));
 const Model_1 = require("../Model");
@@ -12,7 +11,7 @@ const Handler_1 = require("../../Users/Handler");
 const Disk_Proxy_1 = require("../Proxy/Disk Proxy");
 const StreamQueue_1 = tslib_1.__importDefault(require("../Proxy/Downloader Proxy/StreamQueue"));
 const Location = 'Musics.Handler.DBHandler';
-const MakeIndexation = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+exports.MakeIndexation = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     MopConsole_1.default.info(Location, 'Starting indexing');
     MopConsole_1.default.time(Location, 'Time ');
     const files = Disk_Proxy_1.GetMusicsFiles();
@@ -35,9 +34,8 @@ const MakeIndexation = () => tslib_1.__awaiter(void 0, void 0, void 0, function*
     MopConsole_1.default.info(Location, `Done - ${files.length} musics on the disk`);
     MopConsole_1.default.timeEnd(Location, 'Time ');
 });
-exports.MakeIndexation = MakeIndexation;
 // TODO: fix type here
-const HandleMusicRequestById = (id, UserReq) => new Promise((resolve, reject) => {
+exports.HandleMusicRequestById = (id, UserReq) => new Promise((resolve, reject) => {
     MopConsole_1.default.debug(Location, `Searching for music with db id ${id}`);
     Model_1.Music.findById(id, (err, doc) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
         if (err) {
@@ -65,8 +63,7 @@ const HandleMusicRequestById = (id, UserReq) => new Promise((resolve, reject) =>
         resolve(MusicDoc);
     }));
 });
-exports.HandleMusicRequestById = HandleMusicRequestById;
-const HandleAlbumRequestById = (id) => new Promise((resolve, reject) => {
+exports.HandleAlbumRequestById = (id) => new Promise((resolve, reject) => {
     MopConsole_1.default.debug(Location, `Searching for album with db id ${id}`);
     Model_1.Album.findById(id)
         .populate({ path: 'MusicsId', options: { sort: { TrackNumber: 1 } } })
@@ -96,8 +93,7 @@ const HandleAlbumRequestById = (id) => new Promise((resolve, reject) => {
         resolve(AlbumDoc);
     }));
 });
-exports.HandleAlbumRequestById = HandleAlbumRequestById;
-const HandleArtistRequestById = (id) => new Promise((resolve, reject) => {
+exports.HandleArtistRequestById = (id) => new Promise((resolve, reject) => {
     MopConsole_1.default.debug(Location, `Searching for artist with db id ${id}`);
     Model_1.Artist.findById(id)
         .populate({
@@ -137,8 +133,7 @@ const HandleArtistRequestById = (id) => new Promise((resolve, reject) => {
         resolve(ArtistDoc);
     }));
 });
-exports.HandleArtistRequestById = HandleArtistRequestById;
-const HandlePlaylistRequestById = (id) => new Promise((resolve, reject) => {
+exports.HandlePlaylistRequestById = (id) => new Promise((resolve, reject) => {
     MopConsole_1.default.debug(Location, `Searching for playlist with db id ${id}`);
     Model_1.Playlist.findById(id)
         .populate('Creator')
@@ -166,8 +161,7 @@ const HandlePlaylistRequestById = (id) => new Promise((resolve, reject) => {
         resolve(PlaylistDoc);
     }));
 });
-exports.HandlePlaylistRequestById = HandlePlaylistRequestById;
-const AddMusicsToPlaylist = (PlaylistId, MusicsId) => new Promise((resolve, reject) => {
+exports.AddMusicsToPlaylist = (PlaylistId, MusicsId) => new Promise((resolve, reject) => {
     MopConsole_1.default.debug(Location, `Adding ${MusicsId} to playlist ${PlaylistId})`);
     Model_1.Playlist.updateOne({ _id: PlaylistId }, { $push: { MusicsId: { $each: MusicsId } } }, { upsert: true }, (err) => {
         if (err) {
@@ -178,8 +172,7 @@ const AddMusicsToPlaylist = (PlaylistId, MusicsId) => new Promise((resolve, reje
         resolve();
     });
 });
-exports.AddMusicsToPlaylist = AddMusicsToPlaylist;
-const RemoveMusicOfPlaylist = (PlaylistId, MusicId) => new Promise((resolve, reject) => {
+exports.RemoveMusicOfPlaylist = (PlaylistId, MusicId) => new Promise((resolve, reject) => {
     MopConsole_1.default.debug(Location, `Removing ${MusicId} of playlist ${PlaylistId})`);
     Model_1.Playlist.updateOne({ _id: PlaylistId }, { $pullAll: { MusicsId: [MusicId] } }, (err) => {
         if (err) {
@@ -190,8 +183,7 @@ const RemoveMusicOfPlaylist = (PlaylistId, MusicId) => new Promise((resolve, rej
         resolve();
     });
 });
-exports.RemoveMusicOfPlaylist = RemoveMusicOfPlaylist;
-const RemovePlaylistById = (PlaylistId) => new Promise((resolve, reject) => {
+exports.RemovePlaylistById = (PlaylistId) => new Promise((resolve, reject) => {
     MopConsole_1.default.debug(Location, `Deleting playlist (db id: ${PlaylistId})`);
     Model_1.Playlist.deleteOne({ _id: PlaylistId }, (err) => {
         if (err) {
@@ -202,8 +194,7 @@ const RemovePlaylistById = (PlaylistId) => new Promise((resolve, reject) => {
         resolve();
     });
 });
-exports.RemovePlaylistById = RemovePlaylistById;
-const GetMusicFilePath = (id, UserReq, RegisterHistory = true) => new Promise((resolve, reject) => {
+exports.GetMusicFilePath = (id, UserReq, RegisterHistory = true) => new Promise((resolve, reject) => {
     MopConsole_1.default.debug(Location, `Getting music file path, db id: ${id} RegisterHistory is set to ${RegisterHistory}`);
     Model_1.Music.findById(id, (err, doc) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
         if (err) {
@@ -234,21 +225,18 @@ const GetMusicFilePath = (id, UserReq, RegisterHistory = true) => new Promise((r
         resolve({ DeezerId: doc.DeezerId });
     }));
 });
-exports.GetMusicFilePath = GetMusicFilePath;
-const GetMusicStream = (id) => tslib_1.__awaiter(void 0, void 0, void 0, function* () { return yield StreamQueue_1.default.AddToQueueAsync(id); });
-exports.GetMusicStream = GetMusicStream;
-const IncrementLikeCount = (id, increment = 1) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+exports.GetMusicStream = (id) => tslib_1.__awaiter(void 0, void 0, void 0, function* () { return yield StreamQueue_1.default.AddToQueueAsync(id); });
+exports.IncrementLikeCount = (id, increment = 1) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     const music = yield Model_1.Music.findById(id);
     music.Likes += increment;
     yield music.save();
     MopConsole_1.default.debug(Location, `Increased like count of music ${id} by ${increment}`);
 });
-exports.IncrementLikeCount = IncrementLikeCount;
 /** Add multiple deezer formatted music to mongodb
  * @param {Object[]} tags Array of musics from deezer api
  * @returns {Promise<string[]>} return a promise resolving by an array of music db ids
  */
-const AddMusicsFromDeezer = (tags) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+exports.AddMusicsFromDeezer = (tags) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     const MusicDbIds = [];
     for (const musicTags of tags) {
         const DbId = yield DB_Proxy_1.HandleNewMusicFromDz(musicTags);
@@ -256,5 +244,3 @@ const AddMusicsFromDeezer = (tags) => tslib_1.__awaiter(void 0, void 0, void 0, 
     }
     return MusicDbIds;
 });
-exports.AddMusicsFromDeezer = AddMusicsFromDeezer;
-//# sourceMappingURL=DBHandler.js.map

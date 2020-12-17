@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CheckIfDeezerReqAreAllowed = void 0;
 const tslib_1 = require("tslib");
 const MopConsole_1 = tslib_1.__importDefault(require("../../../Tools/MopConsole"));
 const MopConf_json_1 = require("../../../Config/MopConf.json");
@@ -12,12 +11,10 @@ if (MopConf_json_1.DisableDeezerClient) {
  * @returns {boolean} returns value in MopConf.json (True for disable)
  */
 // eslint-disable-next-line import/prefer-default-export
-const CheckIfDeezerReqAreAllowed = () => {
+exports.CheckIfDeezerReqAreAllowed = () => {
     if (MopConf_json_1.DisableDeezerClient) {
         MopConsole_1.default.debug(Location, 'Deezer requests are disabled');
         return true;
     }
     return false;
 };
-exports.CheckIfDeezerReqAreAllowed = CheckIfDeezerReqAreAllowed;
-//# sourceMappingURL=Misc.js.map

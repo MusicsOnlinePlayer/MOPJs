@@ -79,4 +79,3 @@ app.get('/Logout', (req, res) => {
     res.sendStatus(200);
     MopConsole_1.default.info('Route.User', 'User logged out');
 });
-//# sourceMappingURL=User.js.map

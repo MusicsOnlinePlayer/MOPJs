@@ -41,8 +41,8 @@ describe('Musics.Handler.DBHandler should work properly', () => {
             Likes: 0,
         });
         yield Album.create(Object.assign(Object.assign({}, SampleAlbum), { MusicsId: [m1._id] }));
-        const NotFoundMusic = yield HandleMusicRequestById('5ec5a5e79e29336824be64a5');
-        expect(NotFoundMusic).toStrictEqual({});
+        expect.assertions(2);
+        yield HandleMusicRequestById('5ec5a5e79e29336824be64a5').catch((e) => expect(e instanceof Error).toBe(true));
         const FoundMusic = yield HandleMusicRequestById(m1._id);
         expect(FoundMusic).toMatchObject({
             Title: 'HUMBLE.',
@@ -57,8 +57,8 @@ describe('Musics.Handler.DBHandler should work properly', () => {
     it('Should get an album by a db id, and gather ids of musics in it', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
         const m1 = yield Music.create(SampleMusic);
         const a1 = yield Album.create(Object.assign(Object.assign({}, SampleAlbum), { MusicsId: [m1._id] }));
-        const NotFoundAlbum = yield HandleAlbumRequestById('5ec5a5e79e29336824be64a5');
-        expect(NotFoundAlbum).toStrictEqual({});
+        expect.assertions(3);
+        yield HandleAlbumRequestById('5ec5a5e79e29336824be64a5').catch((e) => expect(e instanceof Error).toBe(true));
         const FoundAlbum = yield HandleAlbumRequestById(a1._id);
         expect(FoundAlbum).toMatchObject({
             Name: 'DAMN.',
@@ -72,8 +72,8 @@ describe('Musics.Handler.DBHandler should work properly', () => {
         const m1 = yield Music.create(SampleMusic);
         const a1 = yield Album.create(Object.assign(Object.assign({}, SampleAlbum), { MusicsId: [m1._id] }));
         const ar1 = yield Artist.create(Object.assign(Object.assign({}, SampleArtist), { DeezerId: undefined, AlbumsId: [a1._id] }));
-        const NotFoundArtist = yield HandleArtistRequestById('5ec5a5e79e29336824be64a5');
-        expect(NotFoundArtist).toStrictEqual({});
+        expect.assertions(3);
+        yield HandleArtistRequestById('5ec5a5e79e29336824be64a5').catch((e) => expect(e instanceof Error).toBe(true));
         const FoundArtist = yield HandleArtistRequestById(ar1._id);
         expect(FoundArtist).toMatchObject({ Name: SampleArtist.Name });
         expect(FoundArtist.AlbumsId).toContainObject({ _id: a1._id });
@@ -112,4 +112,3 @@ describe('Musics.Handler.DBHandler should work properly', () => {
         expect(pCountAfter).toBe(0);
     }));
 });
-//# sourceMappingURL=DBHandler.test.js.map
