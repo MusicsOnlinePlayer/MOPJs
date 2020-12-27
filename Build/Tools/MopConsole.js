@@ -56,9 +56,13 @@ class MopConsole {
     static timeEnd(Location, Message) {
         console.timeEnd(chalk_1.default.bold.cyanBright(`[@ ${Location}] `) + Message);
     }
+    static getLogType(logType) {
+        return Object.values(LogType).filter((value) => typeof value === 'string')[logType + 1];
+    }
     static log(logType, Location, Message) {
+        const d = new Date(Date.now()).toUTCString();
         if (logType > MopConf_json_1.MinLogLevel) {
-            MopConsole.classic(`${chalk_1.default.italic.grey(`[${new Date(Date.now()).toUTCString()}`)} - ${chalk_1.default.italic.grey(`${LogType}]`)}${chalk_1.default.bold.cyanBright(`[@ ${Location}] `)}${Message}`);
+            MopConsole.classic(`[${chalk_1.default.italic.grey(d)} - ${chalk_1.default.italic.grey(MopConsole.getLogType(logType))}] ${chalk_1.default.bold.cyanBright(`[@ ${Location}] `)}${Message} `);
         }
     }
     static classic(Message) {

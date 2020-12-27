@@ -61,8 +61,15 @@ export default class MopConsole {
 		console.timeEnd(chalk.bold.cyanBright(`[@ ${Location}] `) + Message);
 	}
 
+	static getLogType(logType: LogType) : string {
+		return (Object.values(LogType).filter((value) => typeof value === 'string') as string[])[logType + 1];
+	}
+
 	static log(logType: LogType, Location: string, Message: string) : void{
-		if (logType > MinLogLevel) { MopConsole.classic(`${chalk.italic.grey(`[${new Date(Date.now()).toUTCString()}`)} - ${chalk.italic.grey(`${LogType}]`)}${chalk.bold.cyanBright(`[@ ${Location}] `)}${Message}`); }
+		const d = new Date(Date.now()).toUTCString();
+		if (logType > MinLogLevel) {
+			MopConsole.classic(`[${chalk.italic.grey(d)} - ${chalk.italic.grey(MopConsole.getLogType(logType))}] ${chalk.bold.cyanBright(`[@ ${Location}] `)}${Message} `);
+		}
 	}
 
 	static classic(Message: string) : void{
