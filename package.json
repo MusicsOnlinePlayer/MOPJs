@@ -83,7 +83,7 @@
     "StartAll": "webpack --mode production && node index.js",
     "BuildClient": "webpack --mode development --watch",
     "BuildClientProd": "webpack --mode production --watch",
-    "StartServer": "node index.js",
+    "StartServer": "node ./Build/index.js",
     "ClearAlbumStatus": "node Utils.js",
     "clean": "node clean.js",
     "deptree": "",

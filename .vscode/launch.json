@@ -8,7 +8,7 @@
         "type": "node",
         "request": "launch",
         "name": "Launch index file",
-        "program": "${workspaceFolder}/index.js",
+        "program": "${workspaceFolder}/Build/index.js",
         "skipFiles": [
             "<node_internals>/**"
         ]

@@ -12,3 +12,4 @@ Server/Config/MopConf.json
 /coverage/**
 .env
 Build/Config/MopConf.json
+Build/.env
