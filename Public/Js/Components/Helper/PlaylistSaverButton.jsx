@@ -68,7 +68,7 @@ class PlaylistSaverButton extends React.Component {
 								<Form.Control value={Name} onChange={this.onNameChange} placeholder="Enter a playlist name" />
 							</Form.Group>
 							<Form.Group controlId="IsPublic">
-								<Form.Check type="checkbox" label="Public" checked={IsPublic} onClick={this.handleIsPublicChange} />
+								<Form.Check type="checkbox" label="Public" checked={IsPublic} onChange={this.handleIsPublicChange} />
 							</Form.Group>
 						</Form>
 					</Modal.Body>

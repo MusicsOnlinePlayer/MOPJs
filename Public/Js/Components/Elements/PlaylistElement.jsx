@@ -5,10 +5,11 @@ import MusicItemRow from '../Items/MusicItemRow';
 import AddToPlaylistModal from '../Helper/AddToPlaylistModal';
 import PlaylistCreateModal from '../Helper/PlaylistCreateModal';
 
+
 class PlaylistElement extends React.Component {
 	static propTypes = {
 		ChangePlayingId: PropTypes.func.isRequired,
-		PlaylistId: PropTypes.number.isRequired,
+		UseDragHandle: PropTypes.bool.isRequired,
 		Music: PropTypes.shape({
 			_id: PropTypes.string,
 			Title: PropTypes.string.isRequired,
@@ -30,8 +31,8 @@ class PlaylistElement extends React.Component {
 	}
 
 	onPlaylistClick = () => {
-		const { ChangePlayingId, PlaylistId } = this.props;
-		ChangePlayingId(PlaylistId);
+		const { ChangePlayingId } = this.props;
+		ChangePlayingId();
 	};
 
 	ShowAddToPlaylistModal = () => {
@@ -60,7 +61,7 @@ class PlaylistElement extends React.Component {
 
 	render() {
 		const { ShowAddToNewPlaylistModal, ShowAddToPlaylistModal } = this.state;
-		const { Music } = this.props;
+		const { Music, UseDragHandle } = this.props;
 		const {
 			AlbumId, Title, Artist,
 		} = Music;
@@ -76,6 +77,7 @@ class PlaylistElement extends React.Component {
 							OnClose={this.CloseAddToNewPlaylistModal}
 						/>
 					)}
+					
 				<MusicItemRow
 					Image={AlbumId.Image || undefined}
 					ImageDz={AlbumId.ImagePathDeezer || undefined}
@@ -83,6 +85,7 @@ class PlaylistElement extends React.Component {
 					Artist={Artist}
 					onClick={this.onPlaylistClick}
 					isAvailable
+					UseDragHandle={UseDragHandle}
 				>
 					<Dropdown.Item onClick={this.onPlaylistClick}>Play</Dropdown.Item>
 					<Dropdown.Divider />

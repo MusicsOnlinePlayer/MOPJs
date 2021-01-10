@@ -1,27 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	Col, Image as ImgBootstrap, Row,
-} from 'react-bootstrap';
+import { Col, Image as ImgBootstrap, Row } from 'react-bootstrap';
 import MoreButtonMusic from './Helper/MoreButtonMusic';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGripLines } from '@fortawesome/free-solid-svg-icons';
+import { SortableHandle } from 'react-sortable-hoc';
 
-const MusicItemRow = ({
-	onClick,
-	Image,
-	ImageDz,
-	Title,
-	Artist,
-	children,
-	isAvailable,
-	AccessoryRight,
-}) => (
+const DragHandle = SortableHandle(() => (
+	<FontAwesomeIcon
+		icon={faGripLines}
+		size="lg"
+		style={{
+			color: '#d6d6d6ff',
+			fontSize: '1.5rem',
+		}}
+	/>
+));
+
+const MusicItemRow = ({ onClick, Image, ImageDz, Title, Artist, children, isAvailable, AccessoryRight, UseDragHandle }) => (
 	<tr className="w-100 m-0 p-0 PointerCursor MusicItemRow">
-		<td className="p-0 py-3 pl-2" onClick={onClick} style={{ width: '50px' }}>
-			{ImageDz ? <ImgBootstrap className="PlayerImage my-auto" rounded height="50em" src={ImageDz} />
-				: <ImgBootstrap className="PlayerImage my-auto" rounded height="50em" src={Image ? `data:image/jpeg;base64,${Image.toString('base64')}` : '/Ressources/noMusic.jpg'} />}
-
+		<td className="p-0 py-3 pl-2 align-middle" style={{
+			width: '10px'
+		}}>
+			{UseDragHandle && <DragHandle />}
 		</td>
-		<td className="p-0 py-3 pl-3" onClick={onClick}>
+
+		<td className="p-0 py-3 pl-2 align-middle" onClick={onClick} style={{ width: '50px' }}>
+			{ImageDz ? (
+				<ImgBootstrap className="PlayerImage my-auto" rounded height="50em" src={ImageDz} />
+			) : (
+				<ImgBootstrap className="PlayerImage my-auto" rounded height="50em" src={Image ? `data:image/jpeg;base64,${Image.toString('base64')}` : '/Ressources/noMusic.jpg'} />
+			)}
+		</td>
+		<td className="p-0 py-3 pl-3 align-top" onClick={onClick}>
 			<Col className="pl-0">
 				<Row className="p-0 m-0 pt-1">
 					<h6 className={isAvailable ? 'p-0 m-0' : 'p-0 m-0 font-italic'}>{Title}</h6>
@@ -35,9 +46,7 @@ const MusicItemRow = ({
 		{AccessoryRight}
 
 		<td className="align-middle pr-4 Accessory">
-			<MoreButtonMusic>
-				{children}
-			</MoreButtonMusic>
+			<MoreButtonMusic>{children}</MoreButtonMusic>
 		</td>
 	</tr>
 );
@@ -48,10 +57,7 @@ MusicItemRow.propTypes = {
 	ImageDz: PropTypes.string,
 	Title: PropTypes.string.isRequired,
 	Artist: PropTypes.string.isRequired,
-	children: PropTypes.oneOfType([
-		PropTypes.arrayOf(PropTypes.node),
-		PropTypes.node,
-	]),
+	children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
 	AccessoryRight: PropTypes.node,
 	isAvailable: PropTypes.bool.isRequired,
 };
