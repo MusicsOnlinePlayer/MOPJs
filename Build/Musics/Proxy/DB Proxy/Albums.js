@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.UpdateAlbumCompleteStatus = exports.HandleAlbumsFromDz = exports.FindAlbumContainingMusic = void 0;
 const tslib_1 = require("tslib");
 const MopConsole_1 = tslib_1.__importDefault(require("../../../Tools/MopConsole"));
 const Interfaces_1 = require("../../Interfaces");
@@ -44,7 +45,7 @@ function AppendAlbumsToArtist(ArtistDzId, Albums) {
  * @param {IMusic} MyMusic - Music
  * @return {Promise<IAlbum>} Album of the specified music
 */
-exports.FindAlbumContainingMusic = (MyMusic) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+const FindAlbumContainingMusic = (MyMusic) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     MopConsole_1.default.debug(LogLocation, `Finding album containing music with name ${MyMusic.Title}`);
     const AlbumCandidates = yield Model_1.Album.find({ Name: MyMusic.Album });
     if (AlbumCandidates.length < 1)
@@ -56,12 +57,13 @@ exports.FindAlbumContainingMusic = (MyMusic) => tslib_1.__awaiter(void 0, void 0
     MopConsole_1.default.debug(LogLocation, `Found album named ${finalAlbum.Name} containing music with name ${MyMusic.Title}`);
     return finalAlbum;
 });
+exports.FindAlbumContainingMusic = FindAlbumContainingMusic;
 /** This function add albums coming from deezer API to an existing artist.
  * This function runs sequentially
  * @param {number} ArtistId - Deezer Id of the artist (unique)
  * @param {Array<IDeezerAlbum>} DeezerAlbums - List of albums details
  */
-exports.HandleAlbumsFromDz = (ArtistId, DeezerAlbums) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+const HandleAlbumsFromDz = (ArtistId, DeezerAlbums) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     const Albums = [];
     DeezerAlbums.forEach((album) => {
         Albums.push({
@@ -73,10 +75,12 @@ exports.HandleAlbumsFromDz = (ArtistId, DeezerAlbums) => tslib_1.__awaiter(void 
     yield AppendAlbumsToArtist(ArtistId, Albums);
     MopConsole_1.default.info(LogLocation, 'Added albums to artist');
 });
+exports.HandleAlbumsFromDz = HandleAlbumsFromDz;
 /** This function modify album states by modifying the IsComplete attribute
  * @param {number} AlbumDzId - Deezer id of the completed album
  */
-exports.UpdateAlbumCompleteStatus = (AlbumDzId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+const UpdateAlbumCompleteStatus = (AlbumDzId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     yield Model_1.Album.findOneAndUpdate({ DeezerId: AlbumDzId }, { IsComplete: true });
     MopConsole_1.default.debug(LogLocation, `Set album with dz id ${AlbumDzId} as complete`);
 });
+exports.UpdateAlbumCompleteStatus = UpdateAlbumCompleteStatus;

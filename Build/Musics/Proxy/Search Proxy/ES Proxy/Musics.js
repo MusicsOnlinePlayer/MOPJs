@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RefreshEsMusicIndex = exports.EsMusicSearch = void 0;
 const tslib_1 = require("tslib");
 const Model_1 = require("../../../Model");
 const MopConsole_1 = tslib_1.__importDefault(require("../../../../Tools/MopConsole"));
 const LogLocation = 'Musics.Proxy.Search.ESProxy.Musics';
-exports.EsMusicSearch = (Query) => new Promise((resolve, reject) => {
+const EsMusicSearch = (Query) => new Promise((resolve, reject) => {
     // TODO Populate query.
     Model_1.Music.search({
         function_score: {
@@ -45,10 +46,11 @@ exports.EsMusicSearch = (Query) => new Promise((resolve, reject) => {
         resolve(ClientResults);
     });
 });
+exports.EsMusicSearch = EsMusicSearch;
 /** Use this function to force refresh indices on es
  * Use it after adding data to es so that search results are up to date.
  */
-exports.RefreshEsMusicIndex = () => new Promise((resolve, reject) => {
+const RefreshEsMusicIndex = () => new Promise((resolve, reject) => {
     MopConsole_1.default.debug(LogLocation, 'Refreshing es music index');
     Model_1.esClient.indices.refresh({ index: 'musics' }, (err) => {
         if (err) {
@@ -59,3 +61,4 @@ exports.RefreshEsMusicIndex = () => new Promise((resolve, reject) => {
     });
     MopConsole_1.default.debug(LogLocation, 'music index refreshed');
 });
+exports.RefreshEsMusicIndex = RefreshEsMusicIndex;

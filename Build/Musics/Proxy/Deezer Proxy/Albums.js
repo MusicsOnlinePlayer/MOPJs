@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.GetCoverPathOfAlbum = exports.GetAlbumsOfArtist = void 0;
 const tslib_1 = require("tslib");
 const axios_1 = tslib_1.__importDefault(require("axios"));
 const MopConsole_1 = tslib_1.__importDefault(require("../../../Tools/MopConsole"));
@@ -9,7 +10,7 @@ const LogLocation = 'Musics.Proxy.DeezerProxy.Albums';
  * @param {number} ArtistDzId - The deezer Id of the artist
  * @returns {Promise<Array<IDeezerAlbum>>}Data from deezer API, not formatted for a usage in MongoDB
  */
-exports.GetAlbumsOfArtist = (ArtistDzId) => new Promise((resolve, reject) => {
+const GetAlbumsOfArtist = (ArtistDzId) => new Promise((resolve, reject) => {
     MopConsole_1.default.debug(LogLocation, `Begin request of albums from artist with Deezer id ${ArtistDzId}`);
     if (Misc_1.CheckIfDeezerReqAreAllowed())
         resolve([]);
@@ -38,12 +39,13 @@ exports.GetAlbumsOfArtist = (ArtistDzId) => new Promise((resolve, reject) => {
         reject();
     });
 });
+exports.GetAlbumsOfArtist = GetAlbumsOfArtist;
 /** This function gets a file path (from Deezer API) of a specified album cover.
  * Correspond to 'cover_big'.
  * @param {number} AlbumDzId - The deezer Id of the album
  * @returns {string} File path from the Deezer API of the cover
  */
-exports.GetCoverPathOfAlbum = (AlbumDzId) => new Promise((resolve, reject) => {
+const GetCoverPathOfAlbum = (AlbumDzId) => new Promise((resolve, reject) => {
     MopConsole_1.default.debug(LogLocation, `Begin requesting cover of album with Deezer id ${AlbumDzId}`);
     if (Misc_1.CheckIfDeezerReqAreAllowed())
         resolve('');
@@ -58,3 +60,4 @@ exports.GetCoverPathOfAlbum = (AlbumDzId) => new Promise((resolve, reject) => {
         reject();
     });
 });
+exports.GetCoverPathOfAlbum = GetCoverPathOfAlbum;

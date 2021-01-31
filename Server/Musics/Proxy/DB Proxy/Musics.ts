@@ -97,6 +97,8 @@ export const DoesMusicExistsTitleDzId = async (
 export const UpdateRanksBulk = async (
 	tags: Array<IDeezerMusic>,
 ) : Promise<number> => {
+	if (tags.length === 0) return 0;
+
 	const bulk = Music.collection.initializeUnorderedBulkOp();
 	tags.forEach((tag) => {
 		bulk.find({ DeezerId: tag.id }).updateOne({ $set: { Rank: tag.rank } });

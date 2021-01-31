@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ConvertTagsFromDzAlbum = exports.ConvertTags = void 0;
 const tslib_1 = require("tslib");
 const MopConsole_1 = tslib_1.__importDefault(require("../../Tools/MopConsole"));
 /** This function normalize tags coming from Deezer

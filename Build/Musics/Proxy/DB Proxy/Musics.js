@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.AddMusicToDatabase = exports.UpdateRanksBulk = exports.DoesMusicExistsTitleDzId = exports.DoesMusicExistsTitle = exports.AppendOrUpdateMusicsToAlbum = void 0;
 const tslib_1 = require("tslib");
 const fs_1 = tslib_1.__importDefault(require("fs"));
 const path_1 = tslib_1.__importDefault(require("path"));
@@ -72,20 +73,24 @@ exports.AppendOrUpdateMusicsToAlbum = AppendOrUpdateMusicsToAlbum;
  * @returns {boolean}
  * @deprecated
  */
-exports.DoesMusicExistsTitle = (Title) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+const DoesMusicExistsTitle = (Title) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     const count = yield Model_1.Music.countDocuments({ Title });
     return count > 0;
 });
+exports.DoesMusicExistsTitle = DoesMusicExistsTitle;
 /** This function checks if a music exist in the MongoDB database
  * @param {string} Title - Title of the music that need to be checked
  * @param {number} DeezerId - Deezer Id of the music that need to be checked
  * @returns {Promise<boolean>}
  */
-exports.DoesMusicExistsTitleDzId = (Title, DeezerId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+const DoesMusicExistsTitleDzId = (Title, DeezerId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     const count = yield Model_1.Music.countDocuments({ Title, DeezerId });
     return count > 0;
 });
-exports.UpdateRanksBulk = (tags) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+exports.DoesMusicExistsTitleDzId = DoesMusicExistsTitleDzId;
+const UpdateRanksBulk = (tags) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    if (tags.length === 0)
+        return 0;
     const bulk = Model_1.Music.collection.initializeUnorderedBulkOp();
     tags.forEach((tag) => {
         bulk.find({ DeezerId: tag.id }).updateOne({ $set: { Rank: tag.rank } });
@@ -93,6 +98,7 @@ exports.UpdateRanksBulk = (tags) => tslib_1.__awaiter(void 0, void 0, void 0, fu
     const bulkResult = yield bulk.execute();
     return bulkResult.nModified;
 });
+exports.UpdateRanksBulk = UpdateRanksBulk;
 /** This function performs a save of music in the database while adding
  * new artist if it doesn't already exists and also adding a new album if it doesn't already exists.
  * @param {object} MusicTags - All tags about the music (see Tags.js for more details)

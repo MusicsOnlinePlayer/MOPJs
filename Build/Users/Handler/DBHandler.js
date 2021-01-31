@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SetCurrentPlaylistPlayingOfUser = exports.SetCurrentPlaylistOfUser = exports.GetCurrentPlaylistOfUser = exports.GetPlaylistsOfUser = exports.RegisterUser = void 0;
 const tslib_1 = require("tslib");
 const Interfaces_1 = require("../../Musics/Interfaces");
 const MopConsole_1 = tslib_1.__importDefault(require("../../Tools/MopConsole"));
@@ -7,7 +8,7 @@ const Model_1 = require("../Model");
 const DB_Proxy_1 = require("../Proxy/DB Proxy");
 const Location = 'Users.Handler.DBHandler';
 tslib_1.__exportStar(require("../Proxy/DB Proxy"), exports);
-exports.RegisterUser = (username, password) => new Promise((resolve, reject) => {
+const RegisterUser = (username, password) => new Promise((resolve, reject) => {
     MopConsole_1.default.debug(Location, `A user named ${username} is trying to register an account`);
     try {
         const user = new Model_1.User({
@@ -31,12 +32,13 @@ exports.RegisterUser = (username, password) => new Promise((resolve, reject) => 
         reject();
     }
 });
+exports.RegisterUser = RegisterUser;
 /** Get playlists of a specified user
  * @param {string} UserId Id of the user
  * @param {boolean} IncludePrivate should it include private playlist in response
  * @returns {Promise<object>} an object containing a creator object and an array of playlist ids
  */
-exports.GetPlaylistsOfUser = (UserId, IncludePrivate) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+const GetPlaylistsOfUser = (UserId, IncludePrivate) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     const PlaylistsId = yield DB_Proxy_1.GetPlaylistsIdOfUser(UserId, IncludePrivate);
     const Creator = yield Model_1.User.findById(UserId);
     return {
@@ -44,11 +46,12 @@ exports.GetPlaylistsOfUser = (UserId, IncludePrivate) => tslib_1.__awaiter(void 
         Creator,
     };
 });
+exports.GetPlaylistsOfUser = GetPlaylistsOfUser;
 /** Get Current Playlist of specified user
  * @param {string} UserId id of the user
  * @returns {Promise<Music[]>} An array of current playlists' musics
  */
-exports.GetCurrentPlaylistOfUser = (UserId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+const GetCurrentPlaylistOfUser = (UserId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     const MyUser = yield Model_1.User.findById(UserId).populate({
         path: 'CurrentPlaylist',
         populate: {
@@ -62,11 +65,12 @@ exports.GetCurrentPlaylistOfUser = (UserId) => tslib_1.__awaiter(void 0, void 0,
         CurrentPlaylistPlaying: MyUser.CurrentPlaylistPlaying,
     };
 });
+exports.GetCurrentPlaylistOfUser = GetCurrentPlaylistOfUser;
 /** Set Current Playlist of specified user
  * @param {string} UserId id of the user
  * @param {string[]} MusicIds Musics of the current playlist
  */
-exports.SetCurrentPlaylistOfUser = (UserId, MusicIds) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+const SetCurrentPlaylistOfUser = (UserId, MusicIds) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     yield Model_1.User.updateOne({ _id: UserId }, {
         $set: {
             CurrentPlaylist: MusicIds,
@@ -74,11 +78,12 @@ exports.SetCurrentPlaylistOfUser = (UserId, MusicIds) => tslib_1.__awaiter(void 
     });
     MopConsole_1.default.info('User.Handler.DBHandler', 'Updated CurrentPlaylist musics of user');
 });
+exports.SetCurrentPlaylistOfUser = SetCurrentPlaylistOfUser;
 /** Set Current Playlist of specified user
  * @param {string} UserId id of the user
  * @param {string[]} CurrentPlaylistPlaying Music id played on the client
  */
-exports.SetCurrentPlaylistPlayingOfUser = (UserId, CurrentPlaylistPlaying) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+const SetCurrentPlaylistPlayingOfUser = (UserId, CurrentPlaylistPlaying) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     yield Model_1.User.updateOne({ _id: UserId }, {
         $set: {
             CurrentPlaylistPlaying,
@@ -86,3 +91,4 @@ exports.SetCurrentPlaylistPlayingOfUser = (UserId, CurrentPlaylistPlaying) => ts
     });
     MopConsole_1.default.info('User.Handler.DBHandler', 'Updated CurrentPlaylist playing of user');
 });
+exports.SetCurrentPlaylistPlayingOfUser = SetCurrentPlaylistPlayingOfUser;

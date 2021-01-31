@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.GetMusicsFiles = void 0;
 const tslib_1 = require("tslib");
 const fs_1 = tslib_1.__importDefault(require("fs"));
 const path_1 = tslib_1.__importDefault(require("path"));
@@ -14,7 +15,7 @@ const CheckIfFileHasCorrectFormat = (file) => path_1.default.extname(file) === '
  * @returns {string[]} File paths of all valid musics files
  */
 // eslint-disable-next-line import/prefer-default-export
-exports.GetMusicsFiles = () => {
+const GetMusicsFiles = () => {
     MopConsole_1.default.info(Location, `Getting musics in ${Config_1.MusicsFolder}`);
     const CorrectMusicFilesPath = [];
     const files = GetFilesOfDir(Config_1.MusicsFolder);
@@ -28,3 +29,4 @@ exports.GetMusicsFiles = () => {
     MopConsole_1.default.info(Location, `Found ${CorrectMusicFilesPath.length} music files in folder ${Config_1.MusicsFolder}`);
     return CorrectMusicFilesPath;
 };
+exports.GetMusicsFiles = GetMusicsFiles;

@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.CreatePlaylist = exports.ConstructPlaylistFromDz = exports.SearchAndAddMusicsDeezer = void 0;
 const tslib_1 = require("tslib");
 const DeezerHandler_1 = require("./DeezerHandler");
 const Search_Proxy_1 = tslib_1.__importDefault(require("../Proxy/Search Proxy"));
 const Playlist_1 = require("../Proxy/Deezer Proxy/Playlist");
 const Playlist_2 = require("../Proxy/DB Proxy/Playlist");
-exports.CreatePlaylist = Playlist_2.CreatePlaylist;
+Object.defineProperty(exports, "CreatePlaylist", { enumerable: true, get: function () { return Playlist_2.CreatePlaylist; } });
 const DBHandler_1 = require("./DBHandler");
 tslib_1.__exportStar(require("./DBHandler"), exports);
 const SearchAndAddMusicsDeezer = (Query) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {

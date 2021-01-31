@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.EsArtistSearch = void 0;
 const tslib_1 = require("tslib");
 const Model_1 = require("../../../Model");
 const MopConsole_1 = tslib_1.__importDefault(require("../../../../Tools/MopConsole"));
 const LogLocation = 'Musics.Proxy.Search.ESProxy.Artists';
 // eslint-disable-next-line import/prefer-default-export
-exports.EsArtistSearch = (Query) => new Promise((resolve, reject) => {
+const EsArtistSearch = (Query) => new Promise((resolve, reject) => {
     Model_1.Artist.search({
         simple_query_string: {
             query: `${Query}*`,
@@ -32,3 +33,4 @@ exports.EsArtistSearch = (Query) => new Promise((resolve, reject) => {
         resolve(ClientResults);
     });
 });
+exports.EsArtistSearch = EsArtistSearch;

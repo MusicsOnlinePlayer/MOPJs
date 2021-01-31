@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ConvertTagsFromDisk = exports.ConvertTagsFromDzAlbum = exports.ConvertTagsFromDz = void 0;
 var DeezerTagsInterpreter_1 = require("./DeezerTagsInterpreter");
-exports.ConvertTagsFromDz = DeezerTagsInterpreter_1.ConvertTags;
-exports.ConvertTagsFromDzAlbum = DeezerTagsInterpreter_1.ConvertTagsFromDzAlbum;
+Object.defineProperty(exports, "ConvertTagsFromDz", { enumerable: true, get: function () { return DeezerTagsInterpreter_1.ConvertTags; } });
+Object.defineProperty(exports, "ConvertTagsFromDzAlbum", { enumerable: true, get: function () { return DeezerTagsInterpreter_1.ConvertTagsFromDzAlbum; } });
 var DiskTagsInterpreter_1 = require("./DiskTagsInterpreter");
-exports.ConvertTagsFromDisk = DiskTagsInterpreter_1.ConvertTags;
+Object.defineProperty(exports, "ConvertTagsFromDisk", { enumerable: true, get: function () { return DiskTagsInterpreter_1.ConvertTags; } });

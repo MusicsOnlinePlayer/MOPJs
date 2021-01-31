@@ -12,7 +12,8 @@ export const DBMusicSearch = (
 	PerPage = 8,
 ) : Promise<IMusic[]> => new Promise((resolve, reject) => {
 	Music
-		.find({ $text: { $search: Query } })
+		.find({ $text: { $search: Query } }, { score: { $meta: 'textScore' } })
+		.sort({ score: { $meta: 'textScore' }, Rank: -1 })
 		.limit(PerPage)
 		.skip(Page * PerPage)
 		.populate('AlbumId')

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.isUser = void 0;
 function isUser(obj) {
     return (obj && obj.username && typeof obj.username === 'string');
 }

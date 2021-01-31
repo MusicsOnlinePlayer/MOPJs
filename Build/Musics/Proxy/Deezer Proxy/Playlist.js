@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.GetMusicsOfPlaylist = void 0;
 const tslib_1 = require("tslib");
 const axios_1 = tslib_1.__importDefault(require("axios"));
 const MopConsole_1 = tslib_1.__importDefault(require("../../../Tools/MopConsole"));
@@ -10,7 +11,7 @@ const LogLocation = 'Musics.Proxy.DeezerProxy.Playlist';
  * @returns {Promise<Array<IDeezerMusic>>}Data from deezer API, not formatted for a usage in MongoDB
  */
 // eslint-disable-next-line import/prefer-default-export
-exports.GetMusicsOfPlaylist = (PlaylistId) => new Promise((resolve, reject) => {
+const GetMusicsOfPlaylist = (PlaylistId) => new Promise((resolve, reject) => {
     MopConsole_1.default.debug(LogLocation, `Getting musics of playlist with deezer id ${PlaylistId}`);
     if (Misc_1.CheckIfDeezerReqAreAllowed())
         resolve([]);
@@ -41,3 +42,4 @@ exports.GetMusicsOfPlaylist = (PlaylistId) => new Promise((resolve, reject) => {
         reject();
     });
 });
+exports.GetMusicsOfPlaylist = GetMusicsOfPlaylist;

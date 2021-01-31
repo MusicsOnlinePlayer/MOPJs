@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DBAlbumSearch = void 0;
 const tslib_1 = require("tslib");
 const Model_1 = require("../../../Model");
 const MopConsole_1 = tslib_1.__importDefault(require("../../../../Tools/MopConsole"));
 const LogLocation = 'Musics.Proxy.Search.DBSearch.Albums';
 // eslint-disable-next-line import/prefer-default-export
-exports.DBAlbumSearch = (Query, Page = 0, PerPage = 8) => new Promise((resolve, reject) => {
+const DBAlbumSearch = (Query, Page = 0, PerPage = 8) => new Promise((resolve, reject) => {
     Model_1.Album
         .find({ $text: { $search: Query } })
         .limit(PerPage)
@@ -24,3 +25,4 @@ exports.DBAlbumSearch = (Query, Page = 0, PerPage = 8) => new Promise((resolve, 
         resolve(result);
     });
 });
+exports.DBAlbumSearch = DBAlbumSearch;

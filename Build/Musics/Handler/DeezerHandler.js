@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SearchMusics = exports.CompleteArtist = exports.CompleteAlbum = void 0;
 const tslib_1 = require("tslib");
 const DB_Proxy_1 = require("../Proxy/DB Proxy");
 const Musics_1 = require("../Proxy/Deezer Proxy/Musics");
 const Deezer_Proxy_1 = require("../Proxy/Deezer Proxy");
-exports.SearchMusics = Deezer_Proxy_1.SearchMusics;
+Object.defineProperty(exports, "SearchMusics", { enumerable: true, get: function () { return Deezer_Proxy_1.SearchMusics; } });
 const Tags_1 = require("../Tags");
 const MopConsole_1 = tslib_1.__importDefault(require("../../Tools/MopConsole"));
 const Location = 'Musics.Handler.DeezerHandler';
