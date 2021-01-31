@@ -38,6 +38,7 @@ function ConvertTags(tags, DeezerId, CustomAlbumName = undefined, CustomAlbumDzI
         DeezerId,
         Views: 0,
         Likes: 0,
+        Rank: tags.rank,
     };
     const AlbumTags = {
         Name: CustomAlbumName || tags.album.title,
@@ -65,6 +66,7 @@ function ConvertTagsFromDzAlbum(tags, AlbumName, AlbumDzId) {
         DeezerId: tags.id,
         Views: 0,
         Likes: 0,
+        Rank: tags.rank,
     };
     const AlbumTags = {
         Name: AlbumName,

@@ -48,6 +48,7 @@ export function ConvertTags(
 		DeezerId,
 		Views: 0,
 		Likes: 0,
+		Rank: tags.rank,
 	} as unknown) as IMusic;
 	const AlbumTags : IAlbum = ({
 		Name: CustomAlbumName || tags.album.title,
@@ -80,6 +81,7 @@ export function ConvertTagsFromDzAlbum(
 		DeezerId: tags.id,
 		Views: 0,
 		Likes: 0,
+		Rank: tags.rank,
 	} as unknown) as IMusic;
 
 	const AlbumTags : IAlbum = ({

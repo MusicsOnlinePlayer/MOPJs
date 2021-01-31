@@ -26,6 +26,7 @@ const MusicSchema = new mongoose.Schema({
 	DeezerId: { type: Number, index: { unique: true, sparse: true } },
 	Views: { type: Number, default: 0, es_indexed: true },
 	Likes: { type: Number, default: 0, es_indexed: true },
+	Rank: { type: Number, default: 0, es_indexed: true },
 	LastView: { type: Date, es_type: 'date', es_indexed: true },
 });
 

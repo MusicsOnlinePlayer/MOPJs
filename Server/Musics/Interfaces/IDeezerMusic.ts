@@ -6,5 +6,6 @@ export interface IDeezerMusic {
 	title : string,
 	album : IDeezerAlbum,
 	artist: IDeezerArtist,
+	rank: number,
 	track_position: number
 }

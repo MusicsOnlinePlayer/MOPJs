@@ -242,5 +242,7 @@ exports.AddMusicsFromDeezer = (tags) => tslib_1.__awaiter(void 0, void 0, void 0
         const DbId = yield DB_Proxy_1.HandleNewMusicFromDz(musicTags);
         MusicDbIds.push(DbId);
     }
+    const numberModified = yield DB_Proxy_1.UpdateRanksBulk(tags);
+    MopConsole_1.default.info(Location, `Updated ranks of ${numberModified} musics`);
     return MusicDbIds;
 });

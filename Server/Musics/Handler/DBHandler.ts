@@ -4,7 +4,9 @@ import {
 	Music, Album, Artist, Playlist,
 } from '../Model';
 import MopConsole from '../../Tools/MopConsole';
-import { FindAlbumContainingMusic, HandleNewMusicFromDisk, HandleNewMusicFromDz } from '../Proxy/DB Proxy';
+import {
+	FindAlbumContainingMusic, HandleNewMusicFromDisk, HandleNewMusicFromDz, UpdateRanksBulk,
+} from '../Proxy/DB Proxy';
 import { CompleteAlbum, CompleteArtist } from './DeezerHandler';
 import { GetImageOfArtist } from '../Proxy/Deezer Proxy';
 import { RegisterToUserHistory, CheckLikeMusic } from '../../Users/Handler';
@@ -295,5 +297,7 @@ export const AddMusicsFromDeezer = async (tags: Array<IDeezerMusic>) : Promise<A
 		const DbId = await HandleNewMusicFromDz(musicTags);
 		MusicDbIds.push(DbId);
 	}
+	const numberModified = await UpdateRanksBulk(tags);
+	MopConsole.info(Location, `Updated ranks of ${numberModified} musics`);
 	return MusicDbIds;
 };

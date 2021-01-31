@@ -85,6 +85,14 @@ exports.DoesMusicExistsTitleDzId = (Title, DeezerId) => tslib_1.__awaiter(void 0
     const count = yield Model_1.Music.countDocuments({ Title, DeezerId });
     return count > 0;
 });
+exports.UpdateRanksBulk = (tags) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    const bulk = Model_1.Music.collection.initializeUnorderedBulkOp();
+    tags.forEach((tag) => {
+        bulk.find({ DeezerId: tag.id }).updateOne({ $set: { Rank: tag.rank } });
+    });
+    const bulkResult = yield bulk.execute();
+    return bulkResult.nModified;
+});
 /** This function performs a save of music in the database while adding
  * new artist if it doesn't already exists and also adding a new album if it doesn't already exists.
  * @param {object} MusicTags - All tags about the music (see Tags.js for more details)

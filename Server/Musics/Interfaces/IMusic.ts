@@ -11,6 +11,7 @@ export interface IMusic extends mongoose.Document {
 	DeezerId?: number,
 	Views: number,
 	Likes: number,
+	Rank?: number,
 	LastView?: Date,
 }
 

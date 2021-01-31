@@ -1,7 +1,11 @@
 import { ObjectId } from 'mongodb';
 import { FindAlbumContainingMusic, HandleAlbumsFromDz, UpdateAlbumCompleteStatus } from './Albums';
 import {
-	AppendOrUpdateMusicsToAlbum, DoesMusicExistsTitle, DoesMusicExistsTitleDzId, AddMusicToDatabase,
+	AppendOrUpdateMusicsToAlbum,
+	DoesMusicExistsTitle,
+	DoesMusicExistsTitleDzId,
+	AddMusicToDatabase,
+	UpdateRanksBulk,
 } from './Musics';
 import { ConvertTagsFromDisk, ConvertTagsFromDz } from '../../Tags';
 import { IDeezerMusic, IDiskMusic } from '../../Interfaces';
@@ -47,4 +51,5 @@ export {
 	HandleAlbumsFromDz,
 	AppendOrUpdateMusicsToAlbum,
 	UpdateAlbumCompleteStatus,
+	UpdateRanksBulk,
 };

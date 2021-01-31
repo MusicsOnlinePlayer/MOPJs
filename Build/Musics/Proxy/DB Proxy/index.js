@@ -7,6 +7,7 @@ exports.HandleAlbumsFromDz = Albums_1.HandleAlbumsFromDz;
 exports.UpdateAlbumCompleteStatus = Albums_1.UpdateAlbumCompleteStatus;
 const Musics_1 = require("./Musics");
 exports.AppendOrUpdateMusicsToAlbum = Musics_1.AppendOrUpdateMusicsToAlbum;
+exports.UpdateRanksBulk = Musics_1.UpdateRanksBulk;
 const Tags_1 = require("../../Tags");
 /** This function add a new music with tags coming from ID3 file.
  * It will also check if the music exist already.

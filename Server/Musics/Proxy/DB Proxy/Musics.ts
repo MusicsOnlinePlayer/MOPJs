@@ -5,7 +5,7 @@ import MopConsole from '../../../Tools/MopConsole';
 import { Music, Album, Artist } from '../../Model';
 import { ArtistsImageFolder } from '../../Config';
 import {
-	IAlbum, IArtist, IMusic,
+	IAlbum, IArtist, IDeezerMusic, IMusic,
 } from '../../Interfaces';
 
 const LogLocation = 'Musics.Proxy.DB Proxy.Musics';
@@ -92,6 +92,17 @@ export const DoesMusicExistsTitleDzId = async (
 ) : Promise<boolean> => {
 	const count = await Music.countDocuments({ Title, DeezerId });
 	return count > 0;
+};
+
+export const UpdateRanksBulk = async (
+	tags: Array<IDeezerMusic>,
+) : Promise<number> => {
+	const bulk = Music.collection.initializeUnorderedBulkOp();
+	tags.forEach((tag) => {
+		bulk.find({ DeezerId: tag.id }).updateOne({ $set: { Rank: tag.rank } });
+	});
+	const bulkResult = await bulk.execute();
+	return bulkResult.nModified;
 };
 
 /** This function performs a save of music in the database while adding
