@@ -141,7 +141,7 @@ class PlayerConnected extends React.Component {
 					}
 				})
 		} else {
-			this.onPause();
+			ChangePlayingId(CurrentMusicId + 1)
 		}
 		
 	};
