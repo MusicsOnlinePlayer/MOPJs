@@ -1,6 +1,7 @@
 import React from 'react';
 import Favorites from './Favorites';
 import History from './History';
+import Selection from './Selection'
 
 class MainPage extends React.Component {
 	constructor(props) {
@@ -11,6 +12,7 @@ class MainPage extends React.Component {
 	render() {
 		return (
 			<>
+				<Selection />
 				<Favorites Size={10} />
 				<History Size={10} />
 			</>

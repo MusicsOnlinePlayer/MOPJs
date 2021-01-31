@@ -14,17 +14,17 @@ const RegisterUser = (username, password) => new Promise((resolve, reject) => {
         const user = new Model_1.User({
             username,
         });
-        user.setPassword(password, (err) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+        user.setPassword(password, async (err) => {
             if (err) {
                 MopConsole_1.default.warn(Location, "Couldn't set password of user");
                 MopConsole_1.default.warn(Location, err);
                 reject();
                 return;
             }
-            const newUser = yield user.save();
+            const newUser = await user.save();
             resolve(newUser);
             MopConsole_1.default.info(Location, `Added user ${username}`);
-        }));
+        });
     }
     catch (err) {
         MopConsole_1.default.warn(Location, "Couldn't register user");
@@ -38,21 +38,21 @@ exports.RegisterUser = RegisterUser;
  * @param {boolean} IncludePrivate should it include private playlist in response
  * @returns {Promise<object>} an object containing a creator object and an array of playlist ids
  */
-const GetPlaylistsOfUser = (UserId, IncludePrivate) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    const PlaylistsId = yield DB_Proxy_1.GetPlaylistsIdOfUser(UserId, IncludePrivate);
-    const Creator = yield Model_1.User.findById(UserId);
+const GetPlaylistsOfUser = async (UserId, IncludePrivate) => {
+    const PlaylistsId = await DB_Proxy_1.GetPlaylistsIdOfUser(UserId, IncludePrivate);
+    const Creator = await Model_1.User.findById(UserId);
     return {
         PlaylistsId,
         Creator,
     };
-});
+};
 exports.GetPlaylistsOfUser = GetPlaylistsOfUser;
 /** Get Current Playlist of specified user
  * @param {string} UserId id of the user
  * @returns {Promise<Music[]>} An array of current playlists' musics
  */
-const GetCurrentPlaylistOfUser = (UserId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    const MyUser = yield Model_1.User.findById(UserId).populate({
+const GetCurrentPlaylistOfUser = async (UserId) => {
+    const MyUser = await Model_1.User.findById(UserId).populate({
         path: 'CurrentPlaylist',
         populate: {
             path: 'AlbumId',
@@ -64,31 +64,31 @@ const GetCurrentPlaylistOfUser = (UserId) => tslib_1.__awaiter(void 0, void 0, v
         CurrentPlaylist: MyUser.CurrentPlaylist.map((m) => (Interfaces_1.isMusic(m) ? m : undefined)),
         CurrentPlaylistPlaying: MyUser.CurrentPlaylistPlaying,
     };
-});
+};
 exports.GetCurrentPlaylistOfUser = GetCurrentPlaylistOfUser;
 /** Set Current Playlist of specified user
  * @param {string} UserId id of the user
  * @param {string[]} MusicIds Musics of the current playlist
  */
-const SetCurrentPlaylistOfUser = (UserId, MusicIds) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    yield Model_1.User.updateOne({ _id: UserId }, {
+const SetCurrentPlaylistOfUser = async (UserId, MusicIds) => {
+    await Model_1.User.updateOne({ _id: UserId }, {
         $set: {
             CurrentPlaylist: MusicIds,
         },
     });
     MopConsole_1.default.info('User.Handler.DBHandler', 'Updated CurrentPlaylist musics of user');
-});
+};
 exports.SetCurrentPlaylistOfUser = SetCurrentPlaylistOfUser;
 /** Set Current Playlist of specified user
  * @param {string} UserId id of the user
  * @param {string[]} CurrentPlaylistPlaying Music id played on the client
  */
-const SetCurrentPlaylistPlayingOfUser = (UserId, CurrentPlaylistPlaying) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    yield Model_1.User.updateOne({ _id: UserId }, {
+const SetCurrentPlaylistPlayingOfUser = async (UserId, CurrentPlaylistPlaying) => {
+    await Model_1.User.updateOne({ _id: UserId }, {
         $set: {
             CurrentPlaylistPlaying,
         },
     });
     MopConsole_1.default.info('User.Handler.DBHandler', 'Updated CurrentPlaylist playing of user');
-});
+};
 exports.SetCurrentPlaylistPlayingOfUser = SetCurrentPlaylistPlayingOfUser;

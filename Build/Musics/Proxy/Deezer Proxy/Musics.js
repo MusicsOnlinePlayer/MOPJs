@@ -16,7 +16,7 @@ const GetMusicOfAlbum = (AlbumDzId) => new Promise((resolve, reject) => {
     if (Misc_1.CheckIfDeezerReqAreAllowed())
         resolve([]);
     axios_1.default.get(`https://api.deezer.com/album/${AlbumDzId}/tracks`)
-        .then((res) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+        .then(async (res) => {
         const MusicsOfAlbums = [];
         MusicsOfAlbums.push(...res.data.data);
         MopConsole_1.default.debug(LogLocation, `Received ${MusicsOfAlbums.length} musics for album with Deezer id ${AlbumDzId}`);
@@ -24,7 +24,7 @@ const GetMusicOfAlbum = (AlbumDzId) => new Promise((resolve, reject) => {
         while (nextUrl) {
             let nextRes;
             try {
-                nextRes = yield axios_1.default.get(nextUrl);
+                nextRes = await axios_1.default.get(nextUrl);
                 MusicsOfAlbums.push(...nextRes.data.data);
             }
             catch (handlerErr) {
@@ -34,7 +34,7 @@ const GetMusicOfAlbum = (AlbumDzId) => new Promise((resolve, reject) => {
         }
         MopConsole_1.default.debug(LogLocation, `Received a total of ${MusicsOfAlbums.length} musics for album with Deezer id ${AlbumDzId}`);
         resolve(MusicsOfAlbums);
-    }))
+    })
         .catch((err) => {
         MopConsole_1.default.error(LogLocation, err);
         reject();

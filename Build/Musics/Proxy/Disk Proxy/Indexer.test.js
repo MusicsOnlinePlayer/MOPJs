@@ -1,5 +1,4 @@
 "use strict";
-const tslib_1 = require("tslib");
 require('regenerator-runtime/runtime');
 // const fs = require('fs');
 // const path = require('path');
@@ -7,7 +6,7 @@ require('regenerator-runtime/runtime');
 // const { MusicsFolder } = require('../../Config');
 // jest.mock('fs');
 describe('Musics.DiskProxy.Indexer should work properly', () => {
-    it('Should gather all valid mp3 files in a directory', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    it('Should gather all valid mp3 files in a directory', async () => {
         // fs.readdirSync.mockReturnValue([
         //  'E:\\MusicFolderFake\\MyMusic.mp3',
         //  'E:\\MusicFolderFake\\MyMusic2.mp3',
@@ -18,5 +17,5 @@ describe('Musics.DiskProxy.Indexer should work properly', () => {
         // expect(filesFound).toContain(path.join(MusicsFolder, 'MyMusic2.mp3'));
         // expect(filesFound).not.toContain(path.join(MusicsFolder, 'MyImage.png'));
         expect(true).toBe(true);
-    }));
+    });
 });

@@ -16,7 +16,7 @@ const GetMusicsOfPlaylist = (PlaylistId) => new Promise((resolve, reject) => {
     if (Misc_1.CheckIfDeezerReqAreAllowed())
         resolve([]);
     axios_1.default.get(`https://api.deezer.com/playlist/${PlaylistId}/tracks`)
-        .then((res) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+        .then(async (res) => {
         const MusicsOfPlaylist = [];
         let ReqCount = 1;
         MusicsOfPlaylist.push(...res.data.data);
@@ -25,7 +25,7 @@ const GetMusicsOfPlaylist = (PlaylistId) => new Promise((resolve, reject) => {
         while (NextUrl) {
             let nextRes;
             try {
-                nextRes = yield axios_1.default.get(NextUrl);
+                nextRes = await axios_1.default.get(NextUrl);
                 ReqCount += 1;
                 MusicsOfPlaylist.push(...nextRes.data.data);
                 MopConsole_1.default.debug(LogLocation, `Found ${nextRes.data.data.length} musics ${ReqCount}`);
@@ -36,7 +36,7 @@ const GetMusicsOfPlaylist = (PlaylistId) => new Promise((resolve, reject) => {
             NextUrl = nextRes.data ? nextRes.data.next : undefined;
         }
         resolve(MusicsOfPlaylist);
-    }))
+    })
         .catch((err) => {
         MopConsole_1.default.error(LogLocation, err);
         reject();

@@ -23,9 +23,16 @@ import { MusicsFolder } from '../Musics/Config';
 import { LikeMusicOnUser } from '../Users/Handler';
 import MopConsole from '../Tools/MopConsole';
 import { isUser } from '../Users/Model/Interfaces';
+import { GetSelectionForUser } from '../Musics/Proxy/Selection';
 
 const app = express();
 export default app;
+
+app.get('/Selection/v1/', EnsureAuth, (req,res) => {
+	GetSelectionForUser(req.user, 20)
+		.then((musics) => res.send(musics))
+		.catch(() => res.sendStatus(300))
+});
 
 app.get('/Search/Music/Name/:name', EnsureAuth, async (req, res) => {
 	await SearchAndAddMusicsDeezer(req.params.name);
@@ -104,7 +111,7 @@ app.get('/cdn/:id', sendSeekable, (req, res) => {
 });
 
 app.get('/Music/Like/:id', EnsureAuth, (req, res) => {
-	LikeMusicOnUser(req.user._id, new ObjectId(req.params.id))
+	LikeMusicOnUser(new ObjectId(req.params.id), new ObjectId(req.user._id))
 		.then((IsNowLiked) => {
 			IncrementLikeCount(new ObjectId(req.params.id), IsNowLiked ? 1 : -1);
 			res.sendStatus(200);
@@ -206,3 +213,4 @@ app.delete('/Playlist/id/:id/Remove/', EnsureAuth, (req, res) => {
 		res.sendStatus(422);
 	}
 });
+

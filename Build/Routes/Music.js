@@ -11,14 +11,20 @@ const Config_1 = require("../Musics/Config");
 const Handler_2 = require("../Users/Handler");
 const MopConsole_1 = tslib_1.__importDefault(require("../Tools/MopConsole"));
 const Interfaces_1 = require("../Users/Model/Interfaces");
+const Selection_1 = require("../Musics/Proxy/Selection");
 const app = express_1.default();
 exports.default = app;
-app.get('/Search/Music/Name/:name', EnsureAuthentication_1.EnsureAuth, (req, res) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    yield Handler_1.SearchAndAddMusicsDeezer(req.params.name);
+app.get('/Selection/v1/', EnsureAuthentication_1.EnsureAuth, (req, res) => {
+    Selection_1.GetSelectionForUser(req.user, 20)
+        .then((musics) => res.send(musics))
+        .catch(() => res.sendStatus(300));
+});
+app.get('/Search/Music/Name/:name', EnsureAuthentication_1.EnsureAuth, async (req, res) => {
+    await Handler_1.SearchAndAddMusicsDeezer(req.params.name);
     Search_Proxy_1.default.SearchMusics(req.params.name, parseInt(req.query.Page, 10), parseInt(req.query.PerPage, 10))
         .then((searchResult) => res.send(searchResult))
         .catch(() => res.send({}));
-}));
+});
 app.get('/Search/Album/Name/:name', EnsureAuthentication_1.EnsureAuth, (req, res) => {
     Search_Proxy_1.default.SearchAlbums(req.params.name, parseInt(req.query.Page, 10), parseInt(req.query.PerPage, 10))
         .then((searchResult) => res.send(searchResult))
@@ -51,23 +57,23 @@ app.get('/Artist/id/:id', EnsureAuthentication_1.EnsureAuth, (req, res) => {
 });
 app.get('/cdn/:id', send_seekable_1.default, (req, res) => {
     Handler_1.GetMusicFilePath(new mongodb_1.ObjectId(req.params.id), req.user, true)
-        .then((result) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+        .then(async (result) => {
         if (result.FilePath) {
             res.sendFile(result.FilePath, { root: Config_1.MusicsFolder });
         }
         else {
-            const { TotalLength, StreamingCache } = yield Handler_1.GetMusicStream(result.DeezerId);
+            const { TotalLength, StreamingCache } = await Handler_1.GetMusicStream(result.DeezerId);
             console.log(TotalLength);
             res.sendSeekable(StreamingCache, {
                 type: 'audio/mpeg',
                 length: TotalLength,
             });
         }
-    }))
+    })
         .catch((err) => res.send(err));
 });
 app.get('/Music/Like/:id', EnsureAuthentication_1.EnsureAuth, (req, res) => {
-    Handler_2.LikeMusicOnUser(req.user._id, new mongodb_1.ObjectId(req.params.id))
+    Handler_2.LikeMusicOnUser(new mongodb_1.ObjectId(req.params.id), new mongodb_1.ObjectId(req.user._id))
         .then((IsNowLiked) => {
         Handler_1.IncrementLikeCount(new mongodb_1.ObjectId(req.params.id), IsNowLiked ? 1 : -1);
         res.sendStatus(200);
@@ -80,7 +86,7 @@ app.get('/Playlist/id/:id', EnsureAuthentication_1.EnsureAuth, (req, res) => {
         const creator = Interfaces_1.isUser(doc.Creator) ? doc.Creator : undefined;
         const IsCreator = creator._id.toString() === req.user._id.toString();
         if (doc.IsPublic || IsCreator) {
-            res.send(Object.assign(Object.assign({}, doc), { HasControl: IsCreator }));
+            res.send({ ...doc, HasControl: IsCreator });
         }
         res.sendStatus(401);
     })
@@ -123,7 +129,7 @@ app.post('/Playlist/Create/', EnsureAuthentication_1.EnsureAuth, (req, res) => {
 app.post('/Playlist/id/:id/Add/', EnsureAuthentication_1.EnsureAuth, (req, res) => {
     if (Array.isArray(req.body.MusicsId)) {
         Handler_1.HandlePlaylistRequestById(new mongodb_1.ObjectId(req.params.id))
-            .then((doc) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+            .then(async (doc) => {
             const creator = Interfaces_1.isUser(doc.Creator) ? doc.Creator : undefined;
             const IsCreator = creator._id.toString() === req.user._id.toString();
             if (IsCreator) {
@@ -134,7 +140,7 @@ app.post('/Playlist/id/:id/Add/', EnsureAuthentication_1.EnsureAuth, (req, res) 
             else {
                 res.sendStatus(401);
             }
-        }))
+        })
             .catch((err) => {
             MopConsole_1.default.warn('Routes.Music', err);
             res.sendStatus(300);
@@ -148,7 +154,7 @@ app.post('/Playlist/id/:id/Add/', EnsureAuthentication_1.EnsureAuth, (req, res) 
 app.delete('/Playlist/id/:id/Remove/', EnsureAuthentication_1.EnsureAuth, (req, res) => {
     if (req.body.MusicId) {
         Handler_1.HandlePlaylistRequestById(new mongodb_1.ObjectId(req.params.id))
-            .then((doc) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+            .then(async (doc) => {
             const creator = Interfaces_1.isUser(doc.Creator) ? doc.Creator : undefined;
             const IsCreator = creator._id.toString() === req.user._id.toString();
             if (IsCreator) {
@@ -159,7 +165,7 @@ app.delete('/Playlist/id/:id/Remove/', EnsureAuthentication_1.EnsureAuth, (req, 
             else {
                 res.sendStatus(401);
             }
-        }))
+        })
             .catch((err) => {
             MopConsole_1.default.warn('Routes.Music', err);
             res.sendStatus(300);

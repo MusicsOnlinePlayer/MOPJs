@@ -1,5 +1,4 @@
 "use strict";
-const tslib_1 = require("tslib");
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const mongod = new MongoMemoryServer();
@@ -21,8 +20,8 @@ expect.extend({
 /**
  * Connect to the in-memory database.
  */
-module.exports.connect = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    const uri = yield mongod.getConnectionString();
+module.exports.connect = async () => {
+    const uri = await mongod.getConnectionString();
     const mongooseOpts = {
         useNewUrlParser: true,
         autoReconnect: true,
@@ -30,23 +29,23 @@ module.exports.connect = () => tslib_1.__awaiter(void 0, void 0, void 0, functio
         reconnectInterval: 1000,
         poolSize: 10,
     };
-    yield mongoose.connect(uri, mongooseOpts);
-});
+    await mongoose.connect(uri, mongooseOpts);
+};
 /**
  * Drop database, close the connection and stop mongod.
  */
-module.exports.closeDatabase = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    yield mongoose.connection.dropDatabase();
-    yield mongoose.connection.close();
-    yield mongod.stop();
-});
+module.exports.closeDatabase = async () => {
+    await mongoose.connection.dropDatabase();
+    await mongoose.connection.close();
+    await mongod.stop();
+};
 /**
  * Remove all the data for all db collections.
  */
-module.exports.clearDatabase = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+module.exports.clearDatabase = async () => {
     const { collections } = mongoose.connection;
     for (const key in collections) {
         const collection = collections[key];
-        yield collection.deleteMany();
+        await collection.deleteMany();
     }
-});
+};

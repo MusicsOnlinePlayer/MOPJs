@@ -13,7 +13,7 @@ app.post('/Login', passport_1.default.authenticate('local'), (req, res) => {
     res.send({ success: true });
     MopConsole_1.default.info('Route.User', 'User logged in');
 });
-app.post('/Register', (req, res) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+app.post('/Register', async (req, res) => {
     if (!req.body.name) {
         res.send({ success: false });
     }
@@ -32,7 +32,7 @@ app.post('/Register', (req, res) => tslib_1.__awaiter(void 0, void 0, void 0, fu
     })
         .catch(() => res.send({ success: false }));
     // const { user } = await User.authenticate()(req.body.username, req.body.password);
-}));
+});
 app.get('/Me', (req, res) => {
     if (req.user) {
         res.send({ Account: req.user });

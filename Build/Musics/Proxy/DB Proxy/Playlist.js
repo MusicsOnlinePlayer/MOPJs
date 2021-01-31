@@ -13,9 +13,9 @@ const LogLocation = 'Musics.Proxy.DBProxy.Playlist';
  * @returns {Promise<string>} Db id of the created music
  */
 // eslint-disable-next-line import/prefer-default-export
-const CreatePlaylist = (Name, MusicsId, UserId, IsPublic = true) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+const CreatePlaylist = async (Name, MusicsId, UserId, IsPublic = true) => {
     MopConsole_1.default.info(LogLocation, `Creating a ${IsPublic ? 'public' : 'private'} playlist named ${Name} for ${UserId}`);
-    const p = yield Model_1.Playlist.create({
+    const p = await Model_1.Playlist.create({
         Name,
         IsPublic,
         Creator: UserId,
@@ -23,5 +23,5 @@ const CreatePlaylist = (Name, MusicsId, UserId, IsPublic = true) => tslib_1.__aw
     });
     MopConsole_1.default.info(LogLocation, `Created playlist with id ${p._id}`);
     return p._id;
-});
+};
 exports.CreatePlaylist = CreatePlaylist;

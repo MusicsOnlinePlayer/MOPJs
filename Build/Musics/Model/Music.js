@@ -84,17 +84,13 @@ if (process.env.NODE_ENV !== 'test' && !MopConf_json_1.UseMongoSearchIndex) {
         esClient,
     });
 }
-ArtistSchema.static('findOneOrCreate', function findOneOrCreate(condition, doc) {
-    return tslib_1.__awaiter(this, void 0, void 0, function* () {
-        const one = yield this.findOne(condition);
-        return one || (yield this.create(doc));
-    });
+ArtistSchema.static('findOneOrCreate', async function findOneOrCreate(condition, doc) {
+    const one = await this.findOne(condition);
+    return one || await this.create(doc);
 });
-AlbumSchema.static('findOneOrCreate', function findOneOrCreate(condition, doc) {
-    return tslib_1.__awaiter(this, void 0, void 0, function* () {
-        const one = yield this.findOne(condition);
-        return one || (yield this.create(doc));
-    });
+AlbumSchema.static('findOneOrCreate', async function findOneOrCreate(condition, doc) {
+    const one = await this.findOne(condition);
+    return one || await this.create(doc);
 });
 exports.MusicModel = mongoose_1.default.model('Music', MusicSchema, 'Music');
 exports.AlbumModel = mongoose_1.default.model('Album', AlbumSchema, 'Album');

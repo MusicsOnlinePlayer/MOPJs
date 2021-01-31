@@ -17,12 +17,12 @@ const Interfaces_1 = require("../../Interfaces");
 const LogLocation = 'Musics.Proxy.DeezerProxy.Stream';
 class StreamQueue {
     constructor() {
-        this.Init = () => tslib_1.__awaiter(this, void 0, void 0, function* () {
-            this.User = yield _1.GetDownloaderUser();
+        this.Init = async () => {
+            this.User = await _1.GetDownloaderUser();
             this.downloadQueue.autostart = true;
             MopConsole_1.default.info(LogLocation, 'Stream queue: Ready');
-        });
-        this.OnStreamEnd = (dzTrack) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+        };
+        this.OnStreamEnd = async (dzTrack) => {
             const musicId = dzTrack.Id;
             MopConsole_1.default.info(LogLocation, `[${musicId}] Stream ended`);
             const FilePath = StreamQueue.GetPathFromMusicId(musicId);
@@ -35,7 +35,7 @@ class StreamQueue {
                 this.streamCache[musicId] = undefined;
             });
             this.streamCache[musicId].Stream.pipe(ws);
-        });
+        };
         this.CheckStreamCacheLength = () => {
             const { length } = Object.keys(this.streamCache);
             if (length > 10) {
@@ -72,14 +72,14 @@ class StreamQueue {
                 };
                 this.CheckStreamCacheLength();
                 dzdownloadernode_1.GetDecryptedStream(track, this.User, this.streamCache[musicId].Stream, () => this.OnStreamEnd(track), { retries: 3 })
-                    .then(() => tslib_1.__awaiter(this, void 0, void 0, function* () {
+                    .then(async () => {
                     MopConsole_1.default.debug(LogLocation, `[${musicId}] Stream received`);
                     resolve({
                         MusicId: track.Id,
                         TotalLength: track.Size,
                         StreamingCache: this.streamCache[musicId].Stream,
                     });
-                }))
+                })
                     .catch((err) => reject(err));
             })
                 .catch((err) => {
@@ -103,45 +103,39 @@ class StreamQueue {
     static GetPathFromMusicId(musicId) {
         return path_1.default.join(Config_1.MusicsFolder, `${musicId}.mp3`);
     }
-    static GetFilePath(musicId) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const MusicPath = StreamQueue.GetPathFromMusicId(musicId);
-            yield Model_1.Music.findOneAndUpdate({ DeezerId: musicId }, { FilePath: MusicPath });
-            MopConsole_1.default.debug(LogLocation, `[${musicId}] Saved path to db`);
-            return MusicPath;
-        });
+    static async GetFilePath(musicId) {
+        const MusicPath = StreamQueue.GetPathFromMusicId(musicId);
+        await Model_1.Music.findOneAndUpdate({ DeezerId: musicId }, { FilePath: MusicPath });
+        MopConsole_1.default.debug(LogLocation, `[${musicId}] Saved path to db`);
+        return MusicPath;
     }
-    static GetCoverOfTrack(dzTrack) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const music = yield Model_1.Music.findOne({ DeezerId: dzTrack.Id }).populate('AlbumId');
-            const Album = Interfaces_1.isAlbum(music.AlbumId) ? music.AlbumId : undefined;
-            if (Album.ImagePathDeezer) {
-                const res = yield axios_1.default.get(Album.ImagePathDeezer, {
-                    responseType: 'arraybuffer',
-                });
-                return res.data;
-            }
-            return undefined;
-        });
+    static async GetCoverOfTrack(dzTrack) {
+        const music = await Model_1.Music.findOne({ DeezerId: dzTrack.Id }).populate('AlbumId');
+        const Album = Interfaces_1.isAlbum(music.AlbumId) ? music.AlbumId : undefined;
+        if (Album.ImagePathDeezer) {
+            const res = await axios_1.default.get(Album.ImagePathDeezer, {
+                responseType: 'arraybuffer',
+            });
+            return res.data;
+        }
+        return undefined;
     }
-    static WriteTagsToFile(filePath, dzTrack) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            yield node_id3_1.Promise.write({
-                title: dzTrack.Title,
-                artist: dzTrack.Artist,
-                album: dzTrack.Album,
-                trackNumber: String(dzTrack.TrackNumber),
-                image: {
-                    mime: 'jpeg',
-                    type: {
-                        id: 3,
-                        name: 'front cover',
-                    },
-                    imageBuffer: yield StreamQueue.GetCoverOfTrack(dzTrack),
-                    description: `Cover of ${dzTrack.Title}`,
+    static async WriteTagsToFile(filePath, dzTrack) {
+        await node_id3_1.Promise.write({
+            title: dzTrack.Title,
+            artist: dzTrack.Artist,
+            album: dzTrack.Album,
+            trackNumber: String(dzTrack.TrackNumber),
+            image: {
+                mime: 'jpeg',
+                type: {
+                    id: 3,
+                    name: 'front cover',
                 },
-            }, filePath);
-        });
+                imageBuffer: await StreamQueue.GetCoverOfTrack(dzTrack),
+                description: `Cover of ${dzTrack.Title}`,
+            },
+        }, filePath);
     }
     AddToQueueAsync(musicId) {
         return new Promise((resolve) => {

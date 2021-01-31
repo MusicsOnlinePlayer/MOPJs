@@ -16,10 +16,10 @@ const SearchMusics = (Query) => new Promise((resolve, reject) => {
     if (Misc_1.CheckIfDeezerReqAreAllowed())
         resolve([]);
     axios_1.default.get(`https://api.deezer.com/search?q=${Query}`)
-        .then((res) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+        .then(async (res) => {
         MopConsole_1.default.debug(LogLocation, `Found ${res.data.data.length} musics`);
         resolve(res.data.data);
-    }))
+    })
         .catch((err) => {
         MopConsole_1.default.error(LogLocation, err);
         reject();
