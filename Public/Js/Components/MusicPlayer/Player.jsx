@@ -12,6 +12,7 @@ import ButtonIcon from '../Helper/ButtonIcon';
 import {
 	ChangePlayingId as ChangePlayingIdRedux,
 	UpdateCurrentPlaylist as UpdateCurrentPlaylistRedux,
+	AddMultipleMusics as AddMultipleMusicsRedux
 } from '../../Actions/Action';
 import PlayerSlider from './PlayerSlider';
 
@@ -33,6 +34,9 @@ const mapDispatchToProps = (dispatch) => ({
 	UpdateCurrentPlaylist: (Musics, PlayingId) => {
 		dispatch(UpdateCurrentPlaylistRedux(Musics, PlayingId));
 	},
+	AddMultipleMusics: (Musics) => {
+		dispatch(AddMultipleMusicsRedux(Musics));
+	},
 });
 
 class PlayerConnected extends React.Component {
@@ -46,6 +50,7 @@ class PlayerConnected extends React.Component {
 		}).isRequired,
 		ChangePlayingId: PropTypes.func.isRequired,
 		UpdateCurrentPlaylist: PropTypes.func.isRequired,
+		AddMultipleMusics: PropTypes.func.isRequired,
 		MusicFilePath: PropTypes.string,
 		PlayingMusic: PropTypes.shape({
 			_id: PropTypes.string.isRequired,
@@ -124,8 +129,21 @@ class PlayerConnected extends React.Component {
 	}
 
 	OnPlayerEnd = () => {
-		const { NextMusic, ChangePlayingId, CurrentMusicId } = this.props;
-		NextMusic ? ChangePlayingId(CurrentMusicId + 1) : this.setState({ IsPlaying: false });
+		const { NextMusic, ChangePlayingId, CurrentMusicId, AddMultipleMusics } = this.props;
+		if(!NextMusic) {
+			Axios.get('/Music/Selection/v1')
+				.then((res) => {
+					AddMultipleMusics(res.data);
+					if(res.data.length !== 0) {
+						ChangePlayingId(CurrentMusicId + 1)
+					}else {
+						this.onPause();
+					}
+				})
+		} else {
+			this.onPause();
+		}
+		
 	};
 
 	OnPlay = () => {
