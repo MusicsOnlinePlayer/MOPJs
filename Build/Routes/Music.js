@@ -7,6 +7,7 @@ const mongodb_1 = require("mongodb");
 const EnsureAuthentication_1 = require("../Auth/EnsureAuthentication");
 const Search_Proxy_1 = tslib_1.__importDefault(require("../Musics/Proxy/Search Proxy"));
 const Handler_1 = require("../Musics/Handler");
+const DeezerHandler_1 = require("../Musics/Handler/DeezerHandler");
 const Config_1 = require("../Musics/Config");
 const Handler_2 = require("../Users/Handler");
 const MopConsole_1 = tslib_1.__importDefault(require("../Tools/MopConsole"));
@@ -16,6 +17,11 @@ const app = express_1.default();
 exports.default = app;
 app.get('/Selection/v1/', EnsureAuthentication_1.EnsureAuth, (req, res) => {
     Selection_1.GetSelectionForUser(req.user, 20)
+        .then((musics) => res.send(musics))
+        .catch(() => res.sendStatus(300));
+});
+app.get('/Music/Trending/', EnsureAuthentication_1.EnsureAuth, (req, res) => {
+    DeezerHandler_1.ImportTrendingMusics()
         .then((musics) => res.send(musics))
         .catch(() => res.sendStatus(300));
 });

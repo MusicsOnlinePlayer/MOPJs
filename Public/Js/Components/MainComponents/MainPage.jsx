@@ -2,6 +2,7 @@ import React from 'react';
 import Favorites from './Favorites';
 import History from './History';
 import Selection from './Selection'
+import Trending from './Trending';
 
 class MainPage extends React.Component {
 	constructor(props) {
@@ -13,6 +14,7 @@ class MainPage extends React.Component {
 		return (
 			<>
 				<Selection />
+				<Trending />
 				<Favorites Size={10} />
 				<History Size={10} />
 			</>

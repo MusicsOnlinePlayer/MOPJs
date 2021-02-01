@@ -19,6 +19,7 @@ import {
 	CreatePlaylist,
 	RemovePlaylistById,
 } from '../Musics/Handler';
+import { ImportTrendingMusics } from '../Musics/Handler/DeezerHandler';
 import { MusicsFolder } from '../Musics/Config';
 import { LikeMusicOnUser } from '../Users/Handler';
 import MopConsole from '../Tools/MopConsole';
@@ -33,6 +34,12 @@ app.get('/Selection/v1/', EnsureAuth, (req,res) => {
 		.then((musics) => res.send(musics))
 		.catch(() => res.sendStatus(300))
 });
+
+app.get('/Music/Trending/', EnsureAuth, (req,res) => {
+	ImportTrendingMusics()
+		.then((musics) => res.send(musics))
+		.catch(() => res.sendStatus(300))
+})
 
 app.get('/Search/Music/Name/:name', EnsureAuth, async (req, res) => {
 	await SearchAndAddMusicsDeezer(req.params.name);
