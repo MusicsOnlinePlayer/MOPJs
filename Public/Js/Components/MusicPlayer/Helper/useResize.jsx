@@ -19,7 +19,7 @@ const useResize = (myRef) => {
 		return () => {
 			window.removeEventListener('resize', handleResize);
 		};
-	}, [myRef]);
+	}, [myRef.current]);
 
 	return { width, height };
 };

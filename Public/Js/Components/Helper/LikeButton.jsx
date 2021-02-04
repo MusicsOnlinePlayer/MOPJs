@@ -35,7 +35,7 @@ class LikeButton extends React.Component {
 		return (<ButtonIcon 
 			onClick={this.onButtonClick}
 			dataEva={IsLiked ? "heart" : "heart-outline"}
-			evaOptions={{fill: "#d6d6d6ff", width: '30px', height: '30px'}} 
+			evaOptions={{fill: "#CC506C", width: '30px', height: '30px'}} 
 			buttonClass="float-right d-none d-lg-block Accessory LikeButton" 
 		/>);
 	}
