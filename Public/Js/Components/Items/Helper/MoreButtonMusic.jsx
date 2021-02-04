@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dropdown } from 'react-bootstrap';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import Icon from './../../Helper/Icon'
 
 const MoreIconButton = React.forwardRef(({ onClick }, ref) => (
 	<div
@@ -14,14 +13,7 @@ const MoreIconButton = React.forwardRef(({ onClick }, ref) => (
 		}}
 		className="float-right"
 	>
-		<FontAwesomeIcon
-			icon={faPlus}
-			size="lg"
-			style={{
-				color: '#d6d6d6ff',
-				fontSize: '1.5rem',
-			}}
-		/>
+		<Icon dataEva="plus-outline" evaOptions={{fill: "#d6d6d6ff", width: '34px', height: '34px'}} />
 	</div>
 ));
 

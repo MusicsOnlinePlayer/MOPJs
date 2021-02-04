@@ -1,6 +1,4 @@
 import React from 'react';
-import { faHeart } from '@fortawesome/free-solid-svg-icons';
-import { faHeart as faHeartEmpty } from '@fortawesome/free-regular-svg-icons';
 import PropTypes from 'prop-types';
 import ButtonIcon from './ButtonIcon';
 
@@ -33,9 +31,13 @@ class LikeButton extends React.Component {
 
 	render() {
 		const { IsLiked } = this.state;
-		const Icon = IsLiked ? faHeart : faHeartEmpty;
 
-		return (<ButtonIcon onClick={this.onButtonClick} faIcon={Icon} buttonClass="float-right d-none d-lg-block Accessory LikeButton" />);
+		return (<ButtonIcon 
+			onClick={this.onButtonClick}
+			dataEva={IsLiked ? "heart" : "heart-outline"}
+			evaOptions={{fill: "#d6d6d6ff", width: '30px', height: '30px'}} 
+			buttonClass="float-right d-none d-lg-block Accessory LikeButton" 
+		/>);
 	}
 }
 

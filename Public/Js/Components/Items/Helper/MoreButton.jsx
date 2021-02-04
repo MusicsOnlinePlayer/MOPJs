@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dropdown } from 'react-bootstrap';
-import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
+import Icon from '../../Helper/Icon';
 
 const MoreIconButton = React.forwardRef(({ onClick }, ref) => (
 	<div
@@ -21,16 +20,16 @@ const MoreIconButton = React.forwardRef(({ onClick }, ref) => (
 			position: 'relative',
 		}}
 	>
-		<FontAwesomeIcon
-			icon={faEllipsisV}
-			className="my-auto"
-			size="lg"
+		<Icon
+			dataEva="more-vertical-outline"
+			evaOptions={{fill: "#d6d6d6ff", width: '30px', height: '30px'}} 
+			// data-eva-fill="#d6d6d6ff"
+			// className="my-auto"
 			style={{
 				fontSize: '20px',
 				position: 'absolute',
-				left: '16.25px',
-				top: '10px',
-				color: '#d6d6d6ff',
+				left: '5.25px',
+				top: '4px',
 				mixBlendMode: 'hard-light',
 			}}
 		/>

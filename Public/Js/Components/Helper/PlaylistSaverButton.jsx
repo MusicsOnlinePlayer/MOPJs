@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import {
 	Modal, Button, Form,
 } from 'react-bootstrap';
-import { faSave } from '@fortawesome/free-solid-svg-icons';
 import Axios from 'axios';
 import ButtonIcon from './ButtonIcon';
 
@@ -55,7 +54,12 @@ class PlaylistSaverButton extends React.Component {
 
 		return (
 			<>
-				<ButtonIcon faIcon={faSave} buttonClass="float-right d-none d-lg-block" onClick={this.openModal} />
+				<ButtonIcon
+					dataEva={"save"}
+					buttonClass="float-right d-none d-lg-block"
+					onClick={this.openModal} 
+					evaOptions={{fill: "#d6d6d6ff", width: '30px', height: '30px'}} 
+				/>
 
 				<Modal show={ShowModal} onHide={this.closeModal}>
 					<Modal.Header closeButton>

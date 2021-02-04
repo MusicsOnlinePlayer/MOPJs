@@ -2,7 +2,6 @@ import React from 'react';
 import {
 	Button, Col, Row, Spinner,
 } from 'react-bootstrap';
-import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { ClearPlaylist as ClearPlaylistRedux, AddMultipleMusics as AddMultipleMusicsRedux } from '../../../Actions/Action';
@@ -105,7 +104,12 @@ class MusicGroupConnected extends React.Component {
 						</small>
 					</Col>
 					<Col className="">
-						<ButtonIcon faIcon={faPlay} onClick={this.onPlayAll} buttonClass="py-auto pr-4 float-right" />
+						<ButtonIcon
+						 dataEva={"play-circle-outline"}
+						 evaOptions={{fill: "#d6d6d6ff", width: '30px', height: '30px'}} 
+						 onClick={this.onPlayAll}
+						 buttonClass="py-auto pr-4 float-right"
+						 />
 					</Col>
 				</Row>
 				<table className="table table-hover table-borderless">

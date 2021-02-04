@@ -2,18 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Image as ImgBootstrap, Row } from 'react-bootstrap';
 import MoreButtonMusic from './Helper/MoreButtonMusic';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGripLines } from '@fortawesome/free-solid-svg-icons';
 import { SortableHandle } from 'react-sortable-hoc';
+import Icon from '../Helper/Icon';
 
 const DragHandle = SortableHandle(() => (
-	<FontAwesomeIcon
-		icon={faGripLines}
-		size="lg"
-		style={{
-			color: '#d6d6d6ff',
-			fontSize: '1.5rem',
-		}}
+	<Icon
+		dataEva="menu-outline"
+		evaOptions={{fill: "#d6d6d6ff", width: '30px', height: '30px'}}
 	/>
 ));
 

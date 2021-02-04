@@ -1,6 +1,3 @@
-import {
-	faPlay, faPause, faStepForward, faStepBackward,
-} from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import {
 	Col, Image, Navbar, Row, Button,
@@ -179,7 +176,7 @@ class PlayerConnected extends React.Component {
 		const { IsPlaying } = this.state;
 		const { PlayingMusic, NextMusic, MusicFilePath } = this.props;
 
-		const PlayingIcon = !IsPlaying ? faPlay : faPause;
+		const PlayingIcon = !IsPlaying ? "play-circle-outline" : "pause-circle-outline";
 
 		document.title = `${PlayingMusic ? PlayingMusic.Title : ''} MOP Js Edition`;
 
@@ -212,11 +209,11 @@ class PlayerConnected extends React.Component {
 										{PlayingMusic.Artist}
 									</p>
 								</Col>
-								<ButtonIcon buttonClass="my-auto mx-2 ml-auto p-0" iconFontSize="1.75rem" onClick={this.HandleBack} faIcon={faStepBackward} />
+								<ButtonIcon buttonClass="my-auto mx-2 ml-auto p-0" iconFontSize="1.75rem" onClick={this.HandleBack} style={{transform: "scale(-1)"}}  evaOptions={{fill: "#d6d6d6ff", width: '30px', height: '30px'}}  dataEva={"skip-forward-outline"} />
 
-								<ButtonIcon buttonClass="my-auto mx-2 p-0" iconFontSize="1.75rem" onClick={this.HandlePlay} faIcon={PlayingIcon} />
+								<ButtonIcon buttonClass="my-auto mx-2 p-0" iconFontSize="1.75rem" onClick={this.HandlePlay} evaOptions={{fill: "#d6d6d6ff", width: '30px', height: '30px'}}  dataEva={PlayingIcon} />
 
-								<ButtonIcon buttonClass="my-auto ml-2 p-0 mr-0" iconFontSize="1.75rem" onClick={this.HandleNext} faIcon={faStepForward} />
+								<ButtonIcon buttonClass="my-auto ml-2 p-0 mr-0" iconFontSize="1.75rem" onClick={this.HandleNext} evaOptions={{fill: "#d6d6d6ff", width: '30px', height: '30px'}}  dataEva={"skip-forward-outline"} />
 
 
 								<Button variant="" className="my-auto ml-1 mt-1 d-none d-lg-block" onClick={this.HandleOpenPlaylist}>

@@ -3,9 +3,8 @@ import {
 	Navbar, FormControl, Form,
 } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import AccountTopNav from '../Authentification/AccountTopNav';
+import Icon from '../Helper/Icon';
 
 export default class TopNav extends React.Component {
 	static propTypes = {
@@ -39,11 +38,10 @@ export default class TopNav extends React.Component {
 			<Navbar variant="" bg="" expand="lg" className="justify-content-between">
 				<Navbar.Brand href="#">Mop - Js Edition</Navbar.Brand>
 				<Navbar.Toggle aria-controls="basic-navbar-nav">
-					<FontAwesomeIcon
-						icon={faCaretDown}
-						size="lg"
+					<Icon
+						dataEva="menu-2-outline"
+						evaOptions={{fill: "#d6d6d6ff"}}
 						style={{
-							color: '#d6d6d6ff',
 							fontSize: '1.5rem',
 						}}
 					/>
