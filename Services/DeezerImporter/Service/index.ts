@@ -1,16 +1,18 @@
 import MopConsole from 'lib/MopConsole';
 import Seneca from 'seneca';
-import DeezerPlugin from './Plugins/DeezerPlugin';
+import DeezerAlbumPlugin from './Plugins/DeezerAlbumPlugin';
+import DeezerArtistPlugin from './Plugins/DeezerArtistPlugin';
 
 const LogLocation = 'Services.DeezerImporter';
 
 Seneca({ tag: 'DeezerImporter' })
-	.use(DeezerPlugin)
+	.use(DeezerArtistPlugin)
+	.use(DeezerAlbumPlugin)
 	.ready(function (err) {
 		if (err) MopConsole.error(LogLocation, err.message);
 
-		MopConsole.warn(LogLocation, `Service ${this.id} ready`);
-
+		MopConsole.warn(LogLocation, `Service ${this.tag} ready`);
+		MopConsole.debug(LogLocation, `Id ${this.id}`);
 		const pluginsNames = Object.keys(this.list_plugins());
 		MopConsole.info(LogLocation, `Plugins loaded (${pluginsNames.length}): `);
 		for (const plugin of pluginsNames) {

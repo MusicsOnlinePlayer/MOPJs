@@ -1,5 +1,6 @@
 import Axios from 'axios';
 import MopConsole from 'lib/MopConsole';
+import { IDeezerAlbum } from 'lib/Types/Deezer';
 
 const LogLocation = 'Services.DeezerImporter.DeezerApi';
 
@@ -20,5 +21,45 @@ export const GetDeezerArtistImage = (ArtistDzId: number): Promise<string> =>
 			.catch((err) => {
 				MopConsole.error(LogLocation, err);
 				reject(err);
+			});
+	});
+
+/** This function gets all albums of a specified Artist (here by a deezer id)
+ * @param {number} ArtistDzId - The deezer Id of the artist
+ * @returns {Promise<Array<IDeezerAlbum>>}Data from deezer API, not formatted for a usage in MongoDB
+ */
+export const GetDeezerArtistAlbums = (ArtistDzId: number): Promise<Array<IDeezerAlbum>> =>
+	new Promise<Array<IDeezerAlbum>>((resolve, reject) => {
+		MopConsole.debug(LogLocation, `Getting Album of artist (id: ${ArtistDzId})`);
+		Axios.get(`https://api.deezer.com/artist/${ArtistDzId}/albums`)
+			.then(async (res) => {
+				const MusicsOfAlbums: Array<IDeezerAlbum> = [];
+				MusicsOfAlbums.push(...res.data.data);
+				MopConsole.debug(
+					LogLocation,
+					`Got ${MusicsOfAlbums.length} albums for artist with (id: ${ArtistDzId})`
+				);
+
+				let nextUrl = res.data.next;
+
+				while (nextUrl) {
+					let nextRes;
+					try {
+						nextRes = await Axios.get(nextUrl);
+						MusicsOfAlbums.push(...nextRes.data.data);
+					} catch (handlerErr) {
+						MopConsole.error(LogLocation, handlerErr);
+					}
+					nextUrl = nextRes.data ? nextRes.data.next : undefined;
+				}
+				MopConsole.debug(
+					LogLocation,
+					`Got a total of ${MusicsOfAlbums.length} albums for artist (id: ${ArtistDzId})`
+				);
+				resolve(MusicsOfAlbums);
+			})
+			.catch((err) => {
+				MopConsole.error(LogLocation, err);
+				reject();
 			});
 	});
