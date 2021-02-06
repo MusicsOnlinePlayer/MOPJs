@@ -13,3 +13,5 @@ Server/Config/MopConf.json
 .env
 Build/Config/MopConf.json
 Build/.env
+**/node_modules/**
+**/Build/**
