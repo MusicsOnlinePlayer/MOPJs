@@ -1,11 +1,11 @@
-import { IDeezerMusic } from "../../Types/Deezer";
+import { IDeezerAlbum, IDeezerMusic } from "../../Types/Deezer";
 
 export interface DeezerAlbumCoverRequest {
-  id: number;
-  path: string;
+	id: number;
+	path: string;
 }
 
 export interface DeezerAlbumMusicsRequest {
-  id: number;
-  Musics: IDeezerMusic[];
+	id: number;
+	Musics: IDeezerMusic[];
 }

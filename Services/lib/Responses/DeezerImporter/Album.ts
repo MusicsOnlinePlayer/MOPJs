@@ -1,9 +1,9 @@
-import { IDeezerMusic } from "../../Types/Deezer";
+import { IMusic } from "lib/Models/Musics";
 
 export interface DeezerAlbumCoverReply {
   path: string;
 }
 
 export interface DeezerAlbumMusicsReply {
-  Musics: IDeezerMusic[];
+  Musics: IMusic[];
 }

@@ -8,7 +8,7 @@ const LogLocation = 'Services.DeezerImporter';
 Seneca({ tag: 'DeezerImporter' })
 	.use(DeezerArtistPlugin)
 	.use(DeezerAlbumPlugin)
-	.client({ port: 3001, host: 'deeezerindexer-service' })
+	.client({ port: 3001, host: 'deeezerindexer-service', pin: 'req:index' })
 	.listen(3000)
 	.ready(function (err) {
 		if (err) MopConsole.error(LogLocation, err.message);

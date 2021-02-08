@@ -1,4 +1,4 @@
 {
-    "http.proxyAuthorization": null,
-    "typescript.tsdk": "node_modules/ttypescript/lib"
+	"http.proxyAuthorization": null,
+	"typescript.tsdk": "node_modules/ttypescript/lib"
 }

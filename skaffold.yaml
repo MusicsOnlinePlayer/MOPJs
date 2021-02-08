@@ -9,6 +9,7 @@ build:
     sync:
       infer:
         - '/Services/DeezerImporter/Service/**/*'
+        - '/Services/lib/**/*'
     docker:
       dockerfile: DeezerImporter/Dockerfile
   - image: malauryd/mop_deezerindexer
@@ -16,11 +17,21 @@ build:
     sync:
       infer:
         - '/Services/DeezerIndexer/Service/**/*'
+        - '/Services/lib/**/*'
     docker:
       dockerfile: DeezerIndexer/Dockerfile
+  - image: malauryd/mop_musicfrontend
+    context: Services
+    sync:
+      infer:
+        - '/Services/MusicFrontend/Frontend/**/*'
+        - '/Services/lib/**/*'
+    docker:
+      dockerfile: MusicFrontend/Dockerfile
 deploy:
   kubectl:
     manifests:
     - Kubernetes/mongo.yaml
     - Services/DeezerImporter/deployment.yaml
     - Services/DeezerIndexer/deployment.yaml
+    - Services/MusicFrontend/deployment.yaml

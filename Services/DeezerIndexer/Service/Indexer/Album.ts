@@ -1,15 +1,15 @@
 import { IDeezerAlbum, IDeezerMusic } from 'lib/Types/Deezer';
-import { IMusicModel, Music, Album, IMusic } from 'lib/Models/Musics';
-import { GetTagsFromDeezerAlbumMusics } from 'Service/Transformer/Music';
+import { IMusicModel, Music, Album, IMusic, IAlbum } from 'lib/Models/Musics';
+import { GetTagsFromDeezerAlbumMusics } from '../Transformer/Music';
 import { BulkWriteOperation, ObjectId } from 'mongodb';
 import MopConsole from 'lib/MopConsole';
 
 const LogLocation = 'Services.DeezerIndexer.Indexer.Album';
 
-const IndexAlbumMusics = async (DeezerAlbum: IDeezerAlbum, DeezerMusics: IDeezerMusic[]) => {
-	const ExportedMusics = DeezerMusics.map((m) => GetTagsFromDeezerAlbumMusics(m, DeezerAlbum.title, DeezerAlbum.id));
+export const IndexAlbumMusics = async (DeezerAlbumId: number, DeezerMusics: IDeezerMusic[]): Promise<IAlbum> => {
+	const AlbumFromDb = await Album.findOne({ DeezerId: DeezerAlbumId });
 
-	const AlbumFromDb = await Album.find({ DeezerId: DeezerAlbum.id });
+	const ExportedMusics = DeezerMusics.map((m) => GetTagsFromDeezerAlbumMusics(m, AlbumFromDb.Name, DeezerAlbumId));
 
 	const MusicsToAdd = ExportedMusics.map(
 		(i) =>
@@ -35,4 +35,13 @@ const IndexAlbumMusics = async (DeezerAlbum: IDeezerAlbum, DeezerMusics: IDeezer
 	const MusicsInsertResult = await Music.collection.bulkWrite(bulkArr);
 	const MusicIds = Object.keys(MusicsInsertResult.upsertedIds);
 	MopConsole.info(LogLocation, `Upserted ${MusicIds.length} musics`);
+
+	AlbumFromDb.MusicsId.push(...MusicIds.map((id) => new ObjectId(id)));
+	return await AlbumFromDb.save();
+};
+
+export const SetDeezerCoverOfAlbum = async (DeezerAlbumId: number, path: string): Promise<IAlbum> => {
+	const AlbumFromDb = await Album.findOne({ DeezerId: DeezerAlbumId });
+	AlbumFromDb.ImagePathDeezer = path;
+	return await AlbumFromDb.save();
 };
