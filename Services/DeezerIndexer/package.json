@@ -12,10 +12,14 @@
   "author": "Malaury DUTOUR",
   "license": "ISC",
   "dependencies": {
+    "chalk": "^4.1.0",
+    "fluent-logger": "^3.4.1",
     "mongoose": "^5.11.15",
     "seneca": "^3.23.2"
   },
   "devDependencies": {
+    "@types/mongoose": "^5.10.3",
+    "@types/seneca": "^2.1.10",
     "@typescript-eslint/eslint-plugin": "^4.14.2",
     "@typescript-eslint/parser": "^4.14.2",
     "eslint": "^7.19.0",

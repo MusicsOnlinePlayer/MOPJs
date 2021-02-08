@@ -1,19 +1,5 @@
 import mongoose from "mongoose";
-import * as elasticsearch from "elasticsearch";
-import mongoosastic from "mongoosastic";
 import { IAlbum, IArtist, IMusic, IPlaylist } from ".";
-
-const EsHost = process.env.ES_HOST;
-const UseMongoSearchIndex = EsHost === undefined;
-
-// eslint-disable-next-line import/no-mutable-exports
-let esClient: elasticsearch.Client;
-if (process.env.NODE_ENV !== "test" && !UseMongoSearchIndex) {
-	esClient = new elasticsearch.Client({
-		host: EsHost,
-	});
-}
-export { esClient };
 
 const MusicSchema = new mongoose.Schema({
 	Title: { type: String, es_indexed: true, es_boost: 8.0 },
@@ -90,85 +76,38 @@ const PlaylistSchema = new mongoose.Schema({
 
 PlaylistSchema.index({ Name: "text" });
 
-if (process.env.NODE_ENV !== "test" && !UseMongoSearchIndex) {
-	MusicSchema.plugin(mongoosastic, {
-		esClient,
-	});
-	AlbumSchema.plugin(mongoosastic, {
-		esClient,
-	});
-	ArtistSchema.plugin(mongoosastic, {
-		esClient,
-	});
-	PlaylistSchema.plugin(mongoosastic, {
-		esClient,
-	});
-}
+ArtistSchema.statics.findOneOrCreate = async function findOneOrCreate(
+	condition: mongoose.FilterQuery<IArtist>,
+	doc: IArtist
+) {
+	const one = await this.findOne(condition);
 
-ArtistSchema.static(
-	"findOneOrCreate",
-	async function findOneOrCreate(
-		condition: mongoose.FilterQuery<IArtist>,
-		doc: IArtist
-	) {
-		const one = await this.findOne(condition);
+	return one || (await this.create(doc));
+};
 
-		return one || (await this.create(doc));
-	}
-);
+AlbumSchema.statics.findOneOrCreate = async function findOneOrCreate(
+	condition: mongoose.FilterQuery<IAlbum>,
+	doc: IArtist
+) {
+	const one = await this.findOne(condition);
 
-AlbumSchema.static(
-	"findOneOrCreate",
-	async function findOneOrCreate(
-		condition: mongoose.FilterQuery<IAlbum>,
-		doc: IAlbum
-	) {
-		const one = await this.findOne(condition);
-
-		return one || (await this.create(doc));
-	}
-);
+	return one || (await this.create(doc));
+};
 
 export interface IAlbumModel extends mongoose.Model<IAlbum> {
 	findOneOrCreate(
 		condition: mongoose.FilterQuery<IAlbum>,
 		doc: IAlbum
 	): Promise<IAlbum>;
-	search(
-		searchParams: Record<string, unknown>,
-		options: Record<string, unknown>,
-		cb: (err: Error, results: { hits: { hits: IAlbum[] } }) => void
-	): void;
-	synchronize(): void;
 }
 export interface IArtistModel extends mongoose.Model<IArtist> {
 	findOneOrCreate(
 		condition: mongoose.FilterQuery<IAlbum>,
 		doc: IArtist
 	): Promise<IArtist>;
-	search(
-		searchParams: Record<string, unknown>,
-		options: Record<string, unknown>,
-		cb: (err: Error, results: { hits: { hits: IArtist[] } }) => void
-	): void;
-	synchronize(): void;
 }
-export interface IMusicModel extends mongoose.Model<IMusic> {
-	search(
-		searchParams: Record<string, unknown>,
-		options: Record<string, unknown>,
-		cb: (err: Error, results: { hits: { hits: IMusic[] } }) => void
-	): void;
-	synchronize(): void;
-}
-export interface IPlaylistModel extends mongoose.Model<IPlaylist> {
-	search(
-		searchParams: Record<string, unknown>,
-		options: Record<string, unknown>,
-		cb: (err: Error, results: { hits: { hits: IPlaylist[] } }) => void
-	): void;
-	synchronize(): void;
-}
+export interface IMusicModel extends mongoose.Model<IMusic> {}
+export interface IPlaylistModel extends mongoose.Model<IPlaylist> {}
 
 export const MusicModel = mongoose.model<IMusic, IMusicModel>(
 	"Music",
@@ -192,10 +131,3 @@ export const PlaylistModel = mongoose.model<IPlaylist, IPlaylistModel>(
 );
 
 export { MusicSchema };
-
-if (process.env.NODE_ENV !== "test" && !UseMongoSearchIndex) {
-	MusicModel.synchronize();
-	AlbumModel.synchronize();
-	ArtistModel.synchronize();
-	PlaylistModel.synchronize();
-}

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mop-deezerindexer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deezerindexer
+  template:
+    metadata:
+      labels:
+        app: deezerindexer
+    spec:
+      containers:
+      - name: deezerindexer
+        image: malauryd/mop_deezerindexer
+        env:
+          - name: MONGO_URL
+            value: 'mongodb://mongodb-service:27017/MOPv2'
+        ports:
+        - containerPort: 3001
+        resources:
+          limits:
+            memory: "64Mi"
+            cpu: "100m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: deeezerindexer
+  name: deeezerindexer-service
+spec:
+  ports:
+  - port: 3001
+    targetPort: 3001
+  selector:
+    app: deezerindexer
+  type: ClusterIP

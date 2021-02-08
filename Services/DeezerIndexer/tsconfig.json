@@ -1,24 +1,25 @@
 {
-    "compilerOptions": {
-        "baseUrl": ".",
-        "paths": {
-            "lib/*": ["../lib/*"]
-        },
-        "target": "es2019",
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "allowSyntheticDefaultImports": true,
-        "allowJs": true,
-        "importHelpers": true,
-        "alwaysStrict": true,
-        "noImplicitAny": true,
-        "noImplicitThis": false,
-        "strictNullChecks": false,
-        "resolveJsonModule": true,
-        "skipLibCheck": true,
-        "outDir": "Build",
-        "esModuleInterop": true,
-        "plugins": [{ "transform": "typescript-transform-paths" }]
-    },
-    "include": ["./Service/**/*", "../lib/**/*"]
+	"compilerOptions": {
+		"baseUrl": ".",
+		"paths": {
+			"lib/*": ["../lib/*"],
+			"*": ["./node_modules/*"]
+		},
+		"target": "es2019",
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
+		"allowJs": true,
+		"importHelpers": true,
+		"alwaysStrict": true,
+		"noImplicitAny": true,
+		"noImplicitThis": false,
+		"strictNullChecks": false,
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"outDir": "Build",
+		"esModuleInterop": true,
+		"plugins": [{ "transform": "typescript-transform-paths" }]
+	},
+	"include": ["./Service/index.ts"]
 }

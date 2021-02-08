@@ -1,0 +1,26 @@
+apiVersion: skaffold/v2beta11
+kind: Config
+metadata:
+  name: mopjs
+build:
+  artifacts:
+  - image: malauryd/mop_deezerimporter
+    context: Services
+    sync:
+      infer:
+        - '/Services/DeezerImporter/Service/**/*'
+    docker:
+      dockerfile: DeezerImporter/Dockerfile
+  - image: malauryd/mop_deezerindexer
+    context: Services
+    sync:
+      infer:
+        - '/Services/DeezerIndexer/Service/**/*'
+    docker:
+      dockerfile: DeezerIndexer/Dockerfile
+deploy:
+  kubectl:
+    manifests:
+    - Kubernetes/mongo.yaml
+    - Services/DeezerImporter/deployment.yaml
+    - Services/DeezerIndexer/deployment.yaml

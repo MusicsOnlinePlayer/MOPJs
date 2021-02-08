@@ -10,6 +10,7 @@ ConnectToDB(process.env.MONGO_URL, process.env.USE_MONGO_AUTH === 'true')
 		MopConsole.info(LogLocation, `Connected to mongodb`);
 		Seneca({ tag: 'DeezerIndexer' })
 			.use(DeezerAlbumPlugin)
+			.listen(3001)
 			.ready(function (err) {
 				if (err) MopConsole.error(LogLocation, err.message);
 

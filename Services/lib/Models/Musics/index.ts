@@ -12,5 +12,4 @@ export {
 	IMusicModel,
 	IPlaylistModel,
 	MusicSchema,
-	esClient,
 } from "./Music";

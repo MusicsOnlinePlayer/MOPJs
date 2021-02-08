@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mop-deezerimporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deezerimporter
+  template:
+    metadata:
+      labels:
+        app: deezerimporter
+    spec:
+      containers:
+      - name: deezerimporter
+        image: malauryd/mop_deezerimporter
+        ports:
+        - containerPort: 3000
+        resources:
+          limits:
+           memory: "64Mi"
+           cpu: "100m"
