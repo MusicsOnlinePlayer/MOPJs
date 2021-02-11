@@ -7,9 +7,9 @@ import ArtistRoute from './Routes/Artist';
 const app = express();
 const LogLocation = 'Services.Frontend.Music';
 
-app.use('/Music', MusicRoute);
-app.use('/Album', AlbumRoute);
-app.use('/Artist', ArtistRoute);
+app.use('/Music/Music', MusicRoute);
+app.use('/Music/Album', AlbumRoute);
+app.use('/Music/Artist', ArtistRoute);
 
 const port = parseInt(process.env.PORT);
 

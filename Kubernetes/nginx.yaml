@@ -1,25 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mop-musicfrontend
+  name: mop-static
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: musicfrontend
+      app: static
   template:
     metadata:
       labels:
-        app: musicfrontend
+        app: static
     spec:
       containers:
-      - name: musicfrontend
-        image: malauryd/mop_musicfrontend
-        env:
-          - name: PORT
-            value: '8080'
+      - name: static
+        image: malauryd/mop_static
         ports:
-        - containerPort: 8080
+        - containerPort: 80
         resources:
           limits:
            memory: "64Mi"
@@ -29,13 +26,13 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: musicfrontend
-  name: musicfrontend-service
+    app: static
+  name: static-service
 spec:
   ports:
   - name: 'http'
     port: 80
-    targetPort: 8080
+    targetPort: 80
   selector:
-    app: musicfrontend
+    app: static
   type: NodePort
