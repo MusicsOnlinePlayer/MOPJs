@@ -39,6 +39,7 @@ deploy:
   kubectl:
     manifests:
     - Kubernetes/mongo.yaml
+    # - Kubernetes/monitoring.yaml
     - Services/DeezerImporter/deployment.yaml
     - Services/DeezerIndexer/deployment.yaml
     - Kubernetes/nginx.yaml

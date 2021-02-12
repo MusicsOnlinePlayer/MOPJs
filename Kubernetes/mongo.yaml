@@ -1,70 +1,40 @@
 apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: mo-data-pv
-  labels:
-    type: local
-spec:
-  storageClassName: generic
-  capacity:
-    storage: 500Mi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: "/var/lib/mongo"
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: mo-data-pvc
-spec:
-  storageClassName: generic
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 500Mi
----
-apiVersion: v1
 kind: Service
 metadata:
+  name: mongo-svc
   labels:
-    app: mongo-db
-  name: mongodb-service
+    app: mongo
 spec:
-  ports:
-  - port: 27017
-    targetPort: 27017
+  clusterIP: None
   selector:
-    app: mongodb-pod
-  type: ClusterIP
+    app: mongo
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  labels:
-    app: mongo-db
-  name: mongodb-deployment
+  name: database
 spec:
-  replicas: 1
   selector:
     matchLabels:
-      app: mongodb-pod
+      app: mongo # has to match .spec.template.metadata.labels
+  serviceName: "mongo"
+  replicas: 1 # by default is 1
   template:
     metadata:
       labels:
-        app: mongodb-pod
+        app: mongo # has to match .spec.selector.matchLabels
     spec:
+      terminationGracePeriodSeconds: 10
       containers:
-      - name: mongodb
-        volumeMounts:
-          - mountPath: /var/lib/mongo
-            name: mo-data
+      - name: mongo
         image: mongo:latest
         ports:
         - containerPort: 27017
+          name: mongo
+        volumeMounts:
+        - name: data
+          mountPath: /data/db/
       volumes:
-      - name: mo-data
+      - name: data
         persistentVolumeClaim:
-          claimName: mo-data-pvc
-      restartPolicy: Always
+          claimName: mongo-pvc

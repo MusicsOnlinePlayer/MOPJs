@@ -81,6 +81,7 @@
     "webpack-dev-server": "^3.11.0"
   },
   "scripts": {
+    "skaffold": "kubectl apply -f .\\Kubernetes\\mongo-pv.yaml && skaffold dev",
     "test": "tsc --project tsconfig.test.json && jest ./Build --runInBand --detectOpenHandles",
     "StartAll": "webpack --mode production && node index.js",
     "BuildClient": "webpack --mode development --watch",
