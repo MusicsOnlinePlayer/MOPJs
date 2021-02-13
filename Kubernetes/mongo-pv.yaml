@@ -4,14 +4,14 @@ metadata:
   name: mongo-pv
 spec:
   capacity:
-    storage: 10Gi
+    storage: 1Gi
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   local:
-    path: /run/desktop/mnt/host/wsl/sample-hostmount
+    path: /run/desktop/mnt/host/c/data/pv
   nodeAffinity:
     required:
       nodeSelectorTerms:

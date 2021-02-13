@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mop-musicmanager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: musicmanager
+  template:
+    metadata:
+      labels:
+        app: musicmanager
+    spec:
+      containers:
+      - name: musicmanager
+        image: malauryd/mop_musicmanager
+        ports:
+        - containerPort: 3003
+        resources:
+          limits:
+           memory: "64Mi"
+           cpu: "100m"

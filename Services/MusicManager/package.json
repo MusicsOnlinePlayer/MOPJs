@@ -1,23 +1,25 @@
 {
-  "name": "mopjs-musicfrontend",
+  "name": "mopjs-musicmanager",
   "version": "1.0.0",
-  "description": "Server frontend containing http api",
-  "main": "Build/index.js",
+  "description": "Service responsible of managing music on mopjs",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "ttsc && node Build/DeezerImporter/Service/index.js",
+    "dev": "nodemon --watch './Service/**/*.ts' -e ts --exec \"ts-node -C ttypescript Service/index.ts\"",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "author": "Malaury DUTOUR",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.21.1",
     "chalk": "^4.1.0",
-    "express": "^4.17.1",
-    "fluent-logger": "^3.4.1"
+    "fluent-logger": "^3.4.1",
+    "seneca": "^3.23.2"
   },
   "devDependencies": {
-    "@types/express": "^4.17.11",
     "@types/mongoose": "^5.10.3",
     "@types/node": "^14.14.25",
+    "@types/seneca": "^2.1.10",
     "@typescript-eslint/eslint-plugin": "^4.14.2",
     "@typescript-eslint/parser": "^4.14.2",
     "eslint": "^7.19.0",

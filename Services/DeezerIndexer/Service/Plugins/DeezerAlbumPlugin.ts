@@ -1,18 +1,21 @@
-import { DeezerAlbumCoverRequest, DeezerAlbumMusicsRequest } from 'lib/Requests/DeezerIndexer';
-import { DeezerAlbumMusicsResponse, DeezerAlbumCoverResponse } from 'lib/Responses/DeezerIndexer/Album';
-import { Instance, PluginOptions } from 'seneca';
 import { IndexAlbumMusics, SetDeezerCoverOfAlbum } from '../Indexer/Album';
 
-export default function DeezerAlbumIndexerPlugin(this: Instance, option: PluginOptions): void {
-	this.add('req:index,from:deezer,type:album,what:musics', (msg: DeezerAlbumMusicsRequest, reply) => {
-		IndexAlbumMusics(msg.id, msg.Musics)
-			.then((Album) => reply(null, <DeezerAlbumMusicsResponse>{ Album }))
-			.catch((err) => reply(err));
-	});
+import express from 'express';
 
-	this.add('req:index,from:deezer,type:album,what:cover', (msg: DeezerAlbumCoverRequest, reply) => {
-		SetDeezerCoverOfAlbum(msg.id, msg.path)
-			.then((Album) => reply(null, <DeezerAlbumCoverResponse>{ Album }))
-			.catch((err) => reply(err));
-	});
-}
+const router = express.Router();
+
+router.post('/Index/Musics', (req, res) => {
+	const msg = req.body;
+	IndexAlbumMusics(msg.id, msg.Musics)
+		.then((Album) => res.send({ Album }))
+		.catch((err) => res.status(300).send(err));
+});
+
+router.post('/Index/Cover', (req, res) => {
+	const msg = req.body;
+	SetDeezerCoverOfAlbum(msg.id, msg.path)
+		.then((Album) => res.send({ Album }))
+		.catch((err) => res.status(300).send(err));
+});
+
+export default router;

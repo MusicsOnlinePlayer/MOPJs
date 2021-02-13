@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mop-deezerindexer
+  name: mop-musicsearch
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: deezerindexer
+      app: musicsearch
   template:
     metadata:
       labels:
-        app: deezerindexer
+        app: musicsearch
     spec:
       containers:
-      - name: deezerindexer
-        image: malauryd/mop_deezerindexer
+      - name: musicsearch
+        image: malauryd/mop_musicsearch
         env:
           - name: MONGO_URL
             value: 'mongodb://mongodb-service:27017/MOPv2'
@@ -22,19 +22,19 @@ spec:
         - containerPort: 3000
         resources:
           limits:
-            memory: "64Mi"
-            cpu: "100m"
+           memory: "64Mi"
+           cpu: "100m"
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: deeezerindexer
-  name: deeezerindexer-service
+    app: musicsearch
+  name: musicsearch-service
 spec:
   ports:
   - port: 3000
     targetPort: 3000
   selector:
-    app: deezerindexer
+    app: musicsearch
   type: ClusterIP

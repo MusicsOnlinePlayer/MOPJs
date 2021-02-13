@@ -20,6 +20,22 @@ build:
         - '/Services/lib/**/*'
     docker:
       dockerfile: DeezerIndexer/Dockerfile
+  - image: malauryd/mop_musicmanager
+    context: Services
+    sync:
+      infer:
+        - '/Services/MusicManager/Service/**/*'
+        - '/Services/lib/**/*'
+    docker:
+      dockerfile: MusicManager/Dockerfile
+  - image: malauryd/mop_musicsearch
+    context: Services
+    sync:
+      infer:
+        - '/Services/MusicSearch/Service/**/*'
+        - '/Services/lib/**/*'
+    docker:
+      dockerfile: MusicSearch/Dockerfile
   - image: malauryd/mop_static
     context: Public
     sync:
@@ -42,6 +58,8 @@ deploy:
     # - Kubernetes/monitoring.yaml
     - Services/DeezerImporter/deployment.yaml
     - Services/DeezerIndexer/deployment.yaml
+    - Services/MusicSearch/deployment.yaml
+    - Services/MusicManager/deployment.yaml
     - Kubernetes/nginx.yaml
     - Services/MusicFrontend/deployment.yaml
     - Kubernetes/ingress.yaml

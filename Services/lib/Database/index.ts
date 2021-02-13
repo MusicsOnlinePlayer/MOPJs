@@ -7,6 +7,7 @@ export const ConnectToDB = (
 	new Promise((resolve, reject) => {
 		mongoose.connect(MongoUrl, {
 			useNewUrlParser: true,
+			useUnifiedTopology: true,
 			authSource: EnableMongoAuth ? "admin" : undefined,
 		});
 		const DataBase = mongoose.connection;

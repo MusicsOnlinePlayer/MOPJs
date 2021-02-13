@@ -1,11 +1,10 @@
 import MopConsole from 'lib/MopConsole';
 import express from 'express';
-import { ConnectToDB } from 'lib/Database';
-import DeezerAlbumPlugin from './Plugins/DeezerAlbumPlugin';
-import DeezerMusicPlugin from './Plugins/DeezerMusicPlugin';
+import MusicSearchPlugin from './Plugins/MusicSearchPlugin';
 import bodyParser from 'body-parser';
+import { ConnectToDB } from 'lib/Database';
 
-const LogLocation = 'Services.DeezerIndexer';
+const LogLocation = 'Services.MusicSearch';
 const app = express();
 
 ConnectToDB(process.env.MONGO_URL, process.env.USE_MONGO_AUTH === 'true')
@@ -23,7 +22,6 @@ app.use(
 		extended: true,
 	})
 );
-app.use('/Album', DeezerAlbumPlugin);
-app.use('/Music', DeezerMusicPlugin);
+app.use('/Music', MusicSearchPlugin);
 
 app.listen(3000, () => MopConsole.info(LogLocation, 'Waiting for requests on 3000'));
