@@ -21,6 +21,8 @@ spec:
   replicas: 1 # by default is 1
   template:
     metadata:
+      annotations:
+          linkerd.io/inject: enabled
       labels:
         app: mongo # has to match .spec.selector.matchLabels
     spec:

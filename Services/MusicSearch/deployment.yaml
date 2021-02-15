@@ -9,6 +9,8 @@ spec:
       app: musicsearch
   template:
     metadata:
+      annotations:
+        linkerd.io/inject: enabled
       labels:
         app: musicsearch
     spec:

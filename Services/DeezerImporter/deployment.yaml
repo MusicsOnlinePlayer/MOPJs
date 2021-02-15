@@ -9,6 +9,8 @@ spec:
       app: deezerimporter
   template:
     metadata:
+      annotations:
+        linkerd.io/inject: enabled
       labels:
         app: deezerimporter
     spec:

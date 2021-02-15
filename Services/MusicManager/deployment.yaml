@@ -9,6 +9,8 @@ spec:
       app: musicmanager
   template:
     metadata:
+      annotations:
+        linkerd.io/inject: enabled
       labels:
         app: musicmanager
     spec:
