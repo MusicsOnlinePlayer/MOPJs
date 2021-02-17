@@ -1,6 +1,7 @@
 import MopConsole from 'lib/MopConsole';
 import express from 'express';
 import MusicSearchPlugin from './Plugins/MusicSearchPlugin';
+import AlbumSearchPlugin from './Plugins/AlbumSearchPlugin';
 import bodyParser from 'body-parser';
 import { ConnectToDB } from 'lib/Database';
 
@@ -23,5 +24,6 @@ app.use(
 	})
 );
 app.use('/Music', MusicSearchPlugin);
+app.use('/Album', AlbumSearchPlugin);
 
 app.listen(3000, () => MopConsole.info(LogLocation, 'Waiting for requests on 3000'));

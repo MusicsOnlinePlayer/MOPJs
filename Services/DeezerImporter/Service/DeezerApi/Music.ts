@@ -9,11 +9,16 @@ const LogLocation = 'Services.DeezerImporter.DeezerApi';
  */
 export const SearchDeezerMusics = (Query: string): Promise<IDeezerMusic[]> =>
 	new Promise((resolve, reject) => {
+		const startTime = Date.now();
 		MopConsole.debug(LogLocation, `Getting musics (query: ${Query})`);
 		axios
 			.get(`https://api.deezer.com/search?q=${Query}`)
 			.then(async (res) => {
-				MopConsole.debug(LogLocation, `Got ${res.data.data.length} musics (query: ${Query})`);
+				const requestTime = Date.now() - startTime;
+				MopConsole.debug(
+					LogLocation,
+					`Got ${res.data.data.length} musics in ${requestTime} ms (query: ${Query})`
+				);
 				resolve(res.data.data);
 			})
 			.catch((err) => {
