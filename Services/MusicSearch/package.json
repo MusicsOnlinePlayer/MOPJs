@@ -12,6 +12,7 @@
   "author": "Malaury DUTOUR",
   "license": "ISC",
   "dependencies": {
+    "@types/mongodb": "^3.6.7",
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
     "chalk": "^4.1.0",

@@ -28,6 +28,14 @@ build:
         - '/Services/lib/**/*'
     docker:
       dockerfile: MusicManager/Dockerfile
+  - image: malauryd/mop_usermanager
+    context: Services
+    sync:
+      infer:
+        - '/Services/UserManager/Service/**/*'
+        - '/Services/lib/**/*'
+    docker:
+      dockerfile: UserManager/Dockerfile
   - image: malauryd/mop_musicsearch
     context: Services
     sync:
@@ -58,6 +66,7 @@ deploy:
     # - Kubernetes/monitoring.yaml
     - Services/DeezerImporter/deployment.yaml
     - Services/DeezerIndexer/deployment.yaml
+    - Services/UserManager/deployment.yaml
     - Services/MusicSearch/deployment.yaml
     - Services/MusicManager/deployment.yaml
     - Kubernetes/nginx.yaml
