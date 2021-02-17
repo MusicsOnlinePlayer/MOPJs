@@ -48,11 +48,13 @@ export function GetTagsFromDeezerSearchMusics(tags: IDeezerMusic): IDeezerExport
 	const AlbumTags: IAlbum = ({
 		Name: tags.album.title,
 		DeezerId: tags.album.id,
+		ImagePathDeezer: tags.album.cover_big,
 	} as unknown) as IAlbum;
 
 	const ArtistTags: IArtist = ({
 		Name: tags.artist.name,
 		DeezerId: tags.artist.id,
+		ImagePath: tags.artist.picture_big,
 	} as unknown) as IArtist;
 
 	return {

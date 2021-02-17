@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import MopConsole from 'lib/MopConsole';
-import { IDeezerAlbum } from 'lib/Types/Deezer';
+import { IDeezerAlbum, IDeezerArtist } from 'lib/Types/Deezer';
 
 const LogLocation = 'Services.DeezerImporter.DeezerApi';
 
@@ -57,6 +57,25 @@ export const GetDeezerArtistAlbums = (ArtistDzId: number): Promise<Array<IDeezer
 					`Got a total of ${MusicsOfAlbums.length} albums for artist (id: ${ArtistDzId})`
 				);
 				resolve(MusicsOfAlbums);
+			})
+			.catch((err) => {
+				MopConsole.error(LogLocation, err);
+				reject();
+			});
+	});
+
+export const SearchDeezerArtists = (Query: string): Promise<IDeezerArtist[]> =>
+	new Promise((resolve, reject) => {
+		MopConsole.debug(LogLocation, `Getting artists (query: ${Query})`);
+		const startTime = Date.now();
+		Axios.get(`https://api.deezer.com/search/artist?q=${Query}`)
+			.then(async (res) => {
+				const requestTime = Date.now() - startTime;
+				MopConsole.debug(
+					LogLocation,
+					`Got ${res.data.data.length} artists in ${requestTime} ms (query: ${Query})`
+				);
+				resolve(res.data.data);
 			})
 			.catch((err) => {
 				MopConsole.error(LogLocation, err);

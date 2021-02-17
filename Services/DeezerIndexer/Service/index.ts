@@ -1,6 +1,7 @@
 import MopConsole from 'lib/MopConsole';
 import express from 'express';
 import { ConnectToDB } from 'lib/Database';
+import DeezerArtistPlugin from './Plugins/DeezerArtistPlugin';
 import DeezerAlbumPlugin from './Plugins/DeezerAlbumPlugin';
 import DeezerMusicPlugin from './Plugins/DeezerMusicPlugin';
 import bodyParser from 'body-parser';
@@ -19,6 +20,7 @@ ConnectToDB(process.env.MONGO_URL, process.env.USE_MONGO_AUTH === 'true')
 	.then(() => {
 		MopConsole.info(LogLocation, `Connected to mongodb`);
 		app.get('/ready', (req, res) => res.sendStatus(200));
+		app.use('/Artist', DeezerArtistPlugin);
 		app.use('/Album', DeezerAlbumPlugin);
 		app.use('/Music', DeezerMusicPlugin);
 

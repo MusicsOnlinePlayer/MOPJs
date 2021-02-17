@@ -70,7 +70,7 @@ export const SearchDeezerAlbums = (Query: string): Promise<IDeezerAlbum[]> =>
 				const requestTime = Date.now() - startTime;
 				MopConsole.debug(
 					LogLocation,
-					`Got ${res.data.data.length} musics in ${requestTime} ms (query: ${Query})`
+					`Got ${res.data.data.length} albums in ${requestTime} ms (query: ${Query})`
 				);
 				resolve(res.data.data);
 			})

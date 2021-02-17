@@ -2,7 +2,7 @@ import { IndexAlbumMusics, SetDeezerCoverOfAlbum, IndexAlbums } from '../Indexer
 
 import express from 'express';
 import MopConsole from 'lib/MopConsole';
-const LogLocation = 'Services.DeezerIndexer.Plugins.Music';
+const LogLocation = 'Services.DeezerIndexer.Plugins.Album';
 const router = express.Router();
 
 router.post('/Index', (req, res) => {
