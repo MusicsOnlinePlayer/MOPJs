@@ -59,6 +59,14 @@ build:
         - '/Services/lib/**/*'
     docker:
       dockerfile: MusicFrontend/Dockerfile
+  - image: malauryd/mop_authentication
+    context: Services
+    sync:
+      infer:
+        - '/Services/Authentication/Frontend/**/*'
+        - '/Services/lib/**/*'
+    docker:
+      dockerfile: Authentication/Dockerfile
 deploy:
   kubectl:
     manifests:
@@ -71,4 +79,5 @@ deploy:
     - Services/MusicManager/deployment.yaml
     - Kubernetes/nginx.yaml
     - Services/MusicFrontend/deployment.yaml
+    - Services/Authentication/deployment.yaml
     - Kubernetes/ingress.yaml

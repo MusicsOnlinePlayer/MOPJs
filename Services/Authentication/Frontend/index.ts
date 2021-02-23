@@ -1,7 +1,7 @@
-import MopConsole from 'lib/MopConsole';
 import express from 'express';
 import bodyParser from 'body-parser';
-import UserDataPlugin from './Plugin/UserDataPlugin';
+import MopConsole from 'lib/MopConsole';
+import UserAuthenticationPlugin from './Plugin/UserAuthenticationPlugin';
 import passport from 'passport';
 import { User } from 'lib/Models/Users';
 import { ConnectToDB } from 'lib/Database';
@@ -10,10 +10,12 @@ import connectMongo from 'connect-mongo';
 import mongoose from 'mongoose';
 
 const MongoStore = connectMongo(session);
-const LogLocation = 'Services.UserManager';
 const app = express();
+const port = parseInt(process.env.PORT);
 
-ConnectToDB(process.env.MONGO_URL, process.env.USE_MONGO_AUTH === 'true')
+const LogLocation = 'Services.Authentication';
+
+ConnectToDB(process.env.MONGO_URL)
 	.then(() => {
 		MopConsole.info(LogLocation, `Connected to mongodb`);
 		passport.use(User.createStrategy());
@@ -38,10 +40,10 @@ ConnectToDB(process.env.MONGO_URL, process.env.USE_MONGO_AUTH === 'true')
 				extended: true,
 			})
 		);
-		app.use('/User', UserDataPlugin);
-		app.listen(8080, () => MopConsole.info(LogLocation, 'Waiting for requests on 3000'));
+		app.use('/Auth', UserAuthenticationPlugin);
+
+		app.listen(port, () => MopConsole.info(LogLocation, `Listening on ${port}`));
 	})
 	.catch((err) => {
 		MopConsole.error(LogLocation, err);
-		process.exit(1);
 	});

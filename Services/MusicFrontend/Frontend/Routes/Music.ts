@@ -10,9 +10,13 @@ router.get('/test', (req, res) => {
 });
 
 router.get('/Search', (req, res) => {
-	const { q, page, perPage } = req.query;
+	const { q, Page, PerPage } = req.query;
 	axios
-		.post('tcp://musicsearch-service:3000/Music/Search', { query: q, page, perPage })
+		.post('tcp://musicsearch-service:3000/Music/Search', {
+			query: q,
+			page: parseInt(Page as string),
+			perPage: parseInt(PerPage as string),
+		})
 		.then((r) => res.send(r.data))
 		.catch((err) => {
 			MopConsole.error(LogLocation, err);

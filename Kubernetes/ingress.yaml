@@ -20,3 +20,17 @@ spec:
             name: static-service
             port:
               number: 80
+      - path: /Auth/
+        pathType: Prefix
+        backend:
+          service:
+            name: authentication-service
+            port:
+              number: 80
+      - path: /User/
+        pathType: Prefix
+        backend:
+          service:
+            name: usermanager-service
+            port:
+              number: 80

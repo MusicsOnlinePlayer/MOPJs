@@ -15,7 +15,7 @@ function RegisterConnected({ history, dispatch }) {
 	const [externalError, setexternalError] = useState('');
 
 	const onSubmit = (data) => {
-		Axios.post('/User/Register', data)
+		Axios.post('/Auth/Register', data)
 			.then((res) => {
 				if (res.data.success) {
 					Axios.get('/User/Me').then((res2) => {

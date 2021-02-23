@@ -1,23 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mop-usermanager
+  name: mop-authentication
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: usermanager
+      app: authentication
   template:
     metadata:
       annotations:
         linkerd.io/inject: enabled
       labels:
-        app: usermanager
+        app: authentication
     spec:
       containers:
-      - name: usermanager
-        image: malauryd/mop_usermanager
+      - name: authentication
+        image: malauryd/mop_authentication
         env:
+          - name: PORT
+            value: '8080'
           - name: MONGO_URL
             value: 'mongodb://mongodb-service:27017/MOPv2'
         ports:
@@ -31,13 +33,13 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: usermanager
-  name: usermanager-service
+    app: authentication
+  name: authentication-service
 spec:
   ports:
   - name: 'http'
     port: 80
     targetPort: 8080
   selector:
-    app: usermanager
-  type: ClusterIP
+    app: authentication
+  type: NodePort

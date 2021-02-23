@@ -17,7 +17,7 @@ function LoginConnected({ history, dispatch }) {
 	const [externalError, setexternalError] = useState('');
 
 	const onSubmit = (data) => {
-		Axios.post('/User/Login', data)
+		Axios.post('/Auth/Login', data)
 			.then((res) => {
 				if (res.data.success) {
 					Axios.get('/User/Me').then((res2) => {

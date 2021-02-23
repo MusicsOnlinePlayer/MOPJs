@@ -2,7 +2,6 @@ import express from 'express';
 import MopConsole from 'lib/MopConsole';
 import passport from 'passport';
 import { RegisterUser } from '../Helper/Authentication';
-import {} from '../Helper/LikedMusics';
 
 const LogLocation = 'Services.UserManager.Plugin.Authentication';
 
