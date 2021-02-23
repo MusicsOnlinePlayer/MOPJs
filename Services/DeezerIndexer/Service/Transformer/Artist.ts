@@ -1,5 +1,5 @@
-import { IArtist } from 'lib/Models/Musics';
-import { IDeezerArtist, IDeezerExport } from 'lib/Types/Deezer';
+import { IAlbum, IArtist } from 'lib/Models/Musics';
+import { IDeezerAlbum, IDeezerArtist, IDeezerExport } from 'lib/Types/Deezer';
 
 export function GetTagsFromDeezerSearchArtists(tags: IDeezerArtist): IDeezerExport {
 	const ArtistTags: IArtist = ({
@@ -12,5 +12,19 @@ export function GetTagsFromDeezerSearchArtists(tags: IDeezerArtist): IDeezerExpo
 		ImportedMusic: undefined,
 		ImportedAlbum: undefined,
 		ImportedArtist: ArtistTags,
+	};
+}
+
+export function GetTagsFromDeezerArtistAlbums(tags: IDeezerAlbum): IDeezerExport {
+	const AlbumsTags: IAlbum = ({
+		Name: tags.title,
+		DeezerId: tags.id,
+		ImagePathDeezer: tags.cover_big,
+	} as unknown) as IAlbum;
+
+	return {
+		ImportedMusic: undefined,
+		ImportedAlbum: AlbumsTags,
+		ImportedArtist: undefined,
 	};
 }

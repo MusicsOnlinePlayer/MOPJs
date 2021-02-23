@@ -3,7 +3,7 @@ import { IMusicModel, Music, Album, IMusic, IAlbum, Artist } from 'lib/Models/Mu
 import { GetTagsFromDeezerAlbumMusics } from '../Transformer/Music';
 import { GetTagsFromDeezerSearchAlbums } from '../Transformer/Album';
 import { BulkWriteOperation, ObjectId } from 'mongodb';
-import { BulkInsertAlbums, BulkInsertArtists } from './Helper';
+import { BulkInsertAlbums, BulkInsertArtists, BulkInsertMusics } from './Helper';
 import MopConsole from 'lib/MopConsole';
 
 const LogLocation = 'Services.DeezerIndexer.Indexer.Album';
@@ -12,7 +12,6 @@ export const IndexAlbumMusics = async (DeezerAlbumId: number, DeezerMusics: IDee
 	const AlbumFromDb = await Album.findOne({ DeezerId: DeezerAlbumId });
 
 	const ExportedMusics = DeezerMusics.map((m) => GetTagsFromDeezerAlbumMusics(m, AlbumFromDb.Name, DeezerAlbumId));
-
 	const MusicsToAdd = ExportedMusics.map(
 		(i) =>
 			<IMusic>{
@@ -20,26 +19,15 @@ export const IndexAlbumMusics = async (DeezerAlbumId: number, DeezerMusics: IDee
 				AlbumId: AlbumFromDb._id,
 			}
 	);
-	const bulkArr: BulkWriteOperation<IMusicModel>[] = [];
-	MusicsToAdd.forEach((MusicToAdd) => {
-		bulkArr.push({
-			updateOne: {
-				filter: {
-					DeezerId: MusicToAdd.DeezerId,
-				},
-				update: {
-					$set: Music,
-				},
-				upsert: true,
-			},
-		});
-	});
-	const MusicsInsertResult = await Music.collection.bulkWrite(bulkArr);
-	const MusicIds = Object.keys(MusicsInsertResult.upsertedIds);
+	const BulkMusicInsert = await BulkInsertMusics(MusicsToAdd);
+	const MusicIds = BulkMusicInsert.getUpsertedIds().map((k) => new ObjectId(k._id));
 	MopConsole.info(LogLocation, `Upserted ${MusicIds.length} musics`);
+	AlbumFromDb.MusicsId.push(...MusicIds);
 
-	AlbumFromDb.MusicsId.push(...MusicIds.map((id) => new ObjectId(id)));
-	return await AlbumFromDb.save();
+	await AlbumFromDb.save();
+	return await Album.findById(AlbumFromDb._id)
+		.populate({ path: 'MusicsId', options: { sort: { TrackNumber: 1 } } })
+		.exec();
 };
 
 export const SetDeezerCoverOfAlbum = async (DeezerAlbumId: number, path: string): Promise<IAlbum> => {

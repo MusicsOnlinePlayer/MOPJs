@@ -17,9 +17,26 @@ spec:
       containers:
       - name: musicmanager
         image: malauryd/mop_musicmanager
+        env:
+          - name: MONGO_URL
+            value: 'mongodb://mongodb-service:27017/MOPv2'
         ports:
-        - containerPort: 3003
+        - containerPort: 3000
         resources:
           limits:
            memory: "64Mi"
            cpu: "100m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: musicmanager
+  name: musicmanager-service
+spec:
+  ports:
+  - port: 3000
+    targetPort: 3000
+  selector:
+    app: musicmanager
+  type: ClusterIP

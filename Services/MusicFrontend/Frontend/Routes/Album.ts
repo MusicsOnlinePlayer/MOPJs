@@ -24,4 +24,14 @@ router.get('/Search', (req, res) => {
 		});
 });
 
+router.get('/id/:id', (req, res) => {
+	axios
+		.post('tcp://musicmanager-service:3000/Album/Get', { id: req.params.id })
+		.then((r) => res.send(r.data))
+		.catch((err) => {
+			MopConsole.error(LogLocation, err);
+			res.sendStatus(300);
+		});
+});
+
 export default router;
