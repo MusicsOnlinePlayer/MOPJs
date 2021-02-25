@@ -3,6 +3,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import UserDataPlugin from './Plugin/UserDataPlugin';
 import UserCurrentPlaylist from './Plugin/UserCurrentPlaylist';
+import UserSelection from './Plugin/UserSelection';
 import passport from 'passport';
 import { User } from 'lib/Models/Users';
 import { ConnectToDB } from 'lib/Database';
@@ -41,6 +42,7 @@ ConnectToDB(process.env.MONGO_URL, process.env.USE_MONGO_AUTH === 'true')
 		);
 		app.use('/User', UserDataPlugin);
 		app.use('/User/CurrentPlaylist', UserCurrentPlaylist);
+		app.use('/User/Selection', UserSelection);
 		app.listen(8080, () => MopConsole.info(LogLocation, 'Waiting for requests on 3000'));
 	})
 	.catch((err) => {
