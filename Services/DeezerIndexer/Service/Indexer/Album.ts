@@ -22,9 +22,14 @@ export const IndexAlbumMusics = async (DeezerAlbumId: number, DeezerMusics: IDee
 	const BulkMusicInsert = await BulkInsertMusics(MusicsToAdd);
 	const MusicIds = BulkMusicInsert.getUpsertedIds().map((k) => new ObjectId(k._id));
 	MopConsole.info(LogLocation, `Upserted ${MusicIds.length} musics`);
-	AlbumFromDb.MusicsId.push(...MusicIds);
 
-	await AlbumFromDb.save();
+	await Album.updateOne(
+		{ DeezerId: DeezerAlbumId },
+		{
+			$push: { MusicsId: { $each: MusicIds } },
+			IsComplete: true,
+		}
+	);
 	return await Album.findById(AlbumFromDb._id)
 		.populate({ path: 'MusicsId', options: { sort: { TrackNumber: 1 } } })
 		.exec();

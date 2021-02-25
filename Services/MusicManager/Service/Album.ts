@@ -23,8 +23,6 @@ router.post('/Get', (req, res) => {
 							DeezerId: ReceivedAlbum.DeezerId,
 						})
 						.then((r) => {
-							ReceivedAlbum.IsComplete = true;
-							ReceivedAlbum.save();
 							res.send(r.data);
 						});
 
