@@ -15,3 +15,4 @@ Build/Config/MopConf.json
 Build/.env
 **/node_modules/**
 **/Build/**
+Kubernetes/secrets.yaml

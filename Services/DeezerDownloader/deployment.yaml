@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mop-deezerdownloader
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deezerdownloader
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      labels:
+        app: deezerdownloader
+    spec:
+      containers:
+      - name: deezerdownloader
+        image: malauryd/mop_deezerdownloader
+        env:
+          - name: MONGO_URL
+            value: 'mongodb://mongodb-service:27017/MOPv2'
+          - name: MOP_DEEZER_ARL
+            valueFrom:
+              secretKeyRef:
+                name: mopsecret
+                key: arl
+        ports:
+        - containerPort: 3000
+        resources:
+          limits:
+            memory: "64Mi"
+            cpu: "100m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: deeezerdownloader
+  name: deeezerdownloader-service
+spec:
+  ports:
+  - port: 3000
+    targetPort: 3000
+  selector:
+    app: deezerdownloader
+  type: ClusterIP

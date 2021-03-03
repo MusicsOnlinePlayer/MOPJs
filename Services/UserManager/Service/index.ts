@@ -11,6 +11,8 @@ import session from 'express-session';
 import connectMongo from 'connect-mongo';
 import mongoose from 'mongoose';
 
+import PrivateRoute from './Helper/PrivateRoute';
+
 const MongoStore = connectMongo(session);
 const LogLocation = 'Services.UserManager';
 const app = express();
@@ -40,6 +42,7 @@ ConnectToDB(process.env.MONGO_URL, process.env.USE_MONGO_AUTH === 'true')
 				extended: true,
 			})
 		);
+		app.use(PrivateRoute);
 		app.use('/User', UserDataPlugin);
 		app.use('/User/CurrentPlaylist', UserCurrentPlaylist);
 		app.use('/User/Selection', UserSelection);

@@ -44,6 +44,15 @@ build:
         - '/Services/lib/**/*'
     docker:
       dockerfile: MusicSearch/Dockerfile
+  - image: malauryd/mop_deezerdownloader
+    context: Services
+    sync:
+      infer:
+        - '/Services/DeezerDownloader/Service/**/*'
+        - '/Kubernetes/secrets.yaml'
+        - '/Services/lib/**/*'
+    docker:
+      dockerfile: DeezerDownloader/Dockerfile
   - image: malauryd/mop_static
     context: Public
     sync:
@@ -71,12 +80,15 @@ deploy:
   kubectl:
     manifests:
     - Kubernetes/mongo.yaml
+    - Kubernetes/minio.yaml
+    - Kubernetes/secrets.yaml
     # - Kubernetes/monitoring.yaml
     - Services/DeezerImporter/deployment.yaml
     - Services/DeezerIndexer/deployment.yaml
     - Services/UserManager/deployment.yaml
     - Services/MusicSearch/deployment.yaml
     - Services/MusicManager/deployment.yaml
+    - Services/DeezerDownloader/deployment.yaml
     - Kubernetes/nginx.yaml
     - Services/MusicFrontend/deployment.yaml
     - Services/Authentication/deployment.yaml
