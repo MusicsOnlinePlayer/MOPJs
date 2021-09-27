@@ -1,7 +1,7 @@
 {
   "name": "mop",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@mopjs/dzdownloadernode": "^1.0.17",
     "@types/lodash": "^4.14.168",
