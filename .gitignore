@@ -3,6 +3,7 @@
 *mp3
 *bundle.js
 /node_modules/**
+package-lock.json
 *properties
 deeezertest.js
 Server/Config/MopConf.json
