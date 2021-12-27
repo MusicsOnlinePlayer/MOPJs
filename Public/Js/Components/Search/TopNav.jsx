@@ -20,7 +20,8 @@ export default class TopNav extends React.Component {
 		};
 	}
 
-	handleSearch = () => {
+	handleSearch = (e) => {
+		e.preventDefault();
 		const { history } = this.props;
 		const { SearchValue } = this.state;
 		history.push(`/Search?q=${SearchValue}`);
